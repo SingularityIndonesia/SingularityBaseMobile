@@ -39,7 +39,7 @@ fun TodoListScreen(
 
             Spacer(modifier = Modifier.size(16.dp))
 
-            val searchClue by viewModel.searchClue.collectAsState()
+            val searchClue by viewModel.SearchClue.collectAsState()
             TextField(
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
@@ -83,7 +83,7 @@ fun TodoListScreen(
 
             Spacer(modifier = Modifier.size(16.dp))
 
-            val list by viewModel.todoListDisplay.collectAsState(initial = listOf())
+            val list by viewModel.TodoListDisplay.collectAsState(initial = listOf())
             LazyColumn {
                 items(list) {
                     Column(modifier = Modifier.padding(horizontal = 16.dp)) {

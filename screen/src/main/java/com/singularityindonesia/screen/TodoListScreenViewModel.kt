@@ -39,7 +39,7 @@ class TodoListScreenViewModel(
         }
     }
 
-    val selectedTodo: Flow<Todo?> =
+    private val selectedTodo: Flow<Todo?> =
         intent
             .filter { it is SelectTodo || it is ClearSelectedTodo }
             .flowOn(Dispatchers.IO)
@@ -52,14 +52,14 @@ class TodoListScreenViewModel(
             }
             .stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
-    val searchClue =
+    private val searchClue =
         intent
             .filter { it is Search }
             .flowOn(Dispatchers.IO)
             .map { (it as Search).clue }
             .stateIn(viewModelScope, SharingStarted.Lazily, "")
 
-    val todoFilters =
+    private val todoFilters =
         intent
             .filter {
                 it is AddFilter || it is ClearFilter
@@ -76,7 +76,7 @@ class TodoListScreenViewModel(
 
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val todoListState =
+    private val todoListState =
         intent
             .filterIsInstance<Reload>()
             .map { it.signature }
@@ -108,7 +108,8 @@ class TodoListScreenViewModel(
             .cancellable()
             .stateIn(viewModelScope, SharingStarted.Eagerly, Idle())
 
-    val todoListDisplay = combine(
+    /** ## Reduced State **/
+    val TodoListDisplay = combine(
         selectedTodo,
         todoListState,
         todoFilters,
@@ -141,7 +142,6 @@ class TodoListScreenViewModel(
             }
     }
 
-    /** ## Reduced State **/
     val Status = todoListState.map {
         it::class.simpleName
     }
@@ -174,6 +174,10 @@ class TodoListScreenViewModel(
 
         "Applied Filters = $filters"
     }
+
+    val SearchClue =
+        searchClue
+            .stateIn(viewModelScope, SharingStarted.Lazily, "")
 
     init {
         Post(Reload())
