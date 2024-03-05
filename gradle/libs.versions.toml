@@ -8,6 +8,7 @@ kotlinx-serialization-json = "1.6.3"
 ktor = "2.3.8"
 lifecycle-runtime-ktx = "2.7.0"
 material3 = "1.1.1"
+orbit-core = "6.1.1"
 ui = "1.5.0"
 agp = "8.2.0"
 kotlin = "1.9.22"
@@ -29,6 +30,10 @@ ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "kto
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
 lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
 material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
+orbit-compose = { module = "org.orbit-mvi:orbit-compose", version.ref = "orbit-core" }
+orbit-core = { module = "org.orbit-mvi:orbit-core", version.ref = "orbit-core" }
+orbit-test = { module = "org.orbit-mvi:orbit-test", version.ref = "orbit-core" }
+orbit-viewmodel = { module = "org.orbit-mvi:orbit-viewmodel", version.ref = "orbit-core" }
 ui = { module = "androidx.compose.ui:ui", version.ref = "ui" }
 ui-graphics = { module = "androidx.compose.ui:ui-graphics", version.ref = "ui" }
 ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "ui" }

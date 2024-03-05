@@ -10,9 +10,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.singularityindonesia.screen.TodoListScreenViewModel.Companion.AddFilter
+import com.singularityindonesia.screen.TodoListScreenViewModel.Companion.ClearFilter
+import com.singularityindonesia.screen.TodoListScreenViewModel.Companion.Search
+import com.singularityindonesia.screen.TodoListScreenViewModel.Companion.SelectTodo
 import com.singularityindonesia.serialization.PrettyJson
 import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 
 data class TodoListScreenPld(
     val unit: Unit = Unit
@@ -25,13 +28,13 @@ fun TodoListScreen(
 ) {
     Surface {
         Column {
-            val status by viewModel.status.collectAsState(initial = "Idle")
+            val status by viewModel.Status.collectAsState(initial = "Idle")
             Text(text = "Status = $status")
 
-            val error by viewModel.error.collectAsState(initial = "No Error")
+            val error by viewModel.Error.collectAsState(initial = "No Error")
             Text(text = "Error = ${error.ifBlank { "No Error" }}")
 
-            val filters by viewModel.appliedFilters.collectAsState(initial = "")
+            val filters by viewModel.AppliedFilters.collectAsState(initial = "")
             Text(text = filters)
 
             Spacer(modifier = Modifier.size(16.dp))
@@ -43,7 +46,7 @@ fun TodoListScreen(
                     .fillMaxWidth(),
                 value = searchClue,
                 onValueChange = {
-                    viewModel.search(it)
+                    viewModel.Post(Search(it))
                 }
             )
 
@@ -54,7 +57,11 @@ fun TodoListScreen(
                 Spacer(modifier = Modifier.size(16.dp))
                 Button(
                     onClick = {
-                        viewModel.addFilter(ShowCompleteOnly)
+                        viewModel.Post(
+                            AddFilter(
+                                ShowCompleteOnly
+                            )
+                        )
                     }
                 ) {
                     Text(text = "Completed")
@@ -63,7 +70,9 @@ fun TodoListScreen(
                 Spacer(modifier = Modifier.size(8.dp))
                 Button(
                     onClick = {
-                        viewModel.clearFilters()
+                        viewModel.Post(
+                            ClearFilter
+                        )
                     }
                 ) {
                     Text(text = "Show All")
@@ -79,7 +88,9 @@ fun TodoListScreen(
                 items(list) {
                     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
                         TodoCard(todo = it) {
-                            viewModel.setSelectedTodo(it.todo)
+                            viewModel.Post(
+                                SelectTodo(it.todo)
+                            )
                         }
                         Spacer(modifier = Modifier.size(8.dp))
                     }
@@ -91,7 +102,10 @@ fun TodoListScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TodoCard(todo: TodoDisplay, onClick: (TodoDisplay) -> Unit) {
+fun TodoCard(
+    todo: TodoDisplay,
+    onClick: (TodoDisplay) -> Unit
+) {
 
     Card(
         onClick = {
@@ -112,5 +126,4 @@ fun TodoCard(todo: TodoDisplay, onClick: (TodoDisplay) -> Unit) {
             Text(text = PrettyJson.encodeToString(todo))
         }
     }
-
 }

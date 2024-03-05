@@ -23,6 +23,12 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
 
+    // orbit mvi
+    implementation(libs.orbit.core)
+    implementation(libs.orbit.viewmodel)
+    implementation(libs.orbit.compose)
+    testImplementation(libs.orbit.test)
+
     implementation(libs.activity.compose)
     implementation(libs.ui)
     implementation(libs.ui.graphics)

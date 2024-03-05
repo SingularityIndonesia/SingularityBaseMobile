@@ -4,62 +4,115 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.singularityindonesia.analytics.report
 import com.singularityindonesia.data.*
+import com.singularityindonesia.exception.UnHandledException
 import com.singularityindonesia.exception.utils.toException
 import com.singularityindonesia.main_context.MainContext
 import com.singularityindonesia.model.Todo
 import com.singularityindonesia.webrepository.GetTodos
+import com.singularityindonesia.webrepository.WebRepositoryContext
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 
-class TodoListScreenViewModel : ViewModel() {
+class TodoListScreenViewModel(
+    private val webRepositoryContext: WebRepositoryContext = MainContext.get()
+) : ViewModel() {
 
-    private val webRepositoryContext = MainContext.get()
+    companion object {
+        sealed interface ViewModelIntent
+        data class SelectTodo(val todo: Todo) : ViewModelIntent
+        data object ClearSelectedTodo : ViewModelIntent
+        data class Search(val clue: String) : ViewModelIntent
+        data class AddFilter(val filter: TodoFilter) : ViewModelIntent
+        data object ClearFilter : ViewModelIntent
+        data class Reload(
+            val signature: String = System.currentTimeMillis().toString()
+        ) : ViewModelIntent
+    }
 
-    private val _selectedTodo = MutableStateFlow<Todo?>(null)
-    fun setSelectedTodo(todo: Todo) {
+    private val intent = MutableSharedFlow<ViewModelIntent>(100)
+    fun Post(intent: ViewModelIntent) {
         viewModelScope.launch {
-            _selectedTodo.emit(todo)
+            this@TodoListScreenViewModel.intent.emit(intent)
         }
     }
 
-    fun clearSelectedTodo() {
-        viewModelScope.launch {
-            _selectedTodo.emit(null)
-        }
-    }
-
-    private val _searchClue = MutableStateFlow("")
-    val searchClue = _searchClue.asStateFlow()
-    fun search(clue: String) {
-        viewModelScope.launch {
-            _searchClue.emit(clue)
-        }
-    }
-
-    private val _todoFilters = MutableStateFlow<List<TodoFilter>>(listOf())
-    fun addFilter(filter: TodoFilter) {
-        viewModelScope.launch {
-            _todoFilters.first()
-                .plus(filter)
-                .also {
-                    _todoFilters.emit(it)
+    val selectedTodo: Flow<Todo?> =
+        intent
+            .filter { it is SelectTodo || it is ClearSelectedTodo }
+            .flowOn(Dispatchers.IO)
+            .map { intent ->
+                when (intent) {
+                    is ClearSelectedTodo -> null
+                    is SelectTodo -> intent.todo
+                    else -> throw UnHandledException(intent.toString())
                 }
-        }
-    }
+            }
+            .stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
-    fun clearFilters() {
-        viewModelScope.launch {
-            _todoFilters.emit(listOf())
-        }
-    }
+    val searchClue =
+        intent
+            .filter { it is Search }
+            .flowOn(Dispatchers.IO)
+            .map { (it as Search).clue }
+            .stateIn(viewModelScope, SharingStarted.Lazily, "")
 
-    private val _todoListState = MutableStateFlow<VmState<List<Todo>>>(Idle())
+    val todoFilters =
+        intent
+            .filter {
+                it is AddFilter || it is ClearFilter
+            }
+            .flowOn(Dispatchers.IO)
+            .scan(listOf<TodoFilter>()) { acc, next ->
+                when (next) {
+                    is ClearFilter -> listOf()
+                    is AddFilter -> acc.plus(next.filter)
+                    else -> throw UnHandledException(next.toString())
+                }
+            }
+            .stateIn(viewModelScope, SharingStarted.Eagerly, listOf())
+
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val todoListState =
+        intent
+            .filterIsInstance<Reload>()
+            .map { it.signature }
+            .distinctUntilChanged()
+            .flatMapLatest {
+                flow<VmState<List<Todo>>> {
+                    emit(Processing())
+                    with(webRepositoryContext) {
+                        GetTodos()
+                    }
+                        .onSuccess {
+                            emit(
+                                Success(data = it)
+                            )
+                        }
+                        .onFailure {
+                            it.toException()
+                                .also { e ->
+                                    emit(
+                                        Failed(e)
+                                    )
+                                }
+                                .also { e ->
+                                    e.report()
+                                }
+                        }
+                }
+            }
+            .cancellable()
+            .stateIn(viewModelScope, SharingStarted.Eagerly, Idle())
+
     val todoListDisplay = combine(
-        _selectedTodo,
-        _todoListState,
-        _todoFilters,
-        _searchClue,
+        selectedTodo,
+        todoListState,
+        todoFilters,
+        searchClue,
     ) { selected, todoListState, filters, searchClue ->
         todoListState
             .fold(
@@ -88,20 +141,21 @@ class TodoListScreenViewModel : ViewModel() {
             }
     }
 
-    val status = _todoListState.map {
+    /** ## Reduced State **/
+    val Status = todoListState.map {
         it::class.simpleName
     }
 
-    val error = _todoListState.map {
+    val Error = todoListState.map {
         it.fold(
             onFailed = { e -> e.message },
             onElse = { "" }
         )
     }
 
-    val appliedFilters = combine(
-        _searchClue,
-        _todoFilters
+    val AppliedFilters = combine(
+        searchClue,
+        todoFilters
     ) { searchClue, todoFilters ->
 
         val filters =
@@ -121,36 +175,11 @@ class TodoListScreenViewModel : ViewModel() {
         "Applied Filters = $filters"
     }
 
-    fun getTodos() {
-        viewModelScope.launch {
-            _todoListState.emit(Processing())
-
-            with(webRepositoryContext) {
-                GetTodos()
-            }
-                .onSuccess {
-                    _todoListState.emit(
-                        Success(data = it)
-                    )
-                }
-                .onFailure {
-                    it.toException()
-                        .also { e ->
-                            _todoListState.emit(
-                                Failed(e)
-                            )
-                        }
-                        .also { e ->
-                            e.report()
-                        }
-                }
-        }
-    }
-
     init {
-        getTodos()
+        Post(Reload())
     }
 }
+
 
 @Serializable
 data class TodoDisplay(
