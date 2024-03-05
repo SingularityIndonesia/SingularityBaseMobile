@@ -118,7 +118,7 @@ class TodoListScreenViewModel : ViewModel() {
                     "$acc$r,"
                 }
 
-        "Applied Filters: $filters"
+        "Applied Filters = $filters"
     }
 
     fun getTodos() {
