@@ -15,4 +15,5 @@ object DefaultConfigs {
     val JAVA_TARGET_COMPAT = JavaVersion.VERSION_17
     val JVM_TARGET = "17"
     val EXCLUDED_RESOURCES = "/META-INF/{AL2.0,LGPL2.1}"
+    val KOTLIN_COMPILER_EXTENSION_VERSION = "1.5.10"
 }

@@ -2,13 +2,14 @@ package com.singularityindonesia.convention.features
 
 import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.LibraryExtension
+import com.singularityindonesia.convention.companion.DefaultConfigs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 
 class FeatureJetpackCompose : Plugin<Project> {
 
-    private val KOTLIN_COMPILER_EXTENSION_VERSION = "1.5.10"
+    private val KOTLIN_COMPILER_EXTENSION_VERSION = DefaultConfigs.KOTLIN_COMPILER_EXTENSION_VERSION
 
     override fun apply(target: Project) {
         runCatching {
