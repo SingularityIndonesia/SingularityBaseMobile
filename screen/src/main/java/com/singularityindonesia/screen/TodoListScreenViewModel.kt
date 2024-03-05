@@ -148,7 +148,10 @@ class TodoListScreenViewModel(
                     selected = todo.id == selected?.id
                 )
             }
+            .take(2)
     }
+        .distinctUntilChanged()
+        .stateIn(viewModelScope, SharingStarted.Lazily, listOf())
 
     val Status = todoListState.map {
         it::class.simpleName
@@ -182,6 +185,8 @@ class TodoListScreenViewModel(
 
         "Applied Filters = $filters"
     }
+        .distinctUntilChanged()
+        .stateIn(viewModelScope, SharingStarted.Lazily, "")
 
     val SearchClue =
         searchClue
@@ -191,7 +196,6 @@ class TodoListScreenViewModel(
         Post(Reload())
     }
 }
-
 
 @Immutable
 @Serializable

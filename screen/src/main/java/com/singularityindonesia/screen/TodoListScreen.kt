@@ -26,7 +26,9 @@ fun TodoListScreen(
     pld: TodoListScreenPld = TodoListScreenPld(),
     viewModel: TodoListScreenViewModel = viewModel()
 ) {
-    Column {
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
         val status by viewModel.Status.collectAsState(initial = "Idle")
         Text(text = "Status = $status")
 
@@ -86,13 +88,16 @@ fun TodoListScreen(
                 viewModel.Post(SelectTodo(todoDisplay.todo))
             }
         }
-        // fixme: why is this and the lazy colum inside it recomposed twice everytime the search clue is changing?
-        //  suspect: the scroll state emit new state when the new list is drawn to the screen causing the second recomposition.
-        TodoList(
-            list = list,
-            onClick = onItemClicked,
-            scrollState = scrollState
-        )
+        LazyColumn(
+            state = scrollState,
+        ) {
+            items(list) {
+                TodoItem(
+                    item = it,
+                    onClick = onItemClicked
+                )
+            }
+        }
     }
 }
 
@@ -136,28 +141,6 @@ private fun SearchComponent(
         value = clue,
         onValueChange = onSearch
     )
-}
-
-@Composable
-private fun TodoList(
-    list: List<TodoDisplay>,
-    onClick: (TodoDisplay) -> Unit,
-    scrollState: LazyListState = rememberLazyListState()
-) {
-
-    Box{
-        LazyColumn(
-            state = scrollState
-        ) {
-            items(list) {
-                TodoItem(
-                    item = it,
-                    onClick = onClick
-                )
-            }
-        }
-    }
-
 }
 
 @Composable
