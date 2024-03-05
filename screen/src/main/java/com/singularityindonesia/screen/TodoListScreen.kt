@@ -24,84 +24,122 @@ fun TodoListScreen(
     pld: TodoListScreenPld = TodoListScreenPld(),
     viewModel: TodoListScreenViewModel = viewModel()
 ) {
-    Surface {
-        Column {
-            val status by viewModel.Status.collectAsState(initial = "Idle")
-            Text(text = "Status = $status")
+    Column {
+        val status by viewModel.Status.collectAsState(initial = "Idle")
+        Text(text = "Status = $status")
 
-            val error by viewModel.Error.collectAsState(initial = "No Error")
-            Text(text = "Error = ${error.ifBlank { "No Error" }}")
+        val error by viewModel.Error.collectAsState(initial = "No Error")
+        Text(text = "Error = ${error.ifBlank { "No Error" }}")
 
-            val filters by viewModel.AppliedFilters.collectAsState(initial = "")
-            Text(text = filters)
+        val filters by viewModel.AppliedFilters.collectAsState(initial = "")
+        Text(text = filters)
 
-            Spacer(modifier = Modifier.size(16.dp))
+        Spacer(modifier = Modifier.size(16.dp))
 
-            var searchClue by remember {
-                mutableStateOf("")
+        val searchClue = remember {
+            mutableStateOf("")
+        }
+
+        LaunchedEffect(
+            key1 = searchClue.value,
+            block = {
+                viewModel.Post(Search(searchClue.value))
             }
+        )
 
-            LaunchedEffect(key1 = searchClue) {
-                viewModel.Post(
-                    Search(searchClue)
-                )
+        SearchComponent(
+            clue = searchClue.value,
+            onSearch = {
+                searchClue.value = it
             }
+        )
 
-            TextField(
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .fillMaxWidth(),
-                value = searchClue,
-                onValueChange = {
-                    searchClue = it
+        Spacer(modifier = Modifier.size(8.dp))
+
+        val onFilter = remember {
+            { filter: TodoFilter ->
+                viewModel.Post(AddFilter(filter))
+            }
+        }
+        val onClearFilter = remember {
+            {
+                viewModel.Post(ClearFilter)
+            }
+        }
+        ButtonFilters(
+            onFilter = onFilter,
+            onClearFilter = onClearFilter
+        )
+
+        Spacer(modifier = Modifier.size(16.dp))
+
+        val list = viewModel.TodoListDisplay.collectAsState(initial = listOf())
+        key(list.value) {
+            TodoList(
+                list = list.value,
+                onClick = {
+                    viewModel.Post(SelectTodo(it.todo))
                 }
             )
+        }
+    }
+}
 
-            Spacer(modifier = Modifier.size(8.dp))
+@Composable
+private fun ButtonFilters(
+    onFilter: (TodoFilter) -> Unit,
+    onClearFilter: () -> Unit
+) {
+    Row {
 
-            Row {
-
-                Spacer(modifier = Modifier.size(16.dp))
-                Button(
-                    onClick = {
-                        viewModel.Post(
-                            AddFilter(
-                                ShowCompleteOnly
-                            )
-                        )
-                    }
-                ) {
-                    Text(text = "Completed")
-                }
-
-                Spacer(modifier = Modifier.size(8.dp))
-                Button(
-                    onClick = {
-                        viewModel.Post(
-                            ClearFilter
-                        )
-                    }
-                ) {
-                    Text(text = "Show All")
-                }
-
+        Spacer(modifier = Modifier.size(16.dp))
+        Button(
+            onClick = {
+                onFilter.invoke(ShowCompleteOnly)
             }
+        ) {
+            Text(text = "Completed")
+        }
 
+        Spacer(modifier = Modifier.size(8.dp))
+        Button(
+            onClick = {
+                onClearFilter.invoke()
+            }
+        ) {
+            Text(text = "Show All")
+        }
 
-            Spacer(modifier = Modifier.size(16.dp))
+    }
+}
 
-            val list by viewModel.TodoListDisplay.collectAsState(initial = listOf())
-            LazyColumn {
-                items(list) {
-                    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-                        TodoCard(todo = it) {
-                            viewModel.Post(
-                                SelectTodo(it.todo)
-                            )
-                        }
-                        Spacer(modifier = Modifier.size(8.dp))
-                    }
-                }
+@Composable
+private fun SearchComponent(
+    clue: String,
+    onSearch: (String) -> Unit
+) {
+    TextField(
+        modifier = Modifier
+            .padding(horizontal = 16.dp)
+            .fillMaxWidth(),
+        value = clue,
+        onValueChange = onSearch
+    )
+}
+
+@Composable
+private fun TodoList(
+    list: List<TodoDisplay>,
+    onClick: (TodoDisplay) -> Unit
+) {
+    LazyColumn {
+        items(list) {
+            Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+                TodoCard(
+                    todo = it,
+                    onClick = onClick
+                )
+                Spacer(modifier = Modifier.size(8.dp))
             }
         }
     }
@@ -113,7 +151,6 @@ fun TodoCard(
     todo: TodoDisplay,
     onClick: (TodoDisplay) -> Unit
 ) {
-
     Card(
         onClick = {
             onClick.invoke(todo)

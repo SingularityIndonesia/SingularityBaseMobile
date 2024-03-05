@@ -1,5 +1,7 @@
 package com.singularityindonesia.screen
 
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.singularityindonesia.analytics.report
@@ -191,6 +193,7 @@ class TodoListScreenViewModel(
 }
 
 
+@Immutable
 @Serializable
 data class TodoDisplay(
     val todo: Todo,

@@ -4,7 +4,7 @@ import org.gradle.api.JavaVersion
 
 object DefaultConfigs {
     val COMPILE_SDK = 34
-    val MIN_SDK = 28
+    val MIN_SDK = 29
     val TEST_INST_RUNNER = "androidx.test.runner.AndroidJUnitRunner"
     val PROGUARD_CONSUMER_FILES = arrayOf<Any>(
         "consumer-rules.pro"
