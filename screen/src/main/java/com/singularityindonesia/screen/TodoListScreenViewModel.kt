@@ -68,7 +68,13 @@ class TodoListScreenViewModel(
             .scan(listOf<TodoFilter>()) { acc, next ->
                 when (next) {
                     is ClearFilter -> listOf()
-                    is AddFilter -> acc.plus(next.filter)
+                    is AddFilter -> {
+                        if (acc.contains(next.filter))
+                            acc
+                        else
+                            acc.plus(next.filter)
+                    }
+
                     else -> throw UnHandledException(next.toString())
                 }
             }
