@@ -1,19 +1,18 @@
 package com.singularityindonesia.webrepository
 
-import android.app.Application
 import android.content.Context
-import com.singularityindonesia.webrepository.util.createOkHttpClient
-import okhttp3.OkHttpClient
+import com.singularityindonesia.webrepository.util.createHttpClient
+import io.ktor.client.*
 
 interface WebRepositoryContext {
-    val okHttpClient: OkHttpClient
+    val httpClient: HttpClient
 }
 
 class WebRepositoryContextDelegate(
     val context: Context,
 ): WebRepositoryContext {
 
-    override val okHttpClient: OkHttpClient by lazy {
-        createOkHttpClient()
+    override val httpClient: HttpClient by lazy {
+        createHttpClient()
     }
 }

@@ -8,6 +8,11 @@ android.namespace = "com.singularityindonesia.singularityindonesia"
 
 dependencies {
 
+    implementation(project(":library:designsystem"))
+    implementation(project(":library:webrepository"))
+    implementation(project(":library:main-context"))
+    implementation(project(":screen"))
+
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
 
@@ -17,8 +22,7 @@ dependencies {
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
 
-    implementation(project(":library:designsystem"))
-    implementation(project(":library:webrepository"))
+    implementation(libs.navigation.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
