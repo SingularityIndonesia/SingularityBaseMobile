@@ -4,9 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -39,14 +37,23 @@ fun TodoListScreen(
 
             Spacer(modifier = Modifier.size(16.dp))
 
-            val searchClue by viewModel.SearchClue.collectAsState()
+            var searchClue by remember {
+                mutableStateOf("")
+            }
+
+            LaunchedEffect(key1 = searchClue) {
+                viewModel.Post(
+                    Search(searchClue)
+                )
+            }
+
             TextField(
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
                     .fillMaxWidth(),
                 value = searchClue,
                 onValueChange = {
-                    viewModel.Post(Search(it))
+                    searchClue = it
                 }
             )
 
