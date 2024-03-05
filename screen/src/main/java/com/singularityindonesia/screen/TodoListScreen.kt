@@ -2,7 +2,9 @@ package com.singularityindonesia.screen
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -47,11 +49,15 @@ fun TodoListScreen(
             }
         )
 
+        val onSearch = remember {
+            { clue: String ->
+                searchClue.value = clue
+            }
+        }
+
         SearchComponent(
             clue = searchClue.value,
-            onSearch = {
-                searchClue.value = it
-            }
+            onSearch = onSearch
         )
 
         Spacer(modifier = Modifier.size(8.dp))
@@ -73,15 +79,20 @@ fun TodoListScreen(
 
         Spacer(modifier = Modifier.size(16.dp))
 
-        val list = viewModel.TodoListDisplay.collectAsState(initial = listOf())
-        key(list.value) {
-            TodoList(
-                list = list.value,
-                onClick = {
-                    viewModel.Post(SelectTodo(it.todo))
-                }
-            )
+        val list by viewModel.TodoListDisplay.collectAsState(initial = listOf())
+        val scrollState = rememberLazyListState()
+        val onItemClicked = remember {
+            { todoDisplay: TodoDisplay ->
+                viewModel.Post(SelectTodo(todoDisplay.todo))
+            }
         }
+        // fixme: why is this and the lazy colum inside it recomposed twice everytime the search clue is changing?
+        //  suspect: the scroll state emit new state when the new list is drawn to the screen causing the second recomposition.
+        TodoList(
+            list = list,
+            onClick = onItemClicked,
+            scrollState = scrollState
+        )
     }
 }
 
@@ -130,18 +141,36 @@ private fun SearchComponent(
 @Composable
 private fun TodoList(
     list: List<TodoDisplay>,
-    onClick: (TodoDisplay) -> Unit
+    onClick: (TodoDisplay) -> Unit,
+    scrollState: LazyListState = rememberLazyListState()
 ) {
-    LazyColumn {
-        items(list) {
-            Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-                TodoCard(
-                    todo = it,
+
+    Box{
+        LazyColumn(
+            state = scrollState
+        ) {
+            items(list) {
+                TodoItem(
+                    item = it,
                     onClick = onClick
                 )
-                Spacer(modifier = Modifier.size(8.dp))
             }
         }
+    }
+
+}
+
+@Composable
+fun TodoItem(
+    item: TodoDisplay,
+    onClick: (TodoDisplay) -> Unit,
+) {
+    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+        TodoCard(
+            todo = item,
+            onClick = onClick
+        )
+        Spacer(modifier = Modifier.size(8.dp))
     }
 }
 
@@ -151,10 +180,13 @@ fun TodoCard(
     todo: TodoDisplay,
     onClick: (TodoDisplay) -> Unit
 ) {
-    Card(
-        onClick = {
+    val onCardClicked = remember {
+        {
             onClick.invoke(todo)
-        },
+        }
+    }
+    Card(
+        onClick = onCardClicked,
         colors = if (todo.selected)
             CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
