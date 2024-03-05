@@ -148,7 +148,6 @@ class TodoListScreenViewModel(
                     selected = todo.id == selected?.id
                 )
             }
-            .take(2)
     }
         .distinctUntilChanged()
         .stateIn(viewModelScope, SharingStarted.Lazily, listOf())
