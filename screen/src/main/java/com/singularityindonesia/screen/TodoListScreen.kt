@@ -163,13 +163,10 @@ fun TodoCard(
     todo: TodoDisplay,
     onClick: (TodoDisplay) -> Unit
 ) {
-    val onCardClicked = remember {
-        {
-            onClick.invoke(todo)
-        }
-    }
     Card(
-        onClick = onCardClicked,
+        onClick = {
+            onClick.invoke(todo)
+        },
         colors = if (todo.selected)
             CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
