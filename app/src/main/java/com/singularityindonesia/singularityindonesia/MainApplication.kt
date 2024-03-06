@@ -2,6 +2,7 @@ package com.singularityindonesia.singularityindonesia
 
 import android.app.Application
 import android.content.Context
+import com.singularityindonesia.debugger.applyPlutoExtension
 import com.singularityindonesia.main_context.MainContext
 
 class MainApplication: Application() {
@@ -11,8 +12,9 @@ class MainApplication: Application() {
         super.attachBaseContext(base)
     }
 
-    override fun getBaseContext(): Context {
-        return MainContext.get().context
+    override fun onCreate() {
+        super.onCreate()
+        applyPlutoExtension()
     }
 
 }

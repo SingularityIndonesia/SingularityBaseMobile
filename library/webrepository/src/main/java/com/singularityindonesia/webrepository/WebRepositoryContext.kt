@@ -6,13 +6,26 @@ import io.ktor.client.*
 
 interface WebRepositoryContext {
     val httpClient: HttpClient
+    fun interceptBuilder(
+        httpClientBuilder: HttpClientConfig<*>.() -> Unit
+    )
 }
 
 class WebRepositoryContextDelegate(
     val context: Context,
-): WebRepositoryContext {
+) : WebRepositoryContext {
+
+    private val builders = mutableListOf<HttpClientConfig<*>.() -> Unit>()
 
     override val httpClient: HttpClient by lazy {
-        createHttpClient()
+        createHttpClient(
+            builders = builders
+        )
+    }
+
+    override fun interceptBuilder(
+        httpClientBuilder: HttpClientConfig<*>.() -> Unit
+    ) {
+        builders.add(httpClientBuilder)
     }
 }

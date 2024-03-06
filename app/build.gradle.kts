@@ -4,13 +4,20 @@ plugins {
     id("FeatureContextReceiver")
 }
 
-android.namespace = "com.singularityindonesia.singularityindonesia"
+android {
+    namespace = "com.singularityindonesia.singularityindonesia"
+    defaultConfig {
+        versionCode = 1
+        versionName = "1.0.0"
+    }
+}
 
 dependencies {
 
     implementation(project(":library:designsystem"))
     implementation(project(":library:webrepository"))
     implementation(project(":library:main-context"))
+    implementation(project(":library:extension:debugger"))
     implementation(project(":screen"))
 
     implementation(libs.core.ktx)
