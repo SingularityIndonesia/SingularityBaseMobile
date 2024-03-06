@@ -1,7 +1,6 @@
 package com.singularityindonesia.screen
 
 import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.singularityindonesia.analytics.report
@@ -18,6 +17,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 
+@Immutable
 class TodoListScreenViewModel(
     private val webRepositoryContext: WebRepositoryContext = MainContext.get()
 ) : ViewModel() {

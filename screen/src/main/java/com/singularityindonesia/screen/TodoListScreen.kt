@@ -2,7 +2,6 @@ package com.singularityindonesia.screen
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.*
@@ -17,6 +16,7 @@ import com.singularityindonesia.screen.TodoListScreenViewModel.Companion.SelectT
 import com.singularityindonesia.serialization.PrettyJson
 import kotlinx.serialization.encodeToString
 
+@Immutable
 data class TodoListScreenPld(
     val unit: Unit = Unit
 )
