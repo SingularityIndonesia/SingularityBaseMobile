@@ -16,15 +16,18 @@ If you choose to use this pattern without my knowledge, then all the risk is you
 See: [Singularity Gitflow - Miro.](https://miro.com/app/board/uXjVMS5Omk8=/?share_link_id=784438148126)
 
 ## Commit convention
-- fix($scope): $message.
+- `fix($scope): $message.`
 
-  Used to commit a bug fix.
-- feat($scope): $message.
+  To commit a bug fix.
+- `feat($scope): $message.`
 
-  Used to commit a feature.
-- BREAKING CHANGE($scope): $message.
+  To commit a feature.
+- `BREAKING CHANGE($scope): $message.`
 
-  Used to commit breaking changes (rename, replace, move, delete, etc.) in the context of "not bug fixing".
+  To commit breaking changes (rename, replace, move, delete, etc.) in the context of "not bug fixing".
+- `doc($scope): $message.`
+
+  To commit documentation.
 
 **Note: Committing changes with side effect**<br/>
 If your changes somehow affecting another module that is not associated with your module / scope, and somehow you cannot separate them to separated commits, you must add `!` at the beginning of your commit message and add `ALSO:` to provides the effects.
