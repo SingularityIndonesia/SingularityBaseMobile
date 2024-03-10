@@ -8,10 +8,6 @@ The `base` branch serves as the pattern convention for this application. It repr
 
 Every contributor is required to adhere to this established pattern and architecture.
 
-Please note that this pattern and architecture are original designs created by me, [(Steve)](https://github.com/stefanusayudha), and are not intended for public use.
-
-If you choose to use this pattern without my knowledge, then all the risk is yours, and it is out of the creator's responsibility.
-
 ## Git flow
 ![Screenshot 2024-03-10 at 19.35.03.png](Docs%2FScreenshot%202024-03-10%20at%2019.35.03.png)
 See: [Singularity Gitflow - Miro.](https://miro.com/app/board/uXjVMS5Omk8=/?share_link_id=784438148126)
@@ -41,20 +37,12 @@ ALSO:
 - ($scope): $changes. 
 ```
 
-**Important** : You must commit load resources first separately and rebase the load resources to the bottom of commit orders.
-As how the development process explain by the git flow:
-1. `feat($scope): Init.`
-2. `feat($scope): Load Resources.`
-3. `.... and next.`
-
 Resources category includes: Strings, Icons.
 
 ## Commit Procedure
 Commit the lowest module first.
-Set the commit view into module.
 
-Commit modules with orders:
-1. Resources.
+1. Set the commit view into module.
 
    ![Screenshot 2024-03-10 at 19.14.55.png](Docs%2FScreenshot%202024-03-10%20at%2019.14.55.png)
 2. Commit modules in order from the lowest to highest.
