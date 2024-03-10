@@ -13,7 +13,7 @@ Please note that this pattern and architecture are original designs created by m
 If you choose to use this pattern without my knowledge, then all the risk is yours, and it is out of the creator's responsibility.
 
 ## Git flow
-[Comming]
+See: [Singularity Gitflow - Miro.](https://miro.com/app/board/uXjVMS5Omk8=/?share_link_id=784438148126)
 
 ## Commit convention
 - fix($scope): $message.
