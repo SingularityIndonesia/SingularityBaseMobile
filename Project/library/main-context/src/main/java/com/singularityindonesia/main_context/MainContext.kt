@@ -15,7 +15,7 @@ interface MainContext : WebRepositoryContext {
 
         fun init(context: Context) {
             mainContext =
-                object : MainContext, WebRepositoryContext by WebRepositoryContextDelegate(context) {
+                object : MainContext, WebRepositoryContext by WebRepositoryContextDelegate() {
                     override val context: Context = context
                 }
         }
@@ -30,5 +30,5 @@ interface MainContext : WebRepositoryContext {
 
 class MainContextDelegate(
     override val context: Context
-) : MainContext, WebRepositoryContext by WebRepositoryContextDelegate(context)
+) : MainContext, WebRepositoryContext by WebRepositoryContextDelegate()
 

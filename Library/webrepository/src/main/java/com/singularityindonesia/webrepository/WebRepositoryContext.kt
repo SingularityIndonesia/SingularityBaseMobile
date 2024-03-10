@@ -5,7 +5,6 @@
  */
 package com.singularityindonesia.webrepository
 
-import android.content.Context
 import com.singularityindonesia.webrepository.util.createHttpClient
 import io.ktor.client.*
 
@@ -16,9 +15,7 @@ interface WebRepositoryContext {
     )
 }
 
-class WebRepositoryContextDelegate(
-    val context: Context,
-) : WebRepositoryContext {
+class WebRepositoryContextDelegate : WebRepositoryContext {
 
     private val builders = mutableListOf<HttpClientConfig<*>.() -> Unit>()
 

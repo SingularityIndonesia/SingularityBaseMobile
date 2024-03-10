@@ -15,7 +15,7 @@ dependencies {
 
     implementation(libs.core.ktx)
     implementation(project(":Project:library:main-context"))
-    implementation(project(":Project:library:webrepository"))
+    implementation(project(":Library:webrepository"))
 
     debugImplementation (libs.pluto)
     releaseImplementation (libs.pluto.no.op)

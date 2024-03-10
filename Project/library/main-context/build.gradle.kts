@@ -24,8 +24,8 @@ dependencies {
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
 
-    implementation(project(":Project:library:webrepository"))
-    implementation(project(":Project:library:webrepository"))
+    implementation(project(":Library:webrepository"))
+    implementation(project(":Library:webrepository"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

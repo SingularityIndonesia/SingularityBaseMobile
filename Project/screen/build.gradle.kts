@@ -16,7 +16,7 @@ android {
 
 dependencies {
 
-    implementation(project(":Project:library:webrepository"))
+    implementation(project(":Library:webrepository"))
     implementation(project(":Project:library:main-context"))
     implementation(project(":Library:model"))
     implementation(project(":Library:data"))

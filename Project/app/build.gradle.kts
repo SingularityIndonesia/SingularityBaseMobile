@@ -20,7 +20,7 @@ android {
 dependencies {
 
     implementation(project(":Project:library:designsystem"))
-    implementation(project(":Project:library:webrepository"))
+    implementation(project(":Library:webrepository"))
     implementation(project(":Project:library:main-context"))
     implementation(project(":Project:library:dictionary"))
     implementation(project(":Project:library:analytic"))
