@@ -13,9 +13,10 @@ android {
 
 dependencies {
 
-    implementation(libs.core.ktx)
-
     implementation(project(":Library:exception"))
+
+    implementation(libs.core.ktx)
+    implementation(libs.coroutine.android)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
