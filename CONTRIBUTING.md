@@ -51,9 +51,12 @@ Set the commit view into module.
 
 Commit modules with orders:
 1. Resources.
-![Screenshot 2024-03-10 at 19.14.55.png](Docs%2FScreenshot%202024-03-10%20at%2019.14.55.png)
+
+   ![Screenshot 2024-03-10 at 19.14.55.png](Docs%2FScreenshot%202024-03-10%20at%2019.14.55.png)
 2. Commit modules in order from the lowest to highest.
-![Screenshot 2024-03-10 at 19.19.43.png](Docs%2FScreenshot%202024-03-10%20at%2019.19.43.png)
+
+   ![Screenshot 2024-03-10 at 19.19.43.png](Docs%2FScreenshot%202024-03-10%20at%2019.19.43.png)
 
 3. Commit only what is necessary.
-![Screenshot 2024-03-10 at 19.21.44.png](Docs%2FScreenshot%202024-03-10%20at%2019.21.44.png)
+
+   ![Screenshot 2024-03-10 at 19.21.44.png](Docs%2FScreenshot%202024-03-10%20at%2019.21.44.png)
