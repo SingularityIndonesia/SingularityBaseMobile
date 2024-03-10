@@ -15,5 +15,9 @@ fun Throwable.toException(): MException {
         MWildException(
             "${this::class.simpleName}: ${this.localizedMessage ?: this.message ?: "Unknown Error"}",
             this
-        )
+        ).also(::reportWildException)
+}
+
+fun reportWildException(e: MWildException) {
+    // TODO
 }
