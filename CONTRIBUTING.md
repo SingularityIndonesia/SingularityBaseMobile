@@ -13,6 +13,7 @@ Please note that this pattern and architecture are original designs created by m
 If you choose to use this pattern without my knowledge, then all the risk is yours, and it is out of the creator's responsibility.
 
 ## Git flow
+![Screenshot 2024-03-10 at 19.35.03.png](Docs%2FScreenshot%202024-03-10%20at%2019.35.03.png)
 See: [Singularity Gitflow - Miro.](https://miro.com/app/board/uXjVMS5Omk8=/?share_link_id=784438148126)
 
 ## Commit convention
