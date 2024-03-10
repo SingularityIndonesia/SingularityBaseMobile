@@ -19,13 +19,13 @@ android {
 
 dependencies {
 
-    implementation(project(":library:designsystem"))
-    implementation(project(":library:webrepository"))
-    implementation(project(":library:main-context"))
-    implementation(project(":library:dictionary"))
-    implementation(project(":library:analytics"))
-    implementation(project(":library:debugger"))
-    implementation(project(":screen"))
+    implementation(project(":Project:library:designsystem"))
+    implementation(project(":Project:library:webrepository"))
+    implementation(project(":Project:library:main-context"))
+    implementation(project(":Project:library:dictionary"))
+    implementation(project(":Project:library:analytics"))
+    implementation(project(":Project:library:debugger"))
+    implementation(project(":Project:screen"))
 
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)

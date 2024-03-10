@@ -8,7 +8,7 @@ pluginManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
-        includeBuild("plugin")
+        includeBuild("Plugin")
     }
 }
 dependencyResolutionManagement {
@@ -20,15 +20,15 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Singularity Indonesia"
-include(":app")
-include(":library:debugger")
-include(":library:dictionary")
-include(":library:model")
-include(":library:exception")
-include(":library:designsystem")
-include(":library:webrepository")
-include(":library:main-context")
-include(":screen")
-include(":library:data")
-include(":library:analytics")
-include(":library:serialization")
+include(":Project:app")
+include(":Project:library:debugger")
+include(":Project:library:dictionary")
+include(":Project:library:model")
+include(":Project:library:exception")
+include(":Project:library:designsystem")
+include(":Project:library:webrepository")
+include(":Project:library:main-context")
+include(":Project:screen")
+include(":Project:library:data")
+include(":Project:library:analytics")
+include(":Project:library:serialization")

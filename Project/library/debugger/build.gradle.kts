@@ -5,28 +5,30 @@
  */
 plugins {
     id("LibraryConventionV1")
-    id("FeatureContextReceiver")
-    kotlin("plugin.serialization")
 }
 
 android {
-    namespace = "com.singularityindonesia.webrepository"
+    namespace = "com.singularityindonesia.debugger"
 }
 
 dependencies {
-    implementation(project(":library:model"))
 
     implementation(libs.core.ktx)
+    implementation(project(":Project:library:main-context"))
+    implementation(project(":Project:library:webrepository"))
+
+    debugImplementation (libs.pluto)
+    releaseImplementation (libs.pluto.no.op)
 
     // ktor
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.okhttp)
     implementation(libs.ktor.client.cio)
 
-    implementation(libs.kotlinx.serialization.json)
+    debugImplementation(libs.pluto.plugins.bundle.core)
+    releaseImplementation(libs.pluto.plugins.bundle.core.no.op)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-
 }
