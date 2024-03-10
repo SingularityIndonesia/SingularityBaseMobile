@@ -23,7 +23,7 @@ import org.gradle.kotlin.dsl.configure
 import java.io.FileInputStream
 import java.util.*
 
-open class LibraryConventionV1 : Plugin<Project> {
+class LibraryConventionV1 : Plugin<Project> {
 
     private val PLUGINS = listOf(
         "com.android.library",
