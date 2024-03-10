@@ -4,6 +4,6 @@
 Singularity is community based social media. Further description remains conceal. 
 
 ## Contributing
-Read [CONTRIBUTING.md](CONTRIBUTING.md)
+Read [README_CONTRIBUTING.md](README_CONTRIBUTING.md)
 
   
