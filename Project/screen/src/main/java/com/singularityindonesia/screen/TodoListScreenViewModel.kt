@@ -8,7 +8,7 @@ package com.singularityindonesia.screen
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.singularityindonesia.analytics.report
+import com.singularityindonesia.analytic.report
 import com.singularityindonesia.data.*
 import com.singularityindonesia.exception.UnHandledException
 import com.singularityindonesia.exception.utils.toException

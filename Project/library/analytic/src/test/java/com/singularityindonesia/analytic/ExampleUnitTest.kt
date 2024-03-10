@@ -1,4 +1,4 @@
-package com.singularityindonesia.analytics
+package com.singularityindonesia.analytic
 
 import org.junit.Test
 

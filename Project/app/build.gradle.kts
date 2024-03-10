@@ -23,7 +23,7 @@ dependencies {
     implementation(project(":Project:library:webrepository"))
     implementation(project(":Project:library:main-context"))
     implementation(project(":Project:library:dictionary"))
-    implementation(project(":Project:library:analytics"))
+    implementation(project(":Project:library:analytic"))
     implementation(project(":Project:library:debugger"))
     implementation(project(":Project:screen"))
 
