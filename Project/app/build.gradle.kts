@@ -27,6 +27,7 @@ dependencies {
     implementation(project(":Project:library:debugger"))
     implementation(project(":Project:screen"))
 
+    implementation(libs.coroutine.android)
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
 
