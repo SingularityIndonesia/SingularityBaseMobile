@@ -14,7 +14,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":Project:library:model"))
+    implementation(project(":Library:model"))
 
     implementation(libs.core.ktx)
 

@@ -18,11 +18,11 @@ dependencies {
 
     implementation(project(":Project:library:webrepository"))
     implementation(project(":Project:library:main-context"))
-    implementation(project(":Project:library:model"))
-    implementation(project(":Project:library:data"))
-    implementation(project(":Project:library:exception"))
+    implementation(project(":Library:model"))
+    implementation(project(":Library:data"))
+    implementation(project(":Library:exception"))
     implementation(project(":Project:library:analytic"))
-    implementation(project(":Project:library:serialization"))
+    implementation(project(":Library:serialization"))
 
     implementation(libs.core.ktx)
     implementation(libs.appcompat)

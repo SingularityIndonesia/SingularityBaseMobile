@@ -20,15 +20,17 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Singularity Indonesia"
+include(":Library:data")
+include(":Library:exception")
+include(":Library:model")
+include(":Library:serialization")
+
 include(":Project:app")
+include(":Project:screen")
+
 include(":Project:library:debugger")
 include(":Project:library:dictionary")
-include(":Project:library:model")
-include(":Project:library:exception")
 include(":Project:library:designsystem")
 include(":Project:library:webrepository")
 include(":Project:library:main-context")
-include(":Project:screen")
-include(":Project:library:data")
 include(":Project:library:analytic")
-include(":Project:library:serialization")

@@ -16,7 +16,7 @@ dependencies {
     implementation(libs.core.ktx)
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
-    implementation(project(":Project:library:exception"))
+    implementation(project(":Library:exception"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
