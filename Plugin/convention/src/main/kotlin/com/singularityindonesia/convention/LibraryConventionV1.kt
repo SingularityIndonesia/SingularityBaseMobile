@@ -20,8 +20,6 @@ import com.singularityindonesia.convention.companion.kotlinCompile
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
-import java.io.FileInputStream
-import java.util.*
 
 class LibraryConventionV1 : Plugin<Project> {
 

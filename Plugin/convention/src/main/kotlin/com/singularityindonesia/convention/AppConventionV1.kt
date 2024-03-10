@@ -15,15 +15,11 @@ import com.singularityindonesia.convention.companion.DefaultConfigs.MIN_SDK
 import com.singularityindonesia.convention.companion.DefaultConfigs.PROGUARD_ANDROID_OPTIMIZE
 import com.singularityindonesia.convention.companion.DefaultConfigs.PROGUARD_RULES
 import com.singularityindonesia.convention.companion.DefaultConfigs.TEST_INST_RUNNER
-import com.singularityindonesia.convention.companion.KEYSTORE_PROPERTIES_FILE_NAME
 import com.singularityindonesia.convention.companion.getSigningConfig
 import com.singularityindonesia.convention.companion.kotlinCompile
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
-import org.gradle.language.nativeplatform.internal.BuildType
-import java.io.FileInputStream
-import java.util.*
 
 class AppConventionV1 : Plugin<Project> {
 

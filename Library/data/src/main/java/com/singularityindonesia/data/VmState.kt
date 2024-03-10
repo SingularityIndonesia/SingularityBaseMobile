@@ -5,7 +5,8 @@
  */
 package com.singularityindonesia.data
 
-import com.singularityindonesia.exception.*
+import com.singularityindonesia.exception.MException
+import com.singularityindonesia.exception.NullPointerException
 
 sealed interface VmState<T>
 

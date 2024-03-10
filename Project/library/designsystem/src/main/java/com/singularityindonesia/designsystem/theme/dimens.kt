@@ -6,7 +6,6 @@
 package com.singularityindonesia.designsystem.theme
 
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 
 val SmallSpacing = 4.dp
 val MediumSpacing = 8.dp
