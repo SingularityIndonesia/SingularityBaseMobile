@@ -79,6 +79,13 @@ open class LibraryConventionV1 : Plugin<Project> {
                             PROGUARD_RULES
                         )
                     }
+                    all {
+                        if (name.lowercase().endsWith("debug")) {
+                            setMatchingFallbacks("debug")
+                        } else {
+                            setMatchingFallbacks("release")
+                        }
+                    }
                 }
                 compileOptions {
                     sourceCompatibility = JAVA_SOURCE_COMPAT

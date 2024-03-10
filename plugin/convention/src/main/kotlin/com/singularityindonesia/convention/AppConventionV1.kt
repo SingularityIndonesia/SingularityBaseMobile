@@ -101,6 +101,13 @@ class AppConventionV1 : Plugin<Project> {
                     create("prod") {
                         initWith(getByName("release"))
                     }
+                    all {
+                        if (name.lowercase().endsWith("debug")) {
+                            setMatchingFallbacks("debug")
+                        } else {
+                            setMatchingFallbacks("release")
+                        }
+                    }
                 }
                 compileOptions {
                     sourceCompatibility = JAVA_SOURCE_COMPAT
