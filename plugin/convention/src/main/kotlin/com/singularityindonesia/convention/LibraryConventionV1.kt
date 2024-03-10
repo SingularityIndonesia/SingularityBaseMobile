@@ -57,6 +57,7 @@ open class LibraryConventionV1 : Plugin<Project> {
                             this.signingConfig = signingConfigAll
 
                         isMinifyEnabled = true
+                        isJniDebuggable = false
                         proguardFiles(
                             getDefaultProguardFile(
                                 PROGUARD_ANDROID_OPTIMIZE
@@ -70,6 +71,7 @@ open class LibraryConventionV1 : Plugin<Project> {
                             this.signingConfig = signingConfigAll
 
                         isMinifyEnabled = false
+                        isJniDebuggable = true
                         proguardFiles(
                             getDefaultProguardFile(
                                 PROGUARD_ANDROID_OPTIMIZE

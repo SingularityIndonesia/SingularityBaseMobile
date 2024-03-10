@@ -21,6 +21,7 @@ import com.singularityindonesia.convention.companion.kotlinCompile
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
+import org.gradle.language.nativeplatform.internal.BuildType
 import java.io.FileInputStream
 import java.util.*
 
@@ -57,6 +58,8 @@ class AppConventionV1 : Plugin<Project> {
                             this.signingConfig = signingConfigAll
 
                         isMinifyEnabled = true
+                        isDebuggable = false
+                        isJniDebuggable = false
                         proguardFiles(
                             getDefaultProguardFile(
                                 PROGUARD_ANDROID_OPTIMIZE
@@ -70,12 +73,33 @@ class AppConventionV1 : Plugin<Project> {
                             this.signingConfig = signingConfigAll
 
                         isMinifyEnabled = false
+                        isDebuggable = true
+                        isJniDebuggable = true
                         proguardFiles(
                             getDefaultProguardFile(
                                 PROGUARD_ANDROID_OPTIMIZE
                             ),
                             PROGUARD_RULES
                         )
+                    }
+                    create("devDebug") {
+                        initWith(getByName("debug"))
+                        isDefault = true
+                    }
+                    create("dev") {
+                        initWith(getByName("release"))
+                    }
+                    create("stagingDebug") {
+                        initWith(getByName("debug"))
+                    }
+                    create("staging") {
+                        initWith(getByName("release"))
+                    }
+                    create("prodDebug") {
+                        initWith(getByName("debug"))
+                    }
+                    create("prod") {
+                        initWith(getByName("release"))
                     }
                 }
                 compileOptions {
