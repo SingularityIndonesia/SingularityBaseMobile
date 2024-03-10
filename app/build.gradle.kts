@@ -22,6 +22,7 @@ dependencies {
     implementation(project(":library:designsystem"))
     implementation(project(":library:webrepository"))
     implementation(project(":library:main-context"))
+    implementation(project(":library:dictionary"))
     implementation(project(":library:extension:debugger"))
     implementation(project(":screen"))
 
