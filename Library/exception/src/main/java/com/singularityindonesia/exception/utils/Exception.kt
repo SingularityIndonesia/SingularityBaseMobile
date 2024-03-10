@@ -6,13 +6,13 @@
 package com.singularityindonesia.exception.utils
 
 import com.singularityindonesia.exception.MException
-import com.singularityindonesia.exception.WildException
+import com.singularityindonesia.exception.MWildException
 
 fun Throwable.toException(): MException {
     return if (this is MException)
         this as MException
     else
-        WildException(
+        MWildException(
             "${this::class.simpleName}: ${this.localizedMessage ?: this.message ?: "Unknown Error"}",
             this
         )

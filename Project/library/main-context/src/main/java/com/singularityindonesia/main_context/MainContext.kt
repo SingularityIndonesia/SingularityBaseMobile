@@ -6,6 +6,7 @@
 package com.singularityindonesia.main_context
 
 import android.content.Context
+import com.singularityindonesia.exception.MNullPointerException
 import com.singularityindonesia.webrepository.WebRepositoryContext
 import com.singularityindonesia.webrepository.WebRepositoryContextDelegate
 
@@ -21,7 +22,7 @@ interface MainContext : WebRepositoryContext {
         }
 
         fun get(): MainContext {
-            return mainContext?: run { throw NullPointerException("MainContext is not yet initialized.") }
+            return mainContext?: run { throw MNullPointerException("MainContext is not yet initialized.") }
         }
     }
 

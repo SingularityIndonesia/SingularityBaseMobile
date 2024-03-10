@@ -25,7 +25,7 @@ dependencies {
     implementation(libs.material3)
 
     implementation(project(":Library:webrepository"))
-    implementation(project(":Library:webrepository"))
+    implementation(project(":Library:exception"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

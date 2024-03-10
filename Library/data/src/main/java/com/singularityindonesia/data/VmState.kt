@@ -6,7 +6,7 @@
 package com.singularityindonesia.data
 
 import com.singularityindonesia.exception.MException
-import com.singularityindonesia.exception.NullPointerException
+import com.singularityindonesia.exception.MNullPointerException
 
 sealed interface VmState<T>
 
@@ -34,9 +34,9 @@ fun<T,R> VmState<T>.fold(
     onElse: (()-> R)? = null,
 ): R {
     return when(this) {
-        is Idle -> onIdle?.invoke() ?: onElse?.invoke() ?: throw NullPointerException("Lambda reducer for idle is null.")
-        is Processing -> onProcessing?.invoke() ?: onElse?.invoke() ?: throw  NullPointerException("Lambda reducer for onProcessing is null.")
-        is Success -> onSuccess?.invoke(data) ?: onElse?.invoke() ?: throw  NullPointerException("Lambda reducer for onSuccess is null.")
-        is Failed -> onFailed?.invoke(e) ?: onElse?.invoke() ?: throw  NullPointerException("Lambda reducer for onFailed is null.")
+        is Idle -> onIdle?.invoke() ?: onElse?.invoke() ?: throw MNullPointerException("Lambda reducer for idle is null.")
+        is Processing -> onProcessing?.invoke() ?: onElse?.invoke() ?: throw  MNullPointerException("Lambda reducer for onProcessing is null.")
+        is Success -> onSuccess?.invoke(data) ?: onElse?.invoke() ?: throw  MNullPointerException("Lambda reducer for onSuccess is null.")
+        is Failed -> onFailed?.invoke(e) ?: onElse?.invoke() ?: throw  MNullPointerException("Lambda reducer for onFailed is null.")
     }
 }

@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.singularityindonesia.analytic.report
 import com.singularityindonesia.data.*
-import com.singularityindonesia.exception.UnHandledException
+import com.singularityindonesia.exception.MUnHandledException
 import com.singularityindonesia.exception.utils.toException
 import com.singularityindonesia.main_context.MainContext
 import com.singularityindonesia.model.Todo
@@ -54,7 +54,7 @@ class TodoListScreenViewModel(
                 when (intent) {
                     is ClearSelectedTodo -> null
                     is SelectTodo -> intent.todo
-                    else -> throw UnHandledException(intent.toString())
+                    else -> throw MUnHandledException(intent.toString())
                 }
             }
             .stateIn(viewModelScope, SharingStarted.Eagerly, null)
@@ -82,7 +82,7 @@ class TodoListScreenViewModel(
                             acc.plus(next.filter)
                     }
 
-                    else -> throw UnHandledException(next.toString())
+                    else -> throw MUnHandledException(next.toString())
                 }
             }
             .stateIn(viewModelScope, SharingStarted.Eagerly, listOf())
