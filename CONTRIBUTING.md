@@ -37,9 +37,10 @@ ALSO:
 - ($scope): $changes. 
 ```
 
-**Important** : You must commit resources first separately! Or rebase the load resources to the bottom of commit orders. 
+**Important** : You must commit load resources first separately and rebase the load resources to the bottom of commit orders.
+As how the development process explain by the git flow:
+1. `feat($scope): Init.`
+2. `feat($scope): Load Resources.`
+3. `.... and next.`
+
 Resources category includes: Strings, Icons.
-eg:
-```
-feat(LoginScreen): Load Resources.
-```
