@@ -25,6 +25,7 @@ include(":Library:exception")
 include(":Library:model")
 include(":Library:serialization")
 include(":Library:webrepository")
+include(":Library:regex")
 
 include(":Project:app")
 include(":Project:screen")
