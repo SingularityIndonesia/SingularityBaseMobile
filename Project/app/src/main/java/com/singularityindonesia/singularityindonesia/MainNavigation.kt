@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.singularityindonesia.screen.TodoListScreen
+import com.singularityindonesia.screen.todolist.TodoListScreen
 
 
 @Composable

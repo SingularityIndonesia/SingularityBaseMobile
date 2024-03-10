@@ -3,7 +3,7 @@
  * Created on 04/03/2024 12:00
  * You are not allowed to remove the copyright.
  */
-package com.singularityindonesia.screen
+package com.singularityindonesia.screen.todolist
 
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
