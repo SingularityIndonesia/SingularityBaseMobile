@@ -21,8 +21,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "Singularity Indonesia"
 include(":app")
-include(":library:extension:debugger")
-include(":library:extension:analytic")
+include(":library:debugger")
 include(":library:dictionary")
 include(":library:model")
 include(":library:exception")

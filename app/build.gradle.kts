@@ -23,7 +23,8 @@ dependencies {
     implementation(project(":library:webrepository"))
     implementation(project(":library:main-context"))
     implementation(project(":library:dictionary"))
-    implementation(project(":library:extension:debugger"))
+    implementation(project(":library:analytics"))
+    implementation(project(":library:debugger"))
     implementation(project(":screen"))
 
     implementation(libs.core.ktx)
