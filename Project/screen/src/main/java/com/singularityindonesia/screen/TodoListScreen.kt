@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.singularityindonesia.screen.TodoListScreenViewModel.Companion.AddFilter
 import com.singularityindonesia.screen.TodoListScreenViewModel.Companion.ClearFilter
+import com.singularityindonesia.screen.TodoListScreenViewModel.Companion.Reload
 import com.singularityindonesia.screen.TodoListScreenViewModel.Companion.Search
 import com.singularityindonesia.screen.TodoListScreenViewModel.Companion.SelectTodo
 import com.singularityindonesia.serialization.PrettyJson
@@ -102,6 +103,17 @@ fun TodoListScreen(
                     onClick = onItemClicked
                 )
             }
+            if (error.isNotBlank())
+                item(error) {
+                    Button(
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        onClick = {
+                            viewModel.Post(Reload())
+                        }
+                    ) {
+                        Text(text = "Reload")
+                    }
+                }
         }
     }
 }
