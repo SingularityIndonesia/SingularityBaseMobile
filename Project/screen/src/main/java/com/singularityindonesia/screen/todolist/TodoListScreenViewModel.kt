@@ -5,6 +5,8 @@
  */
 package com.singularityindonesia.screen.todolist
 
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -156,6 +158,25 @@ class TodoListScreenViewModel(
     }
         .distinctUntilChanged()
         .stateIn(viewModelScope, SharingStarted.Lazily, listOf())
+
+    val SearchError = combine(
+        todoListState,
+        TodoListDisplay
+    ) { raw, reduced ->
+        val rawDataSize =
+            raw
+                .fold(
+                    onSuccess = { it }
+                ) {
+                    listOf()
+                }
+                .size
+
+        if (reduced.isEmpty() && rawDataSize > 0)
+            "Not found"
+        else
+            null
+    }
 
     val Status = todoListState.map {
         it::class.simpleName

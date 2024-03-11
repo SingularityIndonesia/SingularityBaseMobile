@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -94,6 +95,7 @@ fun TodoListScreen(
                 viewModel.Post(SelectTodo(todoDisplay.todo))
             }
         }
+        val searchError by viewModel.SearchError.collectAsState(initial = null)
         LazyColumn(
             state = scrollState,
         ) {
@@ -114,6 +116,26 @@ fun TodoListScreen(
                         Text(text = "Reload")
                     }
                 }
+
+            if (searchError != null)
+                item(searchError) {
+                    Box(
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .fillMaxWidth()
+                    ) {
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                        ) {
+                            Text(
+                                modifier = Modifier.padding(16.dp)
+                                    .align(Alignment.CenterHorizontally),
+                                text = searchError!!
+                            )
+                        }
+                    }
+                }
+
         }
     }
 }
