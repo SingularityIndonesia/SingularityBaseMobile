@@ -5,8 +5,6 @@
  */
 package com.singularityindonesia.screen.todolist
 
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,6 +12,7 @@ import com.singularityindonesia.analytic.report
 import com.singularityindonesia.data.*
 import com.singularityindonesia.exception.MUnHandledException
 import com.singularityindonesia.exception.utils.toException
+import com.singularityindonesia.flow.shareWhileSubscribed
 import com.singularityindonesia.main_context.MainContext
 import com.singularityindonesia.model.Todo
 import com.singularityindonesia.webrepository.GetTodos
@@ -59,14 +58,14 @@ class TodoListScreenViewModel(
                     else -> throw MUnHandledException(intent.toString())
                 }
             }
-            .stateIn(viewModelScope, SharingStarted.Eagerly, null)
+            .shareWhileSubscribed(null)
 
     private val searchClue =
         intent
             .filter { it is Search }
             .flowOn(Dispatchers.IO)
             .map { (it as Search).clue }
-            .stateIn(viewModelScope, SharingStarted.Lazily, "")
+            .shareWhileSubscribed("")
 
     private val todoFilters =
         intent
@@ -87,8 +86,7 @@ class TodoListScreenViewModel(
                     else -> throw MUnHandledException(next.toString())
                 }
             }
-            .stateIn(viewModelScope, SharingStarted.Eagerly, listOf())
-
+            .shareWhileSubscribed(listOf())
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val todoListState =
@@ -121,101 +119,112 @@ class TodoListScreenViewModel(
                 }
             }
             .cancellable()
-            .stateIn(viewModelScope, SharingStarted.Eagerly, Idle())
+            .shareWhileSubscribed(Idle())
 
     /** ## Reduced State **/
-    val TodoListDisplay = combine(
-        selectedTodo,
-        todoListState,
-        todoFilters,
-        searchClue,
-    ) { selected, todoListState, filters, searchClue ->
-        todoListState
-            .fold(
-                onSuccess = { todoList -> todoList },
-                onElse = { listOf() }
-            )
-            .filter {
-                if (searchClue.isBlank())
-                    true
-                else
-                    it.toString().contains(searchClue)
-            }
-            .filter { todo ->
-                filters.fold(true) { acc, l ->
-                    when (l) {
-                        is ShowCompleteOnly -> acc && todo.completed
-                    }
-                }
-            }
-            .map { todo ->
-                TodoDisplay(
-                    todo = todo,
-                    selectable = true,
-                    selected = todo.id == selected?.id
-                )
-            }
-    }
-        .distinctUntilChanged()
-        .stateIn(viewModelScope, SharingStarted.Lazily, listOf())
-
-    val SearchError = combine(
-        todoListState,
-        TodoListDisplay
-    ) { raw, reduced ->
-        val rawDataSize =
-            raw
+    val TodoListDisplay =
+        combine(
+            selectedTodo,
+            todoListState,
+            todoFilters,
+            searchClue,
+        ) { selected, todoListState, filters, searchClue ->
+            todoListState
                 .fold(
-                    onSuccess = { it }
-                ) {
-                    listOf()
-                }
-                .size
-
-        if (reduced.isEmpty() && rawDataSize > 0)
-            "Not found"
-        else
-            null
-    }
-
-    val Status = todoListState.map {
-        it::class.simpleName
-    }
-
-    val Error = todoListState.map {
-        it.fold(
-            onFailed = { e -> e.message },
-            onElse = { "" }
-        )
-    }
-
-    val AppliedFilters = combine(
-        searchClue,
-        todoFilters
-    ) { searchClue, todoFilters ->
-
-        val filters =
-            (if (searchClue.isNotBlank())
-                listOf("Search: $searchClue")
-            else
-                listOf())
-                .plus(
-                    todoFilters.map {
-                        it.toString()
-                    }
+                    onSuccess = { todoList -> todoList },
+                    onElse = { listOf() }
                 )
-                .fold("") { acc, r ->
-                    "$acc$r,"
+                .filter {
+                    if (searchClue.isBlank())
+                        true
+                    else
+                        it.toString().contains(searchClue)
                 }
+                .filter { todo ->
+                    filters.fold(true) { acc, l ->
+                        when (l) {
+                            is ShowCompleteOnly -> acc && todo.completed
+                        }
+                    }
+                }
+                .map { todo ->
+                    TodoDisplay(
+                        todo = todo,
+                        selectable = true,
+                        selected = todo.id == selected?.id
+                    )
+                }
+        }
+            .distinctUntilChanged()
+            .shareWhileSubscribed(listOf())
 
-        "Applied Filters = $filters"
-    }
-        .distinctUntilChanged()
-        .stateIn(viewModelScope, SharingStarted.Lazily, "")
+    val SearchError =
+        combine(
+            todoListState,
+            TodoListDisplay
+        ) { raw, reduced ->
+            val rawDataSize =
+                raw
+                    .fold(
+                        onSuccess = { it }
+                    ) {
+                        listOf()
+                    }
+                    .size
+
+            if (reduced.isEmpty() && rawDataSize > 0)
+                "Not found"
+            else
+                null
+        }
+            .shareWhileSubscribed("")
+
+    val Status =
+        todoListState
+            .map {
+                it::class.simpleName
+            }
+            .shareWhileSubscribed("")
+
+    val Error =
+        todoListState
+            .map {
+                it.fold(
+                    onFailed = { e -> e.message },
+                    onElse = { "" }
+                )
+            }
+            .shareWhileSubscribed("")
+
+
+    val AppliedFilters =
+        combine(
+            searchClue,
+            todoFilters
+        ) { searchClue, todoFilters ->
+
+            val filters =
+                (if (searchClue.isNotBlank())
+                    listOf("Search: $searchClue")
+                else
+                    listOf())
+                    .plus(
+                        todoFilters.map {
+                            it.toString()
+                        }
+                    )
+                    .fold("") { acc, r ->
+                        "$acc$r,"
+                    }
+
+            "Applied Filters = $filters"
+        }
+            .distinctUntilChanged()
+            .shareWhileSubscribed("")
 
     val SearchClue =
         searchClue
-            .stateIn(viewModelScope, SharingStarted.Lazily, "")
+            .shareWhileSubscribed("")
 
     init {
         Post(Reload())

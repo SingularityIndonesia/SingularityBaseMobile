@@ -17,12 +17,14 @@ android {
 dependencies {
 
     implementation(project(":Library:webrepository"))
-    implementation(project(":Project:library:main-context"))
     implementation(project(":Library:model"))
     implementation(project(":Library:data"))
     implementation(project(":Library:exception"))
-    implementation(project(":Project:library:analytic"))
     implementation(project(":Library:serialization"))
+
+    implementation(project(":Project:library:main-context"))
+    implementation(project(":Project:library:analytic"))
+    implementation(project(":Project:library:flow"))
 
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
