@@ -28,7 +28,7 @@ class AppConventionV1 : Plugin<Project> {
         "com.android.application"
     )
 
-    override fun apply(target: Project) {
+    override fun apply(target: Project) =
         with(target) {
             with(pluginManager) {
                 PLUGINS.forEach(::apply)
@@ -122,5 +122,5 @@ class AppConventionV1 : Plugin<Project> {
                 }
             }
         }
-    }
+    
 }

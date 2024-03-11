@@ -28,7 +28,7 @@ class LibraryConventionV1 : Plugin<Project> {
         "org.jetbrains.kotlin.android"
     )
 
-    override fun apply(target: Project) {
+    override fun apply(target: Project) =
         with(target) {
             with(pluginManager) {
                 PLUGINS.forEach(::apply)
@@ -97,5 +97,5 @@ class LibraryConventionV1 : Plugin<Project> {
                 }
             }
         }
-    }
+
 }

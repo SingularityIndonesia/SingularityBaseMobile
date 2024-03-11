@@ -15,15 +15,19 @@ import org.gradle.kotlin.dsl.configure
 class FeatureContextReceiver : Plugin<Project> {
 
     override fun apply(target: Project) {
-        kotlin.runCatching {
-            setupLibrary(target)
-        }
-        kotlin.runCatching {
-            setupApplication(target)
-        }
+        listOf(::setupLibrary, ::setupApplication)
+            .map {
+                runCatching {
+                    setupLibrary(target)
+                }
+            }
+            .also {
+                if (it.count { r -> r.isSuccess } == 0 )
+                    println("Error : Project is not android library or android application.")
+            }
     }
 
-    private fun setupLibrary(target: Project) {
+    private fun setupLibrary(target: Project) =
         target.extensions.configure<LibraryExtension> {
             target.kotlinCompile {
                 kotlinOptions {
@@ -31,9 +35,9 @@ class FeatureContextReceiver : Plugin<Project> {
                 }
             }
         }
-    }
 
-    private fun setupApplication(target: Project) {
+
+    private fun setupApplication(target: Project) =
         target.extensions.configure<ApplicationExtension> {
             target.kotlinCompile {
                 kotlinOptions {
@@ -41,5 +45,5 @@ class FeatureContextReceiver : Plugin<Project> {
                 }
             }
         }
-    }
+
 }

@@ -11,6 +11,5 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 fun Project.kotlinCompile(
     block: KotlinCompile.() -> Unit
-) {
+) =
     tasks.withType<KotlinCompile>(block)
-}

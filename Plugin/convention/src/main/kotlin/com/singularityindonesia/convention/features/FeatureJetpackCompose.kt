@@ -25,7 +25,7 @@ class FeatureJetpackCompose : Plugin<Project> {
         }
     }
 
-    private fun setupLibrary(target: Project) {
+    private fun setupLibrary(target: Project) =
         target.extensions.configure<LibraryExtension> {
             buildFeatures {
                 compose = true
@@ -35,9 +35,8 @@ class FeatureJetpackCompose : Plugin<Project> {
                 kotlinCompilerExtensionVersion = KOTLIN_COMPILER_EXTENSION_VERSION
             }
         }
-    }
 
-    private fun setupApplication(target: Project) {
+    private fun setupApplication(target: Project) =
         target.extensions.configure<ApplicationExtension> {
             buildFeatures {
                 compose = true
@@ -47,5 +46,5 @@ class FeatureJetpackCompose : Plugin<Project> {
                 kotlinCompilerExtensionVersion = KOTLIN_COMPILER_EXTENSION_VERSION
             }
         }
-    }
+
 }

@@ -25,10 +25,10 @@ const val KEYSTORE_PROPERTIES_FILE_NAME = "keystore.properties"
 fun getSigningConfig(
     project: Project,
     extension: CommonExtension<*, *, *, *, *>
-): ApkSigningConfig? {
-    return Properties()
+): ApkSigningConfig? =
+    Properties()
         .let {
-            val fileLoaded = kotlin.runCatching {
+            val fileLoaded = runCatching {
                 it.load(
                     FileInputStream(
                         project.file("${project.rootProject.project.projectDir}/$KEYSTORE_PROPERTIES_FILE_NAME")
@@ -54,4 +54,3 @@ fun getSigningConfig(
                 signingConfigs.getByName("all")
             }
         }
-}
