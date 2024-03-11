@@ -13,7 +13,7 @@ import com.singularityindonesia.main_context.MainContext
 class MainApplication: Application() {
 
     override fun attachBaseContext(base: Context?) {
-        base?.run(MainContext::init)
+        base?.let(MainContext::init)
         super.attachBaseContext(base)
     }
 

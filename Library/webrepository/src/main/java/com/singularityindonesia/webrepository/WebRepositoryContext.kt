@@ -15,19 +15,22 @@ interface WebRepositoryContext {
     )
 }
 
-class WebRepositoryContextDelegate : WebRepositoryContext {
+fun webRepositoryContext(): Lazy<WebRepositoryContext> =
+    lazy {
+        object : WebRepositoryContext {
+            private val builders = mutableListOf<HttpClientConfig<*>.() -> Unit>()
 
-    private val builders = mutableListOf<HttpClientConfig<*>.() -> Unit>()
+            override val httpClient: HttpClient by lazy {
+                createHttpClient(
+                    builders = builders
+                )
+            }
 
-    override val httpClient: HttpClient by lazy {
-        createHttpClient(
-            builders = builders
-        )
+            override fun interceptBuilder(
+                httpClientBuilder: HttpClientConfig<*>.() -> Unit
+            ) {
+                builders.add(httpClientBuilder)
+            }
+
+        }
     }
-
-    override fun interceptBuilder(
-        httpClientBuilder: HttpClientConfig<*>.() -> Unit
-    ) {
-        builders.add(httpClientBuilder)
-    }
-}

@@ -5,31 +5,31 @@
  */
 package com.singularityindonesia.main_context
 
+import android.annotation.SuppressLint
 import android.content.Context
-import com.singularityindonesia.exception.MNullPointerException
+import com.singularityindonesia.exception.MUnHandledException
 import com.singularityindonesia.webrepository.WebRepositoryContext
-import com.singularityindonesia.webrepository.WebRepositoryContextDelegate
+import com.singularityindonesia.webrepository.webRepositoryContext
 
-interface MainContext : WebRepositoryContext {
-    companion object {
-        private var mainContext: MainContext? = null
+@SuppressLint("StaticFieldLeak")
+object MainContext {
 
-        fun init(context: Context) {
-            mainContext =
-                object : MainContext, WebRepositoryContext by WebRepositoryContextDelegate() {
-                    override val context: Context = context
-                }
-        }
+    @JvmStatic
+    lateinit var context: Context
 
-        fun get(): MainContext {
-            return mainContext?: run { throw MNullPointerException("MainContext is not yet initialized.") }
-        }
+    val webRepositoryContext by webRepositoryContext()
+
+    fun init(context: Context) {
+        this.context = context
     }
 
-    val context: Context
-}
+    inline operator fun <reified T> invoke(): T =
+        when (T::class.java) {
+            WebRepositoryContext::class.java -> webRepositoryContext
+            else -> null
+        }
+            ?.let { it as T }
+            ?: throw MUnHandledException("Unknown context ${T::class.simpleName}")
 
-class MainContextDelegate(
-    override val context: Context
-) : MainContext, WebRepositoryContext by WebRepositoryContextDelegate()
+}
 

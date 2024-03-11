@@ -30,7 +30,7 @@ fun Application.applyPlutoExtension() {
 
     also {
         if (BuildConfig.DEBUG)
-            (MainContext.get() as WebRepositoryContext)
+            MainContext<WebRepositoryContext>()
                 .interceptBuilder {
                     install(PlutoKtorInterceptor)
                 }

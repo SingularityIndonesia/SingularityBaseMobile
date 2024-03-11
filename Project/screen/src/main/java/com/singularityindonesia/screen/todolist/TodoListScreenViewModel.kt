@@ -24,7 +24,7 @@ import kotlinx.serialization.Serializable
 
 @Immutable
 class TodoListScreenViewModel(
-    private val webRepositoryContext: WebRepositoryContext = MainContext.get()
+    private val webRepositoryContext: WebRepositoryContext = MainContext()
 ) : ViewModel() {
 
     companion object {
