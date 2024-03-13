@@ -7,11 +7,9 @@ package com.singularityindonesia.analytic
 
 import android.util.Log
 import com.singularityindonesia.exception.MException
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 
+@OptIn(DelicateCoroutinesApi::class)
 fun MException.report() {
     GlobalScope.launch {
         withContext(Dispatchers.IO) {
