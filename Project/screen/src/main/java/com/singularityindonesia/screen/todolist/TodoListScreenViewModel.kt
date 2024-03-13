@@ -12,12 +12,12 @@ import com.singularityindonesia.analytic.report
 import com.singularityindonesia.data.*
 import com.singularityindonesia.exception.MUnHandledException
 import com.singularityindonesia.exception.utils.toException
+import com.singularityindonesia.flow.moveToIO
 import com.singularityindonesia.flow.shareWhileSubscribed
 import com.singularityindonesia.main_context.MainContext
 import com.singularityindonesia.model.Todo
 import com.singularityindonesia.webrepository.GetTodos
 import com.singularityindonesia.webrepository.WebRepositoryContext
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -50,7 +50,6 @@ class TodoListScreenViewModel(
     private val selectedTodo: Flow<Todo?> =
         intent
             .filter { it is SelectTodo || it is ClearSelectedTodo }
-            .flowOn(Dispatchers.IO)
             .map { intent ->
                 when (intent) {
                     is ClearSelectedTodo -> null
@@ -63,7 +62,6 @@ class TodoListScreenViewModel(
     private val searchClue =
         intent
             .filter { it is Search }
-            .flowOn(Dispatchers.IO)
             .map { (it as Search).clue }
             .shareWhileSubscribed("")
 
@@ -72,7 +70,6 @@ class TodoListScreenViewModel(
             .filter {
                 it is AddFilter || it is ClearFilter
             }
-            .flowOn(Dispatchers.IO)
             .scan(listOf<TodoFilter>()) { acc, next ->
                 when (next) {
                     is ClearFilter -> listOf()
@@ -92,6 +89,7 @@ class TodoListScreenViewModel(
     private val todoListState =
         intent
             .filterIsInstance<Reload>()
+            .moveToIO()
             .map { it.signature }
             .distinctUntilChanged()
             .flatMapLatest {
@@ -155,6 +153,7 @@ class TodoListScreenViewModel(
                     )
                 }
         }
+            .moveToIO()
             .distinctUntilChanged()
             .shareWhileSubscribed(listOf())
 
