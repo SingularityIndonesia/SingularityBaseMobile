@@ -3,7 +3,7 @@
  * Created on 04/03/2024 12:00
  * You are not allowed to remove the copyright.
  */
-package com.singularityindonesia.singularityindonesia
+package com.singularityindonesia.composeapp
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost

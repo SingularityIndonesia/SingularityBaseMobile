@@ -27,9 +27,10 @@ include(":Library:serialization")
 include(":Library:webrepository")
 include(":Library:regex")
 include(":Library:validation")
+include(":Library:compose-app")
+include(":Library:screen")
 
 include(":Project:app")
-include(":Project:screen")
 
 include(":Project:library:debugger")
 include(":Project:library:dictionary")

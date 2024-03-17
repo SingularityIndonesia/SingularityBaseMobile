@@ -4,24 +4,20 @@
  * You are not allowed to remove the copyright.
  */
 plugins {
-    id("AppConventionV1")
+    id("LibraryConventionV1")
     id("FeatureJetpackCompose")
     id("FeatureContextReceiver")
 }
 
 android {
-    namespace = "com.singularityindonesia.singularityindonesia"
-    defaultConfig {
-        versionCode = 1
-        versionName = "1.0.0"
-    }
+    namespace = "com.singularityindonesia.composeapp"
 }
 
 dependencies {
 
     implementation(project(":Library:webrepository"))
     implementation(project(":Library:exception"))
-    implementation(project(":Library:compose-app"))
+    implementation(project(":Library:screen"))
 
     implementation(project(":Project:library:designsystem"))
     implementation(project(":Project:library:main-context"))
