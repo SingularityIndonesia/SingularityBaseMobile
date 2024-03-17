@@ -30,11 +30,11 @@ include(":Library:validation")
 include(":Library:analytic")
 include(":Library:compose-app")
 include(":Library:screen")
+include(":Library:designsystem")
 
 include(":Project:app")
 
 include(":Project:library:debugger")
 include(":Project:library:dictionary")
-include(":Project:library:designsystem")
 include(":Project:library:main-context")
 include(":Project:library:flow")

@@ -24,7 +24,6 @@ dependencies {
     implementation(project(":Library:compose-app"))
     implementation(project(":Library:analytic"))
 
-    implementation(project(":Project:library:designsystem"))
     implementation(project(":Project:library:main-context"))
     implementation(project(":Project:library:dictionary"))
     implementation(project(":Project:library:debugger"))

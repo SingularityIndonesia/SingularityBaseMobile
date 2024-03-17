@@ -19,8 +19,8 @@ dependencies {
     implementation(project(":Library:exception"))
     implementation(project(":Library:analytic"))
     implementation(project(":Library:screen"))
+    implementation(project(":Library:designsystem"))
 
-    implementation(project(":Project:library:designsystem"))
     implementation(project(":Project:library:main-context"))
     implementation(project(":Project:library:dictionary"))
     implementation(project(":Project:library:debugger"))
