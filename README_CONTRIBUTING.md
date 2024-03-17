@@ -1,6 +1,22 @@
 # Contributing
 Open for contribution.
 
+## Registration
+Contact me via [email: stefanus.ayudha@gmail.com](mailto:stefanus.ayudha@gmail.com) with the following format:<br/>
+```markdown
+Subject: 
+I want to contribute to Singularity Mobile APP!
+
+Body:
+Github user name: John Doe.
+Task I want to take: [link to task].
+```
+
+## Project
+Brows the task you want to take here:
+[Singularity Project](https://github.com/orgs/SingularityIndonesia/projects/1).
+You can take any task available that is ready.
+
 ## Pattern convention
 Designed by [Stefanus Ayudha](https://github.com/stefanusayudha).
 
