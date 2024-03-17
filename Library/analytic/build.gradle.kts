@@ -9,4 +9,5 @@ plugins {
 
 dependencies {
     implementation(project(":Library:exception"))
+    implementation(libs.coroutine)
 }

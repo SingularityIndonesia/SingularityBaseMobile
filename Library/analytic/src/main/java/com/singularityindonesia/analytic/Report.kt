@@ -5,7 +5,6 @@
  */
 package com.singularityindonesia.analytic
 
-import android.util.Log
 import com.singularityindonesia.exception.MException
 import kotlinx.coroutines.*
 
@@ -14,7 +13,7 @@ fun MException.report() {
     GlobalScope.launch {
         withContext(Dispatchers.IO) {
             // fixme: report the exception here
-            Log.d("MException", "report: $this")
+            println("MException: report: $this")
         }
     }
 }
