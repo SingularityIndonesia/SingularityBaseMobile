@@ -9,7 +9,7 @@ The `base` branch serves as the pattern convention for this application. It repr
 Every contributor is required to adhere to this established pattern and architecture.
 
 ## Git flow
-![Screenshot 2024-03-10 at 19.35.03.png](Docs%2FScreenshot%202024-03-10%20at%2019.35.03.png)
+![Singularity GitFlow - Gitflow.jpg](Docs%2FSingularity%20GitFlow%20-%20Gitflow.jpg)
 See: [Singularity Gitflow - Miro.](https://miro.com/app/board/uXjVMS5Omk8=/?share_link_id=784438148126)
 
 ## Commit convention
