@@ -3,6 +3,6 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":Library:regex"))
-    implementation(project(":Library:exception"))
+    implementation(project(":regex"))
+    implementation(project(":exception"))
 }

@@ -16,25 +16,20 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        includeBuild("Library") {
+            dependencySubstitution {
+                substitute(module("exception:main-SNAPSHOT")).using(project(":exception"))
+                substitute(module("webrepository:main-SNAPSHOT")).using(project(":webrepository"))
+                substitute(module("compose-app:main-SNAPSHOT")).using(project(":compose-app"))
+                substitute(module("analytic:main-SNAPSHOT")).using(project(":analytic"))
+                substitute(module("main-context:main-SNAPSHOT")).using(project(":main-context"))
+                substitute(module("dictionary:main-SNAPSHOT")).using(project(":dictionary"))          }
+
+        }
     }
 }
 
 rootProject.name = "Singularity Indonesia"
-include(":Library:data")
-include(":Library:exception")
-include(":Library:model")
-include(":Library:serialization")
-include(":Library:webrepository")
-include(":Library:regex")
-include(":Library:validation")
-include(":Library:analytic")
-include(":Library:compose-app")
-include(":Library:screen")
-include(":Library:designsystem")
 
 include(":Project:Android:app")
-
 include(":Project:Android:library:debugger")
-include(":Project:Android:library:dictionary")
-include(":Project:Android:library:main-context")
-include(":Project:Android:library:flow")

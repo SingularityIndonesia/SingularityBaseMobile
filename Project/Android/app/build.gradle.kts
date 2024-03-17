@@ -19,13 +19,11 @@ android {
 
 dependencies {
 
-    implementation(project(":Library:webrepository"))
-    implementation(project(":Library:exception"))
-    implementation(project(":Library:compose-app"))
-    implementation(project(":Library:analytic"))
-
-    implementation(project(":Project:Android:library:main-context"))
-    implementation(project(":Project:Android:library:dictionary"))
+    implementation("compose-app:main-SNAPSHOT")
+    implementation("webrepository:main-SNAPSHOT")
+    implementation("exception:main-SNAPSHOT")
+    implementation("dictionary:main-SNAPSHOT")
+    implementation("main-context:main-SNAPSHOT")
     implementation(project(":Project:Android:library:debugger"))
 
     implementation(libs.coroutine.android)

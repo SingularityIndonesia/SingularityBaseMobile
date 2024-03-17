@@ -15,15 +15,15 @@ android {
 
 dependencies {
 
-    implementation(project(":Library:webrepository"))
-    implementation(project(":Library:exception"))
-    implementation(project(":Library:analytic"))
-    implementation(project(":Library:screen"))
-    implementation(project(":Library:designsystem"))
+    implementation(project(":webrepository"))
+    implementation(project(":exception"))
+    implementation(project(":analytic"))
+    implementation(project(":screen"))
+    implementation(project(":designsystem"))
 
-    implementation(project(":Project:Android:library:main-context"))
-    implementation(project(":Project:Android:library:dictionary"))
-    implementation(project(":Project:Android:library:debugger"))
+//    implementation(project(":Project:Android:library:main-context"))
+//    implementation(project(":Project:Android:library:dictionary"))
+//    implementation(project(":Project:Android:library:debugger"))
 
     implementation(libs.coroutine.android)
     implementation(libs.core.ktx)

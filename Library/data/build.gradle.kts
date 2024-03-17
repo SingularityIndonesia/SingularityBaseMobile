@@ -8,5 +8,5 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":Library:exception"))
+    implementation(project(":exception"))
 }

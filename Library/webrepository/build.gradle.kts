@@ -17,7 +17,7 @@ tasks.withType<KotlinCompile> {
 }
 
 dependencies {
-    implementation(project(":Library:model"))
+    implementation(project(":model"))
 
     // ktor
     implementation(libs.ktor.client.core)
