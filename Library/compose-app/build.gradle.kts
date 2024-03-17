@@ -17,12 +17,12 @@ dependencies {
 
     implementation(project(":Library:webrepository"))
     implementation(project(":Library:exception"))
+    implementation(project(":Library:analytic"))
     implementation(project(":Library:screen"))
 
     implementation(project(":Project:library:designsystem"))
     implementation(project(":Project:library:main-context"))
     implementation(project(":Project:library:dictionary"))
-    implementation(project(":Project:library:analytic"))
     implementation(project(":Project:library:debugger"))
 
     implementation(libs.coroutine.android)

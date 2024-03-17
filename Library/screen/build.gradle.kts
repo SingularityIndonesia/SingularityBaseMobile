@@ -21,9 +21,9 @@ dependencies {
     implementation(project(":Library:data"))
     implementation(project(":Library:exception"))
     implementation(project(":Library:serialization"))
+    implementation(project(":Library:analytic"))
 
     implementation(project(":Project:library:main-context"))
-    implementation(project(":Project:library:analytic"))
     implementation(project(":Project:library:flow"))
 
     implementation(libs.core.ktx)
