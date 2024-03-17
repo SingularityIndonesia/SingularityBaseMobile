@@ -13,9 +13,10 @@ android {
 
 dependencies {
 
-    implementation(libs.core.ktx)
-    implementation(project(":Project:library:main-context"))
     implementation(project(":Library:webrepository"))
+    implementation(project(":Project:Android:library:main-context"))
+
+    implementation(libs.core.ktx)
 
     debugImplementation (libs.pluto)
     releaseImplementation (libs.pluto.no.op)

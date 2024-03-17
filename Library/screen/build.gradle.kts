@@ -23,8 +23,8 @@ dependencies {
     implementation(project(":Library:serialization"))
     implementation(project(":Library:analytic"))
 
-    implementation(project(":Project:library:main-context"))
-    implementation(project(":Project:library:flow"))
+    implementation(project(":Project:Android:library:main-context"))
+    implementation(project(":Project:Android:library:flow"))
 
     implementation(libs.core.ktx)
     implementation(libs.appcompat)

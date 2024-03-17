@@ -21,9 +21,9 @@ dependencies {
     implementation(project(":Library:screen"))
     implementation(project(":Library:designsystem"))
 
-    implementation(project(":Project:library:main-context"))
-    implementation(project(":Project:library:dictionary"))
-    implementation(project(":Project:library:debugger"))
+    implementation(project(":Project:Android:library:main-context"))
+    implementation(project(":Project:Android:library:dictionary"))
+    implementation(project(":Project:Android:library:debugger"))
 
     implementation(libs.coroutine.android)
     implementation(libs.core.ktx)
