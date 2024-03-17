@@ -18,7 +18,7 @@ import com.pluto.plugins.rooms.db.PlutoRoomsDatabasePlugin
 import com.singularityindonesia.main_context.MainContext
 import com.singularityindonesia.webrepository.WebRepositoryContext
 
-fun Application.applyPlutoExtension() {
+fun Application.applyPlutoPlugin() {
     Pluto.Installer(this)
         .addPlugin(PlutoNetworkPlugin())
         .addPlugin(PlutoLoggerPlugin())

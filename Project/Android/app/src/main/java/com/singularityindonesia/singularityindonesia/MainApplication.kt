@@ -7,7 +7,7 @@ package com.singularityindonesia.singularityindonesia
 
 import android.app.Application
 import android.content.Context
-import com.singularityindonesia.debugger.applyPlutoExtension
+import com.singularityindonesia.debugger.applyPlutoPlugin
 import com.singularityindonesia.main_context.MainContext
 
 class MainApplication: Application() {
@@ -19,7 +19,7 @@ class MainApplication: Application() {
 
     override fun onCreate() {
         super.onCreate()
-        applyPlutoExtension()
+        applyPlutoPlugin()
     }
 
 }
