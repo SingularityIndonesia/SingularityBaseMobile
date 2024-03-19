@@ -12,9 +12,9 @@ android {
 }
 
 dependencies {
-    implementation(libs.core.ktx)
+    implementation(libs.android.core.ktx)
 
     testImplementation(libs.junit)
-    androidTestImplementation(libs.ext.junit)
-    androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.android.ext.junit)
+    androidTestImplementation(libs.android.espresso.core)
 }

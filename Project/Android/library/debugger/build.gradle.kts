@@ -16,20 +16,20 @@ dependencies {
     implementation("webrepository:main-SNAPSHOT")
     implementation("main-context:main-SNAPSHOT")
 
-    implementation(libs.core.ktx)
+    implementation(libs.android.core.ktx)
 
-    debugImplementation (libs.pluto)
-    releaseImplementation (libs.pluto.no.op)
+    debugImplementation (libs.android.pluto)
+    releaseImplementation (libs.android.pluto.no.op)
 
     // ktor
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.okhttp)
     implementation(libs.ktor.client.cio)
 
-    debugImplementation(libs.pluto.plugins.bundle.core)
-    releaseImplementation(libs.pluto.plugins.bundle.core.no.op)
+    debugImplementation(libs.android.pluto.plugins.bundle.core)
+    releaseImplementation(libs.android.pluto.plugins.bundle.core.no.op)
 
     testImplementation(libs.junit)
-    androidTestImplementation(libs.ext.junit)
-    androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.android.ext.junit)
+    androidTestImplementation(libs.android.espresso.core)
 }

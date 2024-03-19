@@ -25,27 +25,20 @@ dependencies {
     implementation(project(":main-context"))
     implementation(project(":flow"))
 
-    implementation(libs.core.ktx)
-    implementation(libs.appcompat)
-    implementation(libs.material)
+    implementation(libs.android.core.ktx)
+    implementation(libs.android.appcompat)
+    implementation(libs.android.material)
 
-    // orbit mvi
-//    implementation(libs.orbit.core)
-//    implementation(libs.orbit.viewmodel)
-//    implementation(libs.orbit.compose)
-//    testImplementation(libs.orbit.test)
+    implementation(libs.android.compose.ui)
+    implementation(libs.android.compose.ui.graphics)
+    implementation(libs.android.compose.ui.tooling.preview)
+    implementation(libs.android.compose.material3)
 
-    implementation(libs.activity.compose)
-    implementation(libs.ui)
-    implementation(libs.ui.graphics)
-    implementation(libs.ui.tooling.preview)
-    implementation(libs.material3)
-
-    implementation(libs.lifecycle.viewmodel.compose)
+    implementation(libs.android.lifecycle.viewmodel.compose)
 
     implementation(libs.kotlinx.serialization.json)
 
     testImplementation(libs.junit)
-    androidTestImplementation(libs.ext.junit)
-    androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.android.ext.junit)
+    androidTestImplementation(libs.android.espresso.core)
 }

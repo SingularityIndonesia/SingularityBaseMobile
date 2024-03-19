@@ -14,15 +14,14 @@ android {
 
 dependencies {
 
-    implementation(libs.core.ktx)
+    implementation(libs.android.core.ktx)
 
-//    implementation(libs.activity.compose)
-    implementation(libs.ui)
-    implementation(libs.ui.graphics)
-    implementation(libs.ui.tooling.preview)
-    implementation(libs.material3)
+    implementation(libs.android.compose.ui)
+    implementation(libs.android.compose.ui.graphics)
+    implementation(libs.android.compose.ui.tooling.preview)
+    implementation(libs.android.compose.material3)
 
     testImplementation(libs.junit)
-    androidTestImplementation(libs.ext.junit)
-    androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.android.ext.junit)
+    androidTestImplementation(libs.android.espresso.core)
 }

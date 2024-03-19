@@ -12,9 +12,9 @@ dependencies {
     implementation(project(":data"))
     implementation(project(":exception"))
 
-    implementation(libs.lifecycle.viewmodel.compose)
+    implementation(libs.android.lifecycle.viewmodel.compose)
 
     testImplementation(libs.junit)
-    androidTestImplementation(libs.ext.junit)
-    androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.android.ext.junit)
+    androidTestImplementation(libs.android.espresso.core)
 }

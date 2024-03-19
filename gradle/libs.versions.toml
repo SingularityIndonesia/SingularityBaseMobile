@@ -1,63 +1,76 @@
 [versions]
-activity-compose = "1.8.2"
-androidx-junit = "1.1.5"
-core-ktx = "1.12.0"
-espresso-core = "3.5.1"
+android-activity-compose = "1.8.2"
+android-compose-ui = "1.6.2"
+android-navigation-compose = "2.7.7"
+
 junit = "4.13.2"
+android-junit = "1.1.5"
+
+android-core-ktx = "1.12.0"
+android-espresso-core = "3.5.1"
+android-appcompat = "1.6.1"
+android-material = "1.11.0"
+
 kotlinx-serialization-json = "1.6.3"
+
 ktor = "2.3.8"
-lifecycle-runtime-ktx = "2.7.0"
-material3 = "1.2.0"
-orbit-core = "6.1.1"
-pluto = "2.2.1"
-ui = "1.6.2"
-agp = "8.3.0"
-kotlin = "1.9.22"
-appcompat = "1.6.1"
-material = "1.11.0"
-lifecycle-viewmodel-compose = "2.7.0"
-navigation-compose = "2.7.7"
-org-jetbrains-kotlin-jvm = "1.9.22"
-coroutine-android = "1.7.3"
+
+android-lifecycle-runtime-ktx = "2.7.0"
+
+android-material3 = "1.2.0"
+
+android-pluto = "2.2.1"
+
 coroutine = "1.8.0"
+android-coroutine = "1.7.3"
+
+android-lifecycle-viewmodel-compose = "2.7.0"
+
+android-gradle-plugin = "8.3.0"
+kotlin = "1.9.22"
+org-jetbrains-kotlin-jvm = "1.9.22"
+
 
 [libraries]
-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
-core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso-core" }
-ext-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-junit" }
+android-core-ktx = { module = "androidx.core:core-ktx", version.ref = "android-core-ktx" }
+
+android-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "android-activity-compose" }
+
+android-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "android-espresso-core" }
+
 junit = { module = "junit:junit", version.ref = "junit" }
+android-ext-junit = { module = "androidx.test.ext:junit", version.ref = "android-junit" }
+
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
+
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
-ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
-orbit-compose = { module = "org.orbit-mvi:orbit-compose", version.ref = "orbit-core" }
-orbit-core = { module = "org.orbit-mvi:orbit-core", version.ref = "orbit-core" }
-orbit-test = { module = "org.orbit-mvi:orbit-test", version.ref = "orbit-core" }
-orbit-viewmodel = { module = "org.orbit-mvi:orbit-viewmodel", version.ref = "orbit-core" }
-pluto-plugins-bundle-core = { module = "com.plutolib.plugins:bundle-core", version.ref = "pluto" }
-pluto-plugins-bundle-core-no-op = { module = "com.plutolib.plugins:bundle-core-no-op", version.ref = "pluto" }
-pluto = { module = "com.plutolib:pluto", version.ref = "pluto" }
-pluto-no-op = { module = "com.plutolib:pluto-no-op", version.ref = "pluto" }
-ui = { module = "androidx.compose.ui:ui", version.ref = "ui" }
-ui-graphics = { module = "androidx.compose.ui:ui-graphics", version.ref = "ui" }
-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "ui" }
-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "ui" }
-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "ui" }
-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "ui" }
-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycle-viewmodel-compose" }
-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
-coroutine-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutine-android" }
+ios-ktor-client = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
+
+android-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "android-lifecycle-runtime-ktx" }
+android-compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "android-material3" }
+
+android-pluto-plugins-bundle-core = { module = "com.plutolib.plugins:bundle-core", version.ref = "android-pluto" }
+android-pluto-plugins-bundle-core-no-op = { module = "com.plutolib.plugins:bundle-core-no-op", version.ref = "android-pluto" }
+android-pluto = { module = "com.plutolib:pluto", version.ref = "android-pluto" }
+android-pluto-no-op = { module = "com.plutolib:pluto-no-op", version.ref = "android-pluto" }
+
+android-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "android-compose-ui" }
+android-compose-ui-graphics = { module = "androidx.compose.ui:ui-graphics", version.ref = "android-compose-ui" }
+android-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "android-compose-ui" }
+android-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "android-compose-ui" }
+android-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "android-compose-ui" }
+android-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "android-compose-ui" }
+
+android-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "android-appcompat" }
+android-material = { group = "com.google.android.material", name = "material", version.ref = "android-material" }
+android-lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "android-lifecycle-viewmodel-compose" }
+android-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "android-navigation-compose" }
+
 coroutine = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutine" }
+android-coroutine = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "android-coroutine" }
 
 [bundles]
 
 [plugins]
-androidLibrary = { id = "com.android.library", version.ref = "agp" }
-kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "org-jetbrains-kotlin-jvm" }
