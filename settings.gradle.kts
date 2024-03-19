@@ -23,8 +23,8 @@ dependencyResolutionManagement {
                 substitute(module("compose-app:main-SNAPSHOT")).using(project(":compose-app"))
                 substitute(module("analytic:main-SNAPSHOT")).using(project(":analytic"))
                 substitute(module("main-context:main-SNAPSHOT")).using(project(":main-context"))
-                substitute(module("dictionary:main-SNAPSHOT")).using(project(":dictionary"))          }
-
+                substitute(module("dictionary:main-SNAPSHOT")).using(project(":dictionary"))
+            }
         }
     }
 }
