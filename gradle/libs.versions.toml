@@ -3,6 +3,11 @@ android-activity-compose = "1.8.2"
 android-compose-ui = "1.6.3"
 android-navigation-compose = "2.7.7"
 
+coroutine = "1.8.0"
+android-coroutine = "1.8.0"
+
+android-lifecycle-viewmodel-compose = "2.7.0"
+
 junit = "4.13.2"
 android-junit = "1.1.5"
 
@@ -20,11 +25,6 @@ android-lifecycle-runtime-ktx = "2.7.0"
 android-material3 = "1.2.1"
 
 android-pluto = "2.2.1"
-
-coroutine = "1.8.0"
-android-coroutine = "1.8.0"
-
-android-lifecycle-viewmodel-compose = "2.7.0"
 
 android-gradle-plugin = "8.3.0"
 kotlin = "1.9.22"
