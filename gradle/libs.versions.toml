@@ -1,6 +1,6 @@
 [versions]
 android-activity-compose = "1.8.2"
-android-compose-ui = "1.6.2"
+android-compose-ui = "1.6.3"
 android-navigation-compose = "2.7.7"
 
 junit = "4.13.2"
@@ -17,12 +17,12 @@ ktor = "2.3.8"
 
 android-lifecycle-runtime-ktx = "2.7.0"
 
-android-material3 = "1.2.0"
+android-material3 = "1.2.1"
 
 android-pluto = "2.2.1"
 
 coroutine = "1.8.0"
-android-coroutine = "1.7.3"
+android-coroutine = "1.8.0"
 
 android-lifecycle-viewmodel-compose = "2.7.0"
 
