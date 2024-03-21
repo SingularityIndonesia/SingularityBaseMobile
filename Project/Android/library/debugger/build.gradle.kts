@@ -13,8 +13,8 @@ android {
 
 dependencies {
 
-    implementation("webrepository:main-SNAPSHOT")
-    implementation("main-context:main-SNAPSHOT")
+    implementation("webrepository:main")
+    implementation("main-context:main")
 
     implementation(libs.android.core.ktx)
 

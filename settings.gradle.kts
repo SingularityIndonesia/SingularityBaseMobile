@@ -12,24 +12,37 @@ pluginManagement {
     }
 }
 dependencyResolutionManagement {
+    @Suppress("UnstableApiUsage")
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    @Suppress("UnstableApiUsage")
     repositories {
         google()
         mavenCentral()
         includeBuild("Library") {
             dependencySubstitution {
-                substitute(module("exception:main-SNAPSHOT")).using(project(":exception"))
-                substitute(module("webrepository:main-SNAPSHOT")).using(project(":webrepository"))
-                substitute(module("compose-app:main-SNAPSHOT")).using(project(":compose-app"))
-                substitute(module("analytic:main-SNAPSHOT")).using(project(":analytic"))
-                substitute(module("main-context:main-SNAPSHOT")).using(project(":main-context"))
-                substitute(module("dictionary:main-SNAPSHOT")).using(project(":dictionary"))
+                // include all Library
+                File(settingsDir, "Library")
+                    .listFiles()
+                    ?.filter { it.isDirectory }
+                    ?.filterNot { it.name.contains("gradle") }
+                    ?.filterNot { it.name.contains("build") }
+                    ?.forEach { dir ->
+                        substitute(module("${dir.name}:main")).using(project(":${dir.name}"))
+                    }
             }
         }
     }
+
 }
 
 rootProject.name = "Singularity Indonesia"
 
 include(":Project:Android:app")
-include(":Project:Android:library:debugger")
+
+// include all Project Library
+File(settingsDir, "Project/Android/library")
+    .listFiles()
+    ?.filter { it.isDirectory }
+    ?.forEach { dir ->
+        include(":Project:Android:library:${dir.name}")
+    }

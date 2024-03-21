@@ -19,18 +19,12 @@ dependencyResolutionManagement {
     }
 }
 
-include(":data")
-include(":exception")
-include(":model")
-include(":serialization")
-include(":webrepository")
-include(":regex")
-include(":validation")
-include(":analytic")
-include(":compose-app")
-include(":screen")
-include(":designsystem")
-include(":dictionary")
-include(":flow")
-include(":main-context")
-include(":std-extra")
+// include all libraries
+File(settingsDir, "./")
+    .listFiles()
+    ?.filter { it.isDirectory }
+    ?.filterNot { it.name.contains("gradle") }
+    ?.filterNot { it.name.contains("build") }
+    ?.forEach { dir ->
+        include(":${dir.name}")
+    }

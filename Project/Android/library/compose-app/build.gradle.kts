@@ -4,33 +4,31 @@
  * You are not allowed to remove the copyright.
  */
 plugins {
-    id("AppConventionV1")
+    id("LibraryConventionV1")
     id("FeatureJetpackCompose")
     id("FeatureContextReceiver")
 }
 
 android {
-    namespace = "com.singularityindonesia.singularityindonesia"
-    defaultConfig {
-        versionCode = 1
-        versionName = "1.0.0"
-    }
+    namespace = "com.singularityindonesia.composeapp"
 }
 
 dependencies {
 
     implementation("webrepository:main")
     implementation("exception:main")
-    implementation("main-context:main")
-    implementation(project(":Project:Android:library:debugger"))
-    implementation(project(":Project:Android:library:compose-app"))
-    implementation(project(":Project:Android:library:dictionary"))
+    implementation("analytic:main")
+    implementation(project(":Project:Android:library:screen"))
+    implementation(project(":Project:Android:library:designsystem"))
+
+//    implementation(project(":Project:Android:library:main-context"))
+//    implementation(project(":Project:Android:library:dictionary"))
+//    implementation(project(":Project:Android:library:debugger"))
 
     implementation(libs.android.coroutine)
     implementation(libs.android.core.ktx)
     implementation(libs.android.lifecycle.runtime.ktx)
 
-    implementation(libs.android.activity.compose)
     implementation(libs.android.compose.ui)
     implementation(libs.android.compose.ui.graphics)
     implementation(libs.android.compose.ui.tooling.preview)

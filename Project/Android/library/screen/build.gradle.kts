@@ -4,44 +4,43 @@
  * You are not allowed to remove the copyright.
  */
 plugins {
-    id("AppConventionV1")
+    id("LibraryConventionV1")
     id("FeatureJetpackCompose")
     id("FeatureContextReceiver")
+    kotlin("plugin.serialization")
 }
 
 android {
-    namespace = "com.singularityindonesia.singularityindonesia"
-    defaultConfig {
-        versionCode = 1
-        versionName = "1.0.0"
-    }
+    namespace = "com.singularityindonesia.screen"
 }
 
 dependencies {
 
     implementation("webrepository:main")
+    implementation("model:main")
+    implementation("data:main")
     implementation("exception:main")
+    implementation("serialization:main")
+    implementation("analytic:main")
     implementation("main-context:main")
-    implementation(project(":Project:Android:library:debugger"))
-    implementation(project(":Project:Android:library:compose-app"))
-    implementation(project(":Project:Android:library:dictionary"))
+    implementation("flow:main")
 
-    implementation(libs.android.coroutine)
+    implementation(project(":Project:Android:library:viewmodel"))
+
     implementation(libs.android.core.ktx)
-    implementation(libs.android.lifecycle.runtime.ktx)
+    implementation(libs.android.appcompat)
+    implementation(libs.android.material)
 
-    implementation(libs.android.activity.compose)
     implementation(libs.android.compose.ui)
     implementation(libs.android.compose.ui.graphics)
     implementation(libs.android.compose.ui.tooling.preview)
     implementation(libs.android.compose.material3)
 
-    implementation(libs.android.navigation.compose)
+    implementation(libs.android.lifecycle.viewmodel.compose)
+
+    implementation(libs.kotlinx.serialization.json)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.android.ext.junit)
     androidTestImplementation(libs.android.espresso.core)
-    androidTestImplementation(libs.android.compose.ui.test.junit4)
-    debugImplementation(libs.android.compose.ui.tooling)
-    debugImplementation(libs.android.compose.ui.test.manifest)
 }

@@ -1,20 +1,17 @@
+/*
+ * Copyright (c) 2024 Stefanus Ayudha (stefanus.ayudha@gmail.com)
+ * Created on 04/03/2024 12:00
+ * You are not allowed to remove the copyright.
+ */
 plugins {
-    id("LibraryConventionV1")
-    id("FeatureContextReceiver")
-}
-
-android {
-    namespace = "com.singularityindonesia.flow"
+    kotlin("jvm")
 }
 
 dependencies {
 
-    implementation(project(":data"))
-    implementation(project(":exception"))
-
-    implementation(libs.android.lifecycle.viewmodel.compose)
+    implementation("data:main")
+    implementation("exception:main")
+    implementation(libs.coroutine)
 
     testImplementation(libs.junit)
-    androidTestImplementation(libs.android.ext.junit)
-    androidTestImplementation(libs.android.espresso.core)
 }
