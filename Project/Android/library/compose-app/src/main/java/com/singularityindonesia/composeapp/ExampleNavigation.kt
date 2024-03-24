@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.singularityindonesia.screen.todolist.TodoListScreen
+import com.singularityindonesia.screen.exampletodolist.ExampleTodoListScreen
 
 
 @Composable
@@ -24,7 +24,7 @@ fun ExampleNavigation() {
         composable(
             route = "todo-list",
         ) {
-            TodoListScreen()
+            ExampleTodoListScreen()
         }
     }
 }

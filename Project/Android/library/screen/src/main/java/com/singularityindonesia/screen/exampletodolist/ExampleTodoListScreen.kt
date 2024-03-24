@@ -3,7 +3,7 @@
  * Created on 04/03/2024 12:00
  * You are not allowed to remove the copyright.
  */
-package com.singularityindonesia.screen.todolist
+package com.singularityindonesia.screen.exampletodolist
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,11 +15,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.singularityindonesia.screen.todolist.TodoListScreenViewModel.Companion.AddFilter
-import com.singularityindonesia.screen.todolist.TodoListScreenViewModel.Companion.ClearFilter
-import com.singularityindonesia.screen.todolist.TodoListScreenViewModel.Companion.Reload
-import com.singularityindonesia.screen.todolist.TodoListScreenViewModel.Companion.Search
-import com.singularityindonesia.screen.todolist.TodoListScreenViewModel.Companion.SelectTodo
+import com.singularityindonesia.screen.exampletodolist.TodoListScreenViewModel.Companion.AddFilter
+import com.singularityindonesia.screen.exampletodolist.TodoListScreenViewModel.Companion.ClearFilter
+import com.singularityindonesia.screen.exampletodolist.TodoListScreenViewModel.Companion.Reload
+import com.singularityindonesia.screen.exampletodolist.TodoListScreenViewModel.Companion.Search
+import com.singularityindonesia.screen.exampletodolist.TodoListScreenViewModel.Companion.SelectTodo
 import com.singularityindonesia.serialization.PrettyJson
 import kotlinx.serialization.encodeToString
 
@@ -29,7 +29,7 @@ data class TodoListScreenPld(
 )
 
 @Composable
-fun TodoListScreen(
+fun ExampleTodoListScreen(
     pld: TodoListScreenPld = TodoListScreenPld(),
     viewModel: TodoListScreenViewModel = viewModel()
 ) {
