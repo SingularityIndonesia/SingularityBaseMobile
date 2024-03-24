@@ -68,3 +68,8 @@ Commit the lowest module first.
 3. Commit only what is necessary.
 
    ![Screenshot 2024-03-10 at 19.21.44.png](Docs%2FScreenshot%202024-03-10%20at%2019.21.44.png)
+
+## FAQ
+- `#MissingSdk`, `#MissingLocalProperties`, `#LibraryIsNotAnAndroidModule`.
+These issues are known to occur on Windows machines. You need to create a symbolic link from your `local.properties` file to the `Library/` directory.
+Copying the `local.properties` file to the Library project is not recommended.
