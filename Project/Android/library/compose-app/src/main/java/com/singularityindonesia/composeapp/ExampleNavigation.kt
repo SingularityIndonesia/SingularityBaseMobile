@@ -13,7 +13,7 @@ import com.singularityindonesia.screen.todolist.TodoListScreen
 
 
 @Composable
-fun MainNavigation() {
+fun ExampleNavigation() {
     val navController = rememberNavController()
 
     NavHost(
