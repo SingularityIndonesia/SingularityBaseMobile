@@ -71,5 +71,7 @@ Commit the lowest module first.
 
 ## FAQ
 - `#MissingSdk`, `#MissingLocalProperties`, `#LibraryIsNotAnAndroidModule`.
-These issues are known to occur on Windows machines. You need to create a symbolic link from your `local.properties` file to the `Library/` directory.
-Copying the `local.properties` file to the Library project is not recommended.
+
+  These issues are known to occur on Windows machines. You need to create a symbolic link from your `local.properties` file to the `Library/` directory. 
+  
+  **Warning**: Copying the `local.properties` file to the Library project is not recommended.
