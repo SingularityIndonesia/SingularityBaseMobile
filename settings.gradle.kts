@@ -43,6 +43,8 @@ include(":Project:Android:app")
 File(settingsDir, "Project/Android/library")
     .listFiles()
     ?.filter { it.isDirectory }
+    ?.filterNot { it.name.contains("build") }
+    ?.filterNot { it.name.contains(".gradle") }
     ?.forEach { dir ->
         include(":Project:Android:library:${dir.name}")
     }
