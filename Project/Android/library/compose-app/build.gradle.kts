@@ -18,12 +18,12 @@ dependencies {
     implementation("std:webrepository")
     implementation("std:exception")
     implementation("std:analytic")
-    implementation(project(":Project:Android:library:screen"))
-    implementation(project(":Project:Android:library:designsystem"))
+    implementation(project(":library:screen"))
+    implementation(project(":library:designsystem"))
 
-//    implementation(project(":Project:Android:library:main-context"))
-//    implementation(project(":Project:Android:library:dictionary"))
-//    implementation(project(":Project:Android:library:debugger"))
+//    implementation(project(":library:main-context"))
+//    implementation(project(":library:dictionary"))
+//    implementation(project(":library:debugger"))
 
     implementation(libs.android.coroutine)
     implementation(libs.android.core.ktx)

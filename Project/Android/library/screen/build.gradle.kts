@@ -25,7 +25,7 @@ dependencies {
     implementation("std:main-context")
     implementation("std:flow")
 
-    implementation(project(":Project:Android:library:viewmodel"))
+    implementation(project(":library:viewmodel"))
 
     implementation(libs.android.core.ktx)
     implementation(libs.android.appcompat)
