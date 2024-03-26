@@ -27,7 +27,7 @@ dependencyResolutionManagement {
                     ?.filterNot { it.name.contains("gradle") }
                     ?.filterNot { it.name.contains("build") }
                     ?.forEach { dir ->
-                        substitute(module("${dir.name}:main")).using(project(":${dir.name}"))
+                        substitute(module("std:${dir.name}")).using(project(":${dir.name}"))
                     }
             }
         }

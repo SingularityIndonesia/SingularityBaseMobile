@@ -19,9 +19,9 @@ android {
 
 dependencies {
 
-    implementation("webrepository:main")
-    implementation("exception:main")
-    implementation("main-context:main")
+    implementation("std:webrepository")
+    implementation("std:exception")
+    implementation("std:main-context")
     implementation(project(":Project:Android:library:debugger"))
     implementation(project(":Project:Android:library:compose-app"))
     implementation(project(":Project:Android:library:dictionary"))

@@ -9,8 +9,8 @@ android {
 
 dependencies {
 
-    implementation("data:main")
-    implementation("exception:main")
+    implementation("std:data")
+    implementation("std:exception")
 
     implementation(libs.android.lifecycle.viewmodel.compose)
 

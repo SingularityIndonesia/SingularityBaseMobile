@@ -15,9 +15,9 @@ android {
 
 dependencies {
 
-    implementation("webrepository:main")
-    implementation("exception:main")
-    implementation("analytic:main")
+    implementation("std:webrepository")
+    implementation("std:exception")
+    implementation("std:analytic")
     implementation(project(":Project:Android:library:screen"))
     implementation(project(":Project:Android:library:designsystem"))
 
