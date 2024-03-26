@@ -19,7 +19,6 @@ android {
 
 dependencies {
 
-    implementation("plugin:convention")
     implementation("std:webrepository")
     implementation("std:exception")
     implementation("std:main-context")
