@@ -13,8 +13,8 @@ android {
 
 dependencies {
 
-    implementation("webrepository:main")
-    implementation("main-context:main")
+    implementation("std:webrepository")
+    implementation("std:main-context")
 
     implementation(libs.android.core.ktx)
 

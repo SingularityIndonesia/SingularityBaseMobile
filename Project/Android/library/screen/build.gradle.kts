@@ -16,16 +16,16 @@ android {
 
 dependencies {
 
-    implementation("webrepository:main")
-    implementation("model:main")
-    implementation("data:main")
-    implementation("exception:main")
-    implementation("serialization:main")
-    implementation("analytic:main")
-    implementation("main-context:main")
-    implementation("flow:main")
+    implementation("std:webrepository")
+    implementation("std:model")
+    implementation("std:data")
+    implementation("std:exception")
+    implementation("std:serialization")
+    implementation("std:analytic")
+    implementation("std:main-context")
+    implementation("std:flow")
 
-    implementation(project(":Project:Android:library:viewmodel"))
+    implementation(project(":library:viewmodel"))
 
     implementation(libs.android.core.ktx)
     implementation(libs.android.appcompat)

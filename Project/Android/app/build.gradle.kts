@@ -19,12 +19,13 @@ android {
 
 dependencies {
 
-    implementation("webrepository:main")
-    implementation("exception:main")
-    implementation("main-context:main")
-    implementation(project(":Project:Android:library:debugger"))
-    implementation(project(":Project:Android:library:compose-app"))
-    implementation(project(":Project:Android:library:dictionary"))
+    implementation("plugin:convention")
+    implementation("std:webrepository")
+    implementation("std:exception")
+    implementation("std:main-context")
+    implementation(project(":library:debugger"))
+    implementation(project(":library:compose-app"))
+    implementation(project(":library:dictionary"))
 
     implementation(libs.android.coroutine)
     implementation(libs.android.core.ktx)

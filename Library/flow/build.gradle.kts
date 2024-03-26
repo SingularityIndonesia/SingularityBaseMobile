@@ -9,8 +9,8 @@ plugins {
 
 dependencies {
 
-    implementation("data:main")
-    implementation("exception:main")
+    implementation("std:data")
+    implementation("std:exception")
     implementation(libs.coroutine)
 
     testImplementation(libs.junit)
