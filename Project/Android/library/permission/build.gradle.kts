@@ -28,6 +28,8 @@ dependencies {
 
     implementation(libs.kotlinx.serialization.json)
 
+    implementation (libs.android.accompanist.permission)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.android.ext.junit)
     androidTestImplementation(libs.android.espresso.core)
