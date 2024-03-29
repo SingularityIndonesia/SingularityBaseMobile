@@ -30,10 +30,6 @@ android-material3 = "1.2.1"
 
 android-pluto = "2.2.1"
 
-android-gradle-plugin = "8.3.0"
-kotlin = "1.9.22"
-org-jetbrains-kotlin-jvm = "1.9.22"
-
 
 [libraries]
 android-core-ktx = { module = "androidx.core:core-ktx", version.ref = "android-core-ktx" }
