@@ -16,17 +16,12 @@ android {
 dependencies {
 
     implementation(project(":library:permission"))
+    implementation(project(":library:storage"))
 
     implementation(libs.android.core.ktx)
     implementation(libs.android.appcompat)
     implementation(libs.android.material)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.android.ext.junit)
-    androidTestImplementation(libs.android.espresso.core)
-
-    implementation(libs.android.core.ktx)
-    implementation(libs.android.appcompat)
-    implementation(libs.android.material)
+    implementation (libs.android.accompanist.permission)
 
     implementation(libs.android.compose.ui)
     implementation(libs.android.compose.ui.graphics)
