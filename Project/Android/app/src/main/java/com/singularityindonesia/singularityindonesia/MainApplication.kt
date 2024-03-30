@@ -9,11 +9,24 @@ import android.app.Application
 import android.content.Context
 import com.singularityindonesia.debugger.applyPlutoPlugin
 import com.singularityindonesia.main_context.MainContext
+import com.singularityindonesia.main_context.StorageContext
+import com.singularityindonesia.main_context.WebRepositoryContext
+import com.singularityindonesia.storage.storageContext
+import com.singularityindonesia.webrepository.webRepositoryContext
 
-class MainApplication: Application() {
+class MainApplication : Application() {
 
     override fun attachBaseContext(base: Context?) {
-        base?.let(MainContext::init)
+        if (base == null)
+            return
+
+        MainContext.init(
+            object : MainContext {
+                override val webRepositoryContext: WebRepositoryContext by webRepositoryContext()
+                override val storageContext: StorageContext by storageContext(base)
+
+            }
+        )
         super.attachBaseContext(base)
     }
 

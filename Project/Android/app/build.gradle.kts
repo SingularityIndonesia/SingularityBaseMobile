@@ -25,6 +25,7 @@ dependencies {
     implementation(project(":library:debugger"))
     implementation(project(":library:compose-app"))
     implementation(project(":library:dictionary"))
+    implementation(project(":library:storage"))
 
     implementation(libs.android.coroutine)
     implementation(libs.android.core.ktx)
