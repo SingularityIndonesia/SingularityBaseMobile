@@ -5,15 +5,9 @@
  */
 package com.singularityindonesia.webrepository
 
+import com.singularityindonesia.main_context.WebRepositoryContext
 import com.singularityindonesia.webrepository.util.createHttpClient
 import io.ktor.client.*
-
-interface WebRepositoryContext {
-    val httpClient: HttpClient
-    fun interceptBuilder(
-        httpClientBuilder: HttpClientConfig<*>.() -> Unit
-    )
-}
 
 fun webRepositoryContext(): Lazy<WebRepositoryContext> =
     lazy {

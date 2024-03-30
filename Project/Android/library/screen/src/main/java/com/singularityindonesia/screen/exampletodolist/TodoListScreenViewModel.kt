@@ -12,12 +12,12 @@ import com.singularityindonesia.analytic.report
 import com.singularityindonesia.data.*
 import com.singularityindonesia.exception.MUnHandledException
 import com.singularityindonesia.exception.utils.toException
+import com.singularityindonesia.main_context.MainContext
+import com.singularityindonesia.main_context.WebRepositoryContext
+import com.singularityindonesia.model.Todo
 import com.singularityindonesia.viewmodel.moveToIO
 import com.singularityindonesia.viewmodel.shareWhileSubscribed
-import com.singularityindonesia.main_context.MainContext
-import com.singularityindonesia.model.Todo
 import com.singularityindonesia.webrepository.GetTodos
-import com.singularityindonesia.webrepository.WebRepositoryContext
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -25,7 +25,8 @@ import kotlinx.serialization.Serializable
 
 @Immutable
 class TodoListScreenViewModel(
-    private val webRepositoryContext: WebRepositoryContext = MainContext()
+    private val webRepositoryContext: WebRepositoryContext =
+        MainContext.mainContext.webRepositoryContext
 ) : ViewModel() {
 
     companion object {

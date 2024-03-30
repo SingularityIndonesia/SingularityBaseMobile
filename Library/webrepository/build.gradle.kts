@@ -18,6 +18,7 @@ tasks.withType<KotlinCompile> {
 
 dependencies {
     implementation(project(":model"))
+    implementation(project(":main-context"))
 
     // ktor
     implementation(libs.ktor.client.core)

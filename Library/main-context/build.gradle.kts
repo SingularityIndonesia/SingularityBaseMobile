@@ -4,30 +4,17 @@
  * You are not allowed to remove the copyright.
  */
 plugins {
-    id("LibraryConventionV1")
-    id("FeatureJetpackCompose")
-}
-
-android {
-    namespace = "com.singularityindonesia.main_context"
+    kotlin("jvm")
+    kotlin("plugin.serialization")
 }
 
 dependencies {
 
-    implementation(libs.android.core.ktx)
-    implementation(libs.android.appcompat)
-    implementation(libs.android.material)
-
-    implementation(libs.android.activity.compose)
-    implementation(libs.android.compose.ui)
-    implementation(libs.android.compose.ui.graphics)
-    implementation(libs.android.compose.ui.tooling.preview)
-    implementation(libs.android.compose.material3)
-
-    implementation("std:webrepository")
     implementation("std:exception")
 
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.android.ext.junit)
-    androidTestImplementation(libs.android.espresso.core)
+    // ktor
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.okhttp)
+    implementation(libs.ktor.client.cio)
+
 }

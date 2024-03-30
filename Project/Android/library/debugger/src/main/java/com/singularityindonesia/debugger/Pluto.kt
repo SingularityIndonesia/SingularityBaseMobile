@@ -16,7 +16,6 @@ import com.pluto.plugins.network.ktor.PlutoKtorInterceptor
 import com.pluto.plugins.preferences.PlutoSharePreferencesPlugin
 import com.pluto.plugins.rooms.db.PlutoRoomsDatabasePlugin
 import com.singularityindonesia.main_context.MainContext
-import com.singularityindonesia.webrepository.WebRepositoryContext
 
 fun Application.applyPlutoPlugin() {
     Pluto.Installer(this)
@@ -30,7 +29,7 @@ fun Application.applyPlutoPlugin() {
 
     also {
         if (BuildConfig.DEBUG)
-            MainContext<WebRepositoryContext>()
+            MainContext.mainContext.webRepositoryContext
                 .interceptBuilder {
                     install(PlutoKtorInterceptor)
                 }
