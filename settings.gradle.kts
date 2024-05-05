@@ -4,7 +4,7 @@
  * You are not allowed to remove the copyright.
  */
 rootProject.name = "Singularity Indonesia"
-includeBuild("Project")
+includeBuild("Android")
 includeBuild("Library") {
     dependencySubstitution {
         // include all Library
