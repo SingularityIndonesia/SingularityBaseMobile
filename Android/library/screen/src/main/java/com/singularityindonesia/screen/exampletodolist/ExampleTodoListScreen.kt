@@ -7,6 +7,7 @@ package com.singularityindonesia.screen.exampletodolist
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.*
@@ -27,22 +28,6 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 
 @Immutable
-data class TodoListScreenPld(
-    val unit: Unit = Unit
-)
-
-@Immutable
-data class ExampleTodoListScreenState(
-    val error: String = "No Error",
-    val searchClue: String = "",
-    val searchError: String = "",
-    val todoFilters: List<TodoFilter> = listOf(),
-    val selectedTodo: Todo? = null,
-    val todoList: List<Todo> = listOf(),
-    val todoListDataState: VmState<List<Todo>> = Idle(),
-)
-
-@Immutable
 @Serializable
 data class TodoDisplay(
     val todo: Todo,
@@ -53,9 +38,99 @@ data class TodoDisplay(
 sealed interface TodoFilter
 data object ShowCompleteOnly : TodoFilter
 
+@Immutable
+data class ExampleTodoListScreenPld(
+    val unit: Unit = Unit
+)
+
+@Immutable
+data class ExampleTodoListScreenState(
+    val searchClue: String = "",
+    val searchError: String = "",
+    val todoFilters: List<TodoFilter> = listOf(),
+    val selectedTodo: Todo? = null,
+    val todoList: List<Todo> = listOf(),
+    val todoListDataState: VmState<List<Todo>> = Idle(),
+) {
+    // Reducer
+    val statusDisplay: String
+        get() =
+            when (todoListDataState) {
+                is Idle -> "Idle"
+                is Processing -> "Processing"
+                is Success -> "Success"
+                is Failed -> "Failed"
+            }.let {
+                "Status = $it"
+            }
+
+    val errorDisplay: String
+        get() =
+            if (todoListDataState is Failed)
+                "Error = ${todoListDataState.e.message}"
+            else
+                "Error = "
+
+    val appliedFilters: String
+        get() =
+            todoFilters
+                .plus(
+                    if (searchClue.isNotBlank()) {
+                        listOf("Search: $searchClue")
+                    } else {
+                        listOf()
+                    }
+                )
+                .joinToString {
+                    it.toString()
+                }
+                .let {
+                    "Applied Filters = $it"
+                }
+
+    val todoListDisplay: List<TodoDisplay>
+        get() =
+            todoList
+                .filter {
+                    if (searchClue.isBlank())
+                        true
+                    else
+                        it.toString().contains(searchClue)
+                }
+                .filter {
+                    if (todoFilters.isEmpty())
+                        true
+                    else
+                        todoFilters.any { filter ->
+                            when (filter) {
+                                is ShowCompleteOnly -> it.completed
+                            }
+                        }
+                }
+                .map {
+                    TodoDisplay(
+                        todo = it,
+                        selectable = true,
+                        selected = selectedTodo?.id == it.id
+                    )
+                }
+
+    val listErrorDisplay: String
+        get() =
+            todoListDataState
+                .fold(
+                    ifFailed = {
+                        it.message
+                    }
+                ) {
+                    null
+                }
+                ?: searchError
+}
+
 @Composable
 fun ExampleTodoListScreen(
-    pld: TodoListScreenPld = TodoListScreenPld(),
+    pld: ExampleTodoListScreenPld = ExampleTodoListScreenPld(),
 ) {
     val webRepositoryContext =
         remember {
@@ -72,7 +147,9 @@ fun ExampleTodoListScreen(
     val onSearch =
         remember {
             { clue: String ->
-                state = state.copy(searchClue = clue)
+                state = state.copy(
+                    searchClue = clue
+                )
             }
         }
 
@@ -121,7 +198,9 @@ fun ExampleTodoListScreen(
                     .onSuccess {
                         state = state.copy(
                             todoList = it,
-                            todoListDataState = Success(data = it)
+                            todoListDataState = Success(
+                                data = it
+                            )
                         )
                     }
                     .onFailure {
@@ -131,7 +210,9 @@ fun ExampleTodoListScreen(
                             }
                             .also { e ->
                                 state = state.copy(
-                                    todoListDataState = Failed(e)
+                                    todoListDataState = Failed(
+                                        e = e
+                                    )
                                 )
                             }
                     }
@@ -151,17 +232,31 @@ fun ExampleTodoListScreen(
         modifier = Modifier.fillMaxSize()
     ) {
 
+        val statusDisplay by remember {
+            derivedStateOf {
+                state.statusDisplay
+            }
+        }
         Status(
-            status = state.todoListDataState
+            status = statusDisplay
         )
 
+        val errorDisplay by remember {
+            derivedStateOf {
+                state.errorDisplay
+            }
+        }
         Error(
-            error = state.error
+            error = errorDisplay
         )
 
+        val appliedFilters by remember() {
+            derivedStateOf {
+                state.appliedFilters
+            }
+        }
         AppliedFilters(
-            searchClue = state.searchClue,
-            todoFilters = state.todoFilters
+            appliedFilters = appliedFilters
         )
 
         Spacer(
@@ -173,47 +268,49 @@ fun ExampleTodoListScreen(
             onSearch = onSearch
         )
 
-        Spacer(modifier = Modifier.size(8.dp))
+        Spacer(
+            modifier = Modifier.size(8.dp)
+        )
 
         ButtonFilters(
             onFilter = onFilter,
             onClearFilter = onClearFilter
         )
 
-        Spacer(modifier = Modifier.size(16.dp))
+        Spacer(
+            modifier = Modifier.size(16.dp)
+        )
 
+        val todoListDisplay by remember {
+            derivedStateOf {
+                state.todoListDisplay
+            }
+        }
+        val errorDisplay2 by remember {
+            derivedStateOf {
+                state.listErrorDisplay
+            }
+        }
+        val scrollState = rememberLazyListState()
         TodoList(
-            todoList = state.todoList,
-            selectedTodo = state.selectedTodo,
-            searchClue = state.searchClue,
-            searchError = state.searchError,
-            todoFilters = state.todoFilters,
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
+            todoListDisplay = todoListDisplay,
+            scrollState = scrollState,
+            error = errorDisplay2,
+            onReload = onReload,
             onItemClicked = onItemClicked,
-            onReload = onReload
         )
     }
 }
 
 @Composable
 private fun Status(
-    status: VmState<List<Todo>>
+    status: String
 ) {
-    val statusDisplay by remember(status) {
-        derivedStateOf {
-            when (status) {
-                is Idle -> "Idle"
-                is Processing -> "Processing"
-                is Success -> "Success"
-                is Failed -> "Failed"
-            }
-                .let {
-                    "Status = $it"
-                }
-
-        }
-    }
     Text(
-        text = statusDisplay
+        text = status
     )
 }
 
@@ -221,41 +318,15 @@ private fun Status(
 private fun Error(
     error: String
 ) {
-    val errorDisplay by remember {
-        derivedStateOf {
-            "Error = ${error.ifBlank { "No Error" }}"
-        }
-    }
-
     Text(
-        text = errorDisplay
+        text = error
     )
 }
 
 @Composable
 private fun AppliedFilters(
-    searchClue: String,
-    todoFilters: List<TodoFilter>,
+    appliedFilters: String
 ) {
-    val appliedFilters by remember(
-        key1 = todoFilters + searchClue
-    ) {
-        derivedStateOf {
-            val search = if (searchClue.isNotBlank()) {
-                listOf("Search: ${searchClue}")
-            } else {
-                listOf()
-            }
-            (search + todoFilters)
-                .joinToString {
-                    it.toString()
-                }
-                .let {
-                    "Applied Filters = $it"
-                }
-        }
-    }
-
     Text(
         text = appliedFilters
     )
@@ -263,52 +334,15 @@ private fun AppliedFilters(
 
 @Composable
 private fun TodoList(
-    todoList: List<Todo>,
-    selectedTodo: Todo?,
-    searchClue: String,
-    searchError: String,
-    todoFilters: List<TodoFilter>,
-    onItemClicked: (TodoDisplay) -> Unit,
+    modifier: Modifier,
+    scrollState: LazyListState,
+    todoListDisplay: List<TodoDisplay>,
+    error: String,
     onReload: () -> Unit,
+    onItemClicked: (TodoDisplay) -> Unit,
 ) {
-
-    val todoListDisplay by remember(
-        key1 = todoList.toString()
-                + selectedTodo.toString()
-                + searchClue
-                + searchError
-                + todoFilters.toString()
-    ) {
-        derivedStateOf {
-            todoList
-                .filter {
-                    if (searchClue.isBlank())
-                        true
-                    else
-                        it.toString().contains(searchClue)
-                }
-                .filter {
-                    if (todoFilters.isEmpty())
-                        true
-                    else
-                        todoFilters.any { filter ->
-                            when (filter) {
-                                is ShowCompleteOnly -> it.completed
-                            }
-                        }
-                }
-                .map {
-                    TodoDisplay(
-                        todo = it,
-                        selectable = true,
-                        selected = selectedTodo?.id == it.id
-                    )
-                }
-        }
-    }
-    val scrollState = rememberLazyListState()
-
     LazyColumn(
+        modifier = modifier,
         state = scrollState,
     ) {
         items(todoListDisplay) {
@@ -317,36 +351,63 @@ private fun TodoList(
                 onClick = onItemClicked
             )
         }
-        if (searchError.isNotBlank())
-            item(searchError) {
+
+        item(error) {
+            if (error.isNotBlank())
+                Reload(
+                    error = error,
+                    onReload = onReload
+                )
+        }
+    }
+}
+
+@Composable
+fun Reload(
+    error: String,
+    onReload: () -> Unit
+) {
+
+    Box(
+        modifier = Modifier
+            .padding(
+                horizontal = 16.dp
+            )
+            .fillMaxWidth()
+    ) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(
+                        16.dp
+                    )
+            ) {
+                Text(
+                    modifier = Modifier
+                        .align(
+                            Alignment.CenterHorizontally
+                        ),
+                    text = error
+                )
                 Button(
-                    modifier = Modifier.padding(horizontal = 16.dp),
+                    modifier = Modifier
+                        .padding(
+                            top = 16.dp
+                        )
+                        .align(
+                            Alignment.End
+                        ),
                     onClick = onReload
                 ) {
-                    Text(text = "Reload")
+                    Text(
+                        text = "Reload"
+                    )
                 }
             }
-
-        if (searchError.isNotBlank())
-            item(searchError) {
-                Box(
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .fillMaxWidth()
-                ) {
-                    Card(
-                        modifier = Modifier.fillMaxWidth(),
-                    ) {
-                        Text(
-                            modifier = Modifier
-                                .padding(16.dp)
-                                .align(Alignment.CenterHorizontally),
-                            text = searchError
-                        )
-                    }
-                }
-            }
-
+        }
     }
 }
 
@@ -357,22 +418,38 @@ private fun ButtonFilters(
 ) {
     Row {
 
-        Spacer(modifier = Modifier.size(16.dp))
+        Spacer(
+            modifier = Modifier
+                .size(
+                    16.dp
+                )
+        )
         Button(
             onClick = {
-                onFilter.invoke(ShowCompleteOnly)
+                onFilter.invoke(
+                    ShowCompleteOnly
+                )
             }
         ) {
-            Text(text = "Completed")
+            Text(
+                text = "Completed"
+            )
         }
 
-        Spacer(modifier = Modifier.size(8.dp))
+        Spacer(
+            modifier = Modifier
+                .size(
+                    8.dp
+                )
+        )
         Button(
             onClick = {
                 onClearFilter.invoke()
             }
         ) {
-            Text(text = "Show All")
+            Text(
+                text = "Show All"
+            )
         }
 
     }
@@ -385,7 +462,9 @@ private fun SearchComponent(
 ) {
     TextField(
         modifier = Modifier
-            .padding(horizontal = 16.dp)
+            .padding(
+                horizontal = 16.dp
+            )
             .fillMaxWidth(),
         value = clue,
         onValueChange = onSearch
@@ -397,16 +476,25 @@ fun TodoItem(
     item: TodoDisplay,
     onClick: (TodoDisplay) -> Unit,
 ) {
-    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+    Column(
+        modifier = Modifier
+            .padding(
+                horizontal = 16.dp
+            )
+    ) {
         TodoCard(
             todo = item,
             onClick = onClick
         )
-        Spacer(modifier = Modifier.size(8.dp))
+        Spacer(
+            modifier = Modifier
+                .size(
+                    8.dp
+                )
+        )
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TodoCard(
     todo: TodoDisplay,
@@ -414,7 +502,9 @@ fun TodoCard(
 ) {
     Card(
         onClick = {
-            onClick.invoke(todo)
+            onClick.invoke(
+                todo
+            )
         },
         colors = if (todo.selected)
             CardDefaults.cardColors(
@@ -423,12 +513,19 @@ fun TodoCard(
             )
         else
             CardDefaults.cardColors(),
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
     ) {
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier
+                .padding(
+                    16.dp
+                )
         ) {
-            Text(text = PrettyJson.encodeToString(todo))
+            Text(
+                text = PrettyJson
+                    .encodeToString(todo)
+            )
         }
     }
 }

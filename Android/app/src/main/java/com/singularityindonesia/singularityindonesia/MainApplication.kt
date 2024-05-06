@@ -24,7 +24,6 @@ class MainApplication : Application() {
             object : MainContext {
                 override val webRepositoryContext: WebRepositoryContext by webRepositoryContext()
                 override val storageContext: StorageContext by storageContext(base)
-
             }
         )
         super.attachBaseContext(base)
@@ -32,7 +31,7 @@ class MainApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        applyPlutoPlugin()
+//        applyPlutoPlugin()
     }
 
 }

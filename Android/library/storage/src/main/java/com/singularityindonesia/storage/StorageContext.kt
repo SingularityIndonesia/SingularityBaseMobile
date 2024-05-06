@@ -10,11 +10,16 @@ fun storageContext(
 ): Lazy<StorageContext> {
     return lazy {
         object : StorageContext {
-            override fun getOutputDirectory(folderName: String): File {
+            override fun getOutputDirectory(
+                folderName: String
+            ): File {
                 return getOutputDirectory(folderName)
             }
 
-            override fun notifyMediaScanner(file: File, onCompleteListener: (path: String, pathFromUri: String?) -> Unit) {
+            override fun notifyMediaScanner(
+                file: File,
+                onCompleteListener: (path: String, pathFromUri: String?) -> Unit
+            ) {
                 MediaScannerConnection
                     .scanFile(
                         context,

@@ -15,10 +15,10 @@ fun <T, R> Flow<VmState<T>>.foldEach(
 ): Flow<R> =
     map {
         it.fold(
-            onIdle = onIdle,
-            onProcessing = onProcessing,
-            onSuccess = onSuccess,
-            onFailed = onFailed,
-            onElse = default
+            ofIdle = onIdle,
+            ifProcessing = onProcessing,
+            ifSuccess = onSuccess,
+            ifFailed = onFailed,
+            ifElse = default
         )
     }

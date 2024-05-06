@@ -27,16 +27,16 @@ data class Failed<T>(
 ) : VmState<T>
 
 fun<T,R> VmState<T>.fold(
-    onIdle: (()-> R)? = null,
-    onProcessing: (()-> R)? = null,
-    onSuccess: ((T) -> R)? = null,
-    onFailed: ((MException) -> R)? = null,
-    onElse: (()-> R)? = null,
+    ofIdle: (()-> R)? = null,
+    ifProcessing: (()-> R)? = null,
+    ifSuccess: ((T) -> R)? = null,
+    ifFailed: ((MException) -> R)? = null,
+    ifElse: (()-> R)? = null,
 ): R {
     return when(this) {
-        is Idle -> onIdle?.invoke() ?: onElse?.invoke() ?: throw MNullPointerException("Lambda reducer for idle is null.")
-        is Processing -> onProcessing?.invoke() ?: onElse?.invoke() ?: throw  MNullPointerException("Lambda reducer for onProcessing is null.")
-        is Success -> onSuccess?.invoke(data) ?: onElse?.invoke() ?: throw  MNullPointerException("Lambda reducer for onSuccess is null.")
-        is Failed -> onFailed?.invoke(e) ?: onElse?.invoke() ?: throw  MNullPointerException("Lambda reducer for onFailed is null.")
+        is Idle -> ofIdle?.invoke() ?: ifElse?.invoke() ?: throw MNullPointerException("Lambda reducer for idle is null.")
+        is Processing -> ifProcessing?.invoke() ?: ifElse?.invoke() ?: throw  MNullPointerException("Lambda reducer for onProcessing is null.")
+        is Success -> ifSuccess?.invoke(data) ?: ifElse?.invoke() ?: throw  MNullPointerException("Lambda reducer for onSuccess is null.")
+        is Failed -> ifFailed?.invoke(e) ?: ifElse?.invoke() ?: throw  MNullPointerException("Lambda reducer for onFailed is null.")
     }
 }
