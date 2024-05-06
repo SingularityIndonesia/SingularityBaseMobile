@@ -7,8 +7,6 @@ package com.singularityindonesia.data
 
 import com.singularityindonesia.exception.MException
 import com.singularityindonesia.exception.MNullPointerException
-import kotlin.contracts.InvocationKind
-import kotlin.contracts.contract
 
 sealed interface VmState<T>
 
