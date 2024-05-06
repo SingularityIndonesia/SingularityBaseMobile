@@ -55,14 +55,16 @@ data class ExampleTodoListScreenState(
     // Reducer
     val statusDisplay: String
         get() =
-            when (todoListDataState) {
-                is Idle -> "Idle"
-                is Processing -> "Processing"
-                is Success -> "Success"
-                is Failed -> "Failed"
-            }.let {
-                "Status = $it"
-            }
+            todoListDataState
+                .fold(
+                    ifIdle = { "Idle" },
+                    ifProcessing = { "Processing" },
+                    ifSuccess = { "Success" },
+                    ifFailed = { "Failed" }
+                )
+                .let {
+                    "Status = $it"
+                }
 
     val errorDisplay: String
         get() =
