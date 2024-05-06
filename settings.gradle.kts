@@ -5,10 +5,10 @@
  */
 rootProject.name = "Singularity Indonesia"
 includeBuild("Android")
-includeBuild("Library") {
+includeBuild("Shared") {
     dependencySubstitution {
         // include all Library
-        File(settingsDir, "Library")
+        File(settingsDir, "Shared")
             .listFiles()
             ?.filter { it.isDirectory }
             ?.filterNot { it.name.contains("gradle") }
