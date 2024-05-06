@@ -34,16 +34,17 @@ inline fun <reified T, R> VmState<T>.fold(
     noinline ifElse: (() -> R)? = null
 ): R {
     // argument contract
-    if (ifElse == null) {
-        // all argument mustn't null
-        if (ifIdle == null)
-            throw MNullPointerException("Lambda reducer for idle is null.")
-        if (ifProcessing == null)
-            throw MNullPointerException("Lambda reducer for processing is null.")
-        if (ifSuccess == null)
-            throw MNullPointerException("Lambda reducer for success is null.")
-        if (ifFailed == null)
-            throw MNullPointerException("Lambda reducer for failed is null.")
+    require(ifElse != null || ifIdle != null) {
+        "When ifElse is unset, ifIdle must be set and vice versa."
+    }
+    require(ifElse != null || ifProcessing != null) {
+        "When ifElse is unset, ifProcessing must be set and vice versa."
+    }
+    require(ifElse != null || ifSuccess != null) {
+        "When ifElse is unset, ifSuccess must be set and vice versa."
+    }
+    require(ifElse != null || ifFailed != null) {
+        "When ifElse is unset, ifFailed must be set and vice versa."
     }
 
     return when (this) {

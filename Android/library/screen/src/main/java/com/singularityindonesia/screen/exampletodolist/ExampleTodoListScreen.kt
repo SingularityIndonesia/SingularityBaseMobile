@@ -58,9 +58,9 @@ data class ExampleTodoListScreenState(
             todoListDataState
                 .fold(
                     ifIdle = { "Idle" },
-                    ifProcessing = { "Processing" },
-                    ifSuccess = { "Success" },
-                    ifFailed = { "Failed" }
+//                    ifProcessing = { "Processing" },
+//                    ifSuccess = { "Success" },
+//                    ifFailed = { "Failed" }
                 )
                 .let {
                     "Status = $it"
