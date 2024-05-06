@@ -7,6 +7,8 @@ package com.singularityindonesia.data
 
 import com.singularityindonesia.exception.MException
 import com.singularityindonesia.exception.MNullPointerException
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 
 sealed interface VmState<T>
 
@@ -61,13 +63,13 @@ inline fun <reified T, R> VmState<T>.fold(
 
         is Success ->
             if (ifSuccess != null)
-                ifSuccess.invoke(this.data)
+                ifSuccess.invoke(data)
             else
                 ifElse!!.invoke()
 
         is Failed ->
             if (ifFailed != null)
-                ifFailed.invoke(this.e)
+                ifFailed.invoke(e)
             else
                 ifElse!!.invoke()
     }
