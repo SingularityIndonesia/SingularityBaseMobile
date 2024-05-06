@@ -50,7 +50,7 @@ data class ExampleTodoListScreenState(
     val todoFilters: List<TodoFilter> = listOf(),
     val selectedTodo: Todo? = null,
     val todoList: List<Todo> = listOf(),
-    val todoListDataState: VmState<List<Todo>> = Idle(),
+    val todoListDataState: VmState<List<Todo>> = VmIdle(),
 ) {
     // Reducer
     val statusDisplay: String
@@ -68,7 +68,7 @@ data class ExampleTodoListScreenState(
 
     val errorDisplay: String
         get() =
-            if (todoListDataState is Failed)
+            if (todoListDataState is VmFailed)
                 "Error = ${todoListDataState.e.message}"
             else
                 "Error = "
@@ -178,7 +178,7 @@ fun ExampleTodoListScreen(
         {
             ioScope.launch(Dispatchers.IO) {
                 state = state.copy(
-                    todoListDataState = Processing()
+                    todoListDataState = VmProcessing()
                 )
                 with(webRepositoryContext) {
                     GetTodos()
@@ -186,7 +186,7 @@ fun ExampleTodoListScreen(
                     .onSuccess {
                         state = state.copy(
                             todoList = it,
-                            todoListDataState = Success(
+                            todoListDataState = VmSuccess(
                                 data = it
                             )
                         )
@@ -198,7 +198,7 @@ fun ExampleTodoListScreen(
                             }
                             .also { e ->
                                 state = state.copy(
-                                    todoListDataState = Failed(
+                                    todoListDataState = VmFailed(
                                         e = e
                                     )
                                 )
@@ -211,7 +211,7 @@ fun ExampleTodoListScreen(
 
     // preload
     LaunchedEffect(
-        state.todoListDataState is Idle
+        state.todoListDataState is VmIdle
     ) {
         onReload.invoke()
     }

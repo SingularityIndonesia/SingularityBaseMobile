@@ -6,23 +6,22 @@
 package com.singularityindonesia.data
 
 import com.singularityindonesia.exception.MException
-import com.singularityindonesia.exception.MNullPointerException
 
 sealed interface VmState<T>
 
-data class Idle<T>(
+data class VmIdle<T>(
     val unit: Unit = Unit
 ) : VmState<T>
 
-data class Processing<T>(
+data class VmProcessing<T>(
     val unit: Unit = Unit
 ) : VmState<T>
 
-data class Success<T>(
+data class VmSuccess<T>(
     val data: T
 ) : VmState<T>
 
-data class Failed<T>(
+data class VmFailed<T>(
     val e: MException
 ) : VmState<T>
 
@@ -48,25 +47,25 @@ inline fun <reified T, R> VmState<T>.fold(
     }
 
     return when (this) {
-        is Idle ->
+        is VmIdle ->
             if (ifIdle != null)
                 ifIdle.invoke()
             else
                 ifElse!!.invoke()
 
-        is Processing ->
+        is VmProcessing ->
             if (ifProcessing != null)
                 ifProcessing.invoke()
             else
                 ifElse!!.invoke()
 
-        is Success ->
+        is VmSuccess ->
             if (ifSuccess != null)
                 ifSuccess.invoke(data)
             else
                 ifElse!!.invoke()
 
-        is Failed ->
+        is VmFailed ->
             if (ifFailed != null)
                 ifFailed.invoke(e)
             else
