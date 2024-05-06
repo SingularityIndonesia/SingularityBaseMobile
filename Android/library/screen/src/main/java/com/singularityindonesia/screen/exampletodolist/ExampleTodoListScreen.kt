@@ -153,20 +153,6 @@ fun ExampleTodoListScreen(
             }
         }
 
-    val onFilter =
-        remember {
-            { filter: TodoFilter ->
-                state = if (state.todoFilters.contains(filter))
-                    state.copy(
-                        todoFilters = state.todoFilters - filter
-                    )
-                else
-                    state.copy(
-                        todoFilters = state.todoFilters + filter
-                    )
-            }
-        }
-
     val onClearFilter =
         remember {
             {
@@ -273,7 +259,16 @@ fun ExampleTodoListScreen(
         )
 
         ButtonFilters(
-            onFilter = onFilter,
+            onFilter = { filter: TodoFilter ->
+                state = if (state.todoFilters.contains(filter))
+                    state.copy(
+                        todoFilters = state.todoFilters - filter
+                    )
+                else
+                    state.copy(
+                        todoFilters = state.todoFilters + filter
+                    )
+            },
             onClearFilter = onClearFilter
         )
 

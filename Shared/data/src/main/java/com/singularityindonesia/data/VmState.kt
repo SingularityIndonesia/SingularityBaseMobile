@@ -26,17 +26,49 @@ data class Failed<T>(
     val e: MException
 ) : VmState<T>
 
-fun<T,R> VmState<T>.fold(
-    ofIdle: (()-> R)? = null,
-    ifProcessing: (()-> R)? = null,
-    ifSuccess: ((T) -> R)? = null,
-    ifFailed: ((MException) -> R)? = null,
-    ifElse: (()-> R)? = null,
+inline fun <reified T, R> VmState<T>.fold(
+    noinline ifIdle: (() -> R)? = null,
+    noinline ifProcessing: (() -> R)? = null,
+    noinline ifSuccess: ((T) -> R)? = null,
+    noinline ifFailed: ((MException) -> R)? = null,
+    noinline ifElse: (() -> R)? = null
 ): R {
-    return when(this) {
-        is Idle -> ofIdle?.invoke() ?: ifElse?.invoke() ?: throw MNullPointerException("Lambda reducer for idle is null.")
-        is Processing -> ifProcessing?.invoke() ?: ifElse?.invoke() ?: throw  MNullPointerException("Lambda reducer for onProcessing is null.")
-        is Success -> ifSuccess?.invoke(data) ?: ifElse?.invoke() ?: throw  MNullPointerException("Lambda reducer for onSuccess is null.")
-        is Failed -> ifFailed?.invoke(e) ?: ifElse?.invoke() ?: throw  MNullPointerException("Lambda reducer for onFailed is null.")
+    // argument contract
+    if (ifElse == null) {
+        // all argument mustn't null
+        if (ifIdle == null)
+            throw MNullPointerException("Lambda reducer for idle is null.")
+        if (ifProcessing == null)
+            throw MNullPointerException("Lambda reducer for processing is null.")
+        if (ifSuccess == null)
+            throw MNullPointerException("Lambda reducer for success is null.")
+        if (ifFailed == null)
+            throw MNullPointerException("Lambda reducer for failed is null.")
+    }
+
+    return when (this) {
+        is Idle ->
+            if (ifIdle != null)
+                ifIdle.invoke()
+            else
+                ifElse!!.invoke()
+
+        is Processing ->
+            if (ifProcessing != null)
+                ifProcessing.invoke()
+            else
+                ifElse!!.invoke()
+
+        is Success ->
+            if (ifSuccess != null)
+                ifSuccess.invoke(this.data)
+            else
+                ifElse!!.invoke()
+
+        is Failed ->
+            if (ifFailed != null)
+                ifFailed.invoke(this.e)
+            else
+                ifElse!!.invoke()
     }
 }
