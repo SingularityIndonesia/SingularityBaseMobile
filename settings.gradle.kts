@@ -3,7 +3,6 @@
  * Created on 04/03/2024 12:00
  * You are not allowed to remove the copyright.
  */
-rootProject.name = "Singularity Indonesia"
 includeBuild("Android")
 includeBuild("Shared") {
     dependencySubstitution {
