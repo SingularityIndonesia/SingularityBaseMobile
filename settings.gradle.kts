@@ -14,7 +14,20 @@ includeBuild("Shared") {
             ?.filterNot { it.name.contains("gradle") }
             ?.filterNot { it.name.contains("build") }
             ?.forEach { dir ->
-                substitute(module("std:${dir.name}")).using(project(":${dir.name}"))
+                substitute(module("shared:${dir.name}")).using(project(":${dir.name}"))
+            }
+    }
+}
+includeBuild("System") {
+    dependencySubstitution {
+        // include all Library
+        File(settingsDir, "System")
+            .listFiles()
+            ?.filter { it.isDirectory }
+            ?.filterNot { it.name.contains("gradle") }
+            ?.filterNot { it.name.contains("build") }
+            ?.forEach { dir ->
+                substitute(module("system:${dir.name}")).using(project(":${dir.name}"))
             }
     }
 }

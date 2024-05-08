@@ -15,7 +15,7 @@ android {
 
 dependencies {
 
-    implementation("std:main-context")
+    implementation("shared:main-context")
 
     implementation(libs.android.core.ktx)
     implementation(libs.android.appcompat)

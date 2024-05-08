@@ -16,14 +16,14 @@ android {
 
 dependencies {
 
-    implementation("std:webrepository")
-    implementation("std:model")
-    implementation("std:data")
-    implementation("std:exception")
-    implementation("std:serialization")
-    implementation("std:analytic")
-    implementation("std:main-context")
-    implementation("std:flow")
+    implementation("shared:webrepository")
+    implementation("shared:model")
+    implementation("shared:data")
+    implementation("shared:exception")
+    implementation("shared:serialization")
+    implementation("shared:analytic")
+    implementation("shared:main-context")
+    implementation("shared:flow")
 
     implementation(libs.android.core.ktx)
     implementation(libs.android.appcompat)

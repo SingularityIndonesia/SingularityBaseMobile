@@ -15,11 +15,11 @@ android {
 
 dependencies {
 
-    implementation("std:webrepository")
-    implementation("std:exception")
-    implementation("std:analytic")
+    implementation("shared:webrepository")
+    implementation("shared:exception")
+    implementation("shared:analytic")
+    implementation("system:designsystem")
     implementation(project(":library:screen"))
-    implementation(project(":library:designsystem"))
 
 //    implementation(project(":library:main-context"))
 //    implementation(project(":library:dictionary"))
