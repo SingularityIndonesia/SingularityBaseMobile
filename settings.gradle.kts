@@ -12,6 +12,7 @@ includeBuild("Shared") {
             ?.filter { it.isDirectory }
             ?.filterNot { it.name.contains("gradle") }
             ?.filterNot { it.name.contains("build") }
+            ?.filterNot { it.name.contains(".") }
             ?.forEach { dir ->
                 substitute(module("shared:${dir.name}")).using(project(":${dir.name}"))
             }
@@ -25,6 +26,7 @@ includeBuild("System") {
             ?.filter { it.isDirectory }
             ?.filterNot { it.name.contains("gradle") }
             ?.filterNot { it.name.contains("build") }
+            ?.filterNot { it.name.contains(".") }
             ?.forEach { dir ->
                 substitute(module("system:${dir.name}")).using(project(":${dir.name}"))
             }
