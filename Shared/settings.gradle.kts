@@ -8,11 +8,6 @@ pluginManagement {
 }
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    versionCatalogs {
-        create("libs") {
-            from(files("../gradle/libs.versions.toml"))
-        }
-    }
     repositories {
         google()
         mavenCentral()
@@ -25,6 +20,7 @@ File(settingsDir, "./")
     ?.filter { it.isDirectory }
     ?.filterNot { it.name.contains("gradle") }
     ?.filterNot { it.name.contains("build") }
+    ?.filterNot { it.name.contains(".") }
     ?.forEach { dir ->
         include(":${dir.name}")
     }

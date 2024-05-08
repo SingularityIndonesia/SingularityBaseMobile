@@ -9,8 +9,8 @@ plugins {
 
 dependencies {
 
-    implementation("shared:data")
-    implementation("shared:exception")
+    implementation(project(":data"))
+    implementation(project(":exception"))
     implementation(libs.coroutine)
 
     testImplementation(libs.junit)

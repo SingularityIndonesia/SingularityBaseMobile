@@ -10,7 +10,7 @@ plugins {
 
 dependencies {
 
-    implementation("shared:exception")
+    implementation(project(":exception"))
 
     // ktor
     implementation(libs.ktor.client.core)
