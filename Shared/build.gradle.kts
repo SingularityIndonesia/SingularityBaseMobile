@@ -1,1 +1,1 @@
-../build.gradle.kts.template
+../build.gradle.template.kts
