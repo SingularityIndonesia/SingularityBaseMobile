@@ -4,31 +4,18 @@
  * You are not allowed to remove the copyright.
  */
 includeBuild("Main")
-//includeBuild("Shared") {
-//    dependencySubstitution {
-//        // include all Library
-//        File(settingsDir, "Shared")
-//            .listFiles()
-//            ?.filter { it.isDirectory }
-//            ?.filterNot { it.name.contains("gradle") }
-//            ?.filterNot { it.name.contains("build") }
-//            ?.filterNot { it.name.contains(".") }
-//            ?.forEach { dir ->
-//                substitute(module("shared:${dir.name}")).using(project(":${dir.name}"))
-//            }
-//    }
-//}
-//includeBuild("System") {
-//    dependencySubstitution {
-//        // include all Library
-//        File(settingsDir, "System")
-//            .listFiles()
-//            ?.filter { it.isDirectory }
-//            ?.filterNot { it.name.contains("gradle") }
-//            ?.filterNot { it.name.contains("build") }
-//            ?.filterNot { it.name.contains(".") }
-//            ?.forEach { dir ->
-//                substitute(module("system:${dir.name}")).using(project(":${dir.name}"))
-//            }
-//    }
-//}
+includeBuild("System") {
+    dependencySubstitution {
+        // include all Library
+        File(settingsDir, "System")
+            .listFiles()
+            ?.filter { it.isDirectory }
+            ?.filterNot { it.name.contains("gradle") }
+            ?.filterNot { it.name.contains("build") }
+            ?.filterNot { it.name.contains("iosApp") }
+            ?.filterNot { it.name.contains(".") }
+            ?.forEach { dir ->
+                substitute(module("system:${dir.name}")).using(project(":${dir.name}"))
+            }
+    }
+}

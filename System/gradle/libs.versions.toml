@@ -14,14 +14,8 @@ compose = "1.6.6"
 compose-plugin = "1.6.2"
 junit = "4.13.2"
 kotlin = "1.9.23"
-ktor = "2.3.8"
 
 [libraries]
-ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
-ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
-ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
-ktor-client-ios = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
-
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
