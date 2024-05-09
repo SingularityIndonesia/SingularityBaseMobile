@@ -6,8 +6,8 @@
 package com.singularity.contex
 
 interface MainContext {
-    /*val webRepositoryContext: WebRepositoryContext*/
-    /*val storageContext: StorageContext*/
+    val webRepositoryContext: WebRepositoryContext
+    val storageContext: StorageContext
 
     companion object {
         lateinit var mainContext: MainContext
@@ -17,8 +17,8 @@ interface MainContext {
 
         inline operator fun <reified T> MainContext.invoke(): T =
             when (T::class.qualifiedName) {
-                /*WebRepositoryContext::class.qualifiedName -> mainContext.webRepositoryContext as T*/
-                /*StorageContext::class.qualifiedName -> mainContext.storageContext as T*/
+                WebRepositoryContext::class.qualifiedName -> mainContext.webRepositoryContext as T
+                StorageContext::class.qualifiedName -> mainContext.storageContext as T
                 else -> throw IllegalArgumentException("Unknown context ${T::class.simpleName}")
             }
     }
