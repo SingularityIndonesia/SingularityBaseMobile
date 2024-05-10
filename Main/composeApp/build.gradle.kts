@@ -14,13 +14,6 @@ kotlin {
             implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.client.okhttp)
         }
-        commonMain.configure {
-            kotlinCompile {
-                kotlinOptions {
-                    freeCompilerArgs += listOf("-Xcontext-receivers")
-                }
-            }
-        }
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
