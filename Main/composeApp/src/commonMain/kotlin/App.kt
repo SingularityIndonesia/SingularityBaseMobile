@@ -41,7 +41,7 @@ fun App() {
                 ) {
                     Image(painterResource(Res.drawable.compose_multiplatform), null)
                     Text(
-                        "Test Multi Project:\n$greeting",
+                        "Test Multi Project:\n$testMultiProject",
                         textAlign = TextAlign.Center
                     )
                 }

@@ -40,7 +40,6 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
         }
-        iosMain.dependencies {}
     }
 }
 
@@ -75,3 +74,4 @@ android {
     }
 }
 
+task("testClasses")

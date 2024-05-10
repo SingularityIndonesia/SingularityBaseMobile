@@ -3,7 +3,6 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.jetbrainsCompose)
 }
 
 kotlin {
@@ -69,7 +68,8 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
     dependencies {
-        debugImplementation(libs.compose.ui.tooling)
+
     }
 }
 
+task("testClasses")
