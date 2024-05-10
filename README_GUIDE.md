@@ -56,13 +56,13 @@ Library Modules should not have instances within them.
 Any instances such as Services should only exist within the `composeApp` module.
 
 ## Contextual programming.
-A library can requires an instance but never a context. Library should not have context.
+A library can requires an instance but never a context. Library should not have business context.
 
 # Don't
 ## Local Properties & Build Variables
 Learning from the mistakes of many companies, libraries should not be bound to local properties nor the Build Variables.
 Only the composeApp module may access local properties.
-Only the composeApp module may have a context.
+Only the composeApp module may have a business context.
 
 ## Library Context
 Libraries should not have business contexts. Library should be `Context Free`.
@@ -84,7 +84,7 @@ By doing that no function need to have context on their own.
 ## Context re-constructing
 Libraries shouldn't ask how the context works.
 Libraries should not deconstruct the context to obtain information from it.
-Libraries should not re-create a context for their own.
+Libraries should not re-create the context for their own.
 
 ## Transitive Dependency
 Don't.
