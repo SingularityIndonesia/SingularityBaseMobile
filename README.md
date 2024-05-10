@@ -1,4 +1,4 @@
-# Singularity Mobile APP
+# Singularity Codebase is Now a Multi Platform!!
 *Always under the development process.*
 
 I created this codebase to help startup companies kickstart their projects with Kotlin Multiplatform.
