@@ -7,4 +7,5 @@ package com.singularity.common
 
 import kotlinx.serialization.json.Json
 
+
 val PrettyJson = Json { prettyPrint = true }

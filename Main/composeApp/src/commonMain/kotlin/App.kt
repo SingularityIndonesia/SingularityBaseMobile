@@ -21,6 +21,7 @@ import com.singularity.contex.WebRepositoryContext
 import com.singularity.data.VmSuccess
 import com.singularity.designsystem.SingularityTheme
 import com.singularity.webrepository.webRepositoryContext
+import example.ExampleApp
 import main.composeapp.generated.resources.Res
 import main.composeapp.generated.resources.compose_multiplatform
 import org.jetbrains.compose.resources.ExperimentalResourceApi
@@ -30,7 +31,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 @Preview
 fun App() {
-    Screen()
+    ExampleApp()
 }
 
 @OptIn(ExperimentalResourceApi::class)
