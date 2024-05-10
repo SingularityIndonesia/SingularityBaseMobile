@@ -18,6 +18,10 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation("system:core")
             implementation("system:designsystem")
+            implementation("shared:webrepository")
+        }
+        iosMain.dependencies {
+
         }
     }
 }
