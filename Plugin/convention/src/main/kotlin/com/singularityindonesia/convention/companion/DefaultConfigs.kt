@@ -8,6 +8,7 @@ package com.singularityindonesia.convention.companion
 import org.gradle.api.JavaVersion
 
 object DefaultConfigs {
+    val TARGET_SDK = 34
     val COMPILE_SDK = 34
     val MIN_SDK = 29
     val TEST_INST_RUNNER = "androidx.test.runner.AndroidJUnitRunner"

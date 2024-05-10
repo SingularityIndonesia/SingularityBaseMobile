@@ -15,13 +15,8 @@ java {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.22")
-    implementation("com.android.tools.build:gradle:8.2.0")
-    /*implementation(libs.ksp.gradle.plugin)
-    implementation(libs.detekt.plugin)
-    implementation(libs.javapoet.plugin)
-    implementation(libs.navigation.safeargs.plugin)
-    implementation(libs.kotlinx.kover.plugin)*/
+    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:${libs.versions.kotlin.get()}")
+    implementation("com.android.tools.build:gradle:${libs.versions.agp.get()}")
 }
 
 gradlePlugin {

@@ -5,27 +5,20 @@
  */
 package com.singularityindonesia.convention
 
-import com.android.build.api.dsl.LibraryExtension
-import com.singularityindonesia.convention.companion.DefaultConfigs.COMPILE_SDK
-import com.singularityindonesia.convention.companion.DefaultConfigs.JAVA_SOURCE_COMPAT
-import com.singularityindonesia.convention.companion.DefaultConfigs.JAVA_TARGET_COMPAT
-import com.singularityindonesia.convention.companion.DefaultConfigs.JVM_TARGET
-import com.singularityindonesia.convention.companion.DefaultConfigs.MIN_SDK
-import com.singularityindonesia.convention.companion.DefaultConfigs.PROGUARD_ANDROID_OPTIMIZE
-import com.singularityindonesia.convention.companion.DefaultConfigs.PROGUARD_CONSUMER_FILES
-import com.singularityindonesia.convention.companion.DefaultConfigs.PROGUARD_RULES
-import com.singularityindonesia.convention.companion.DefaultConfigs.TEST_INST_RUNNER
-import com.singularityindonesia.convention.companion.getSigningConfig
-import com.singularityindonesia.convention.companion.kotlinCompile
+import com.android.build.gradle.LibraryExtension
+import com.singularityindonesia.convention.companion.DefaultConfigs
+import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.get
+import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 class LibraryConventionV1 : Plugin<Project> {
 
     private val PLUGINS = listOf(
         "com.android.library",
-        "org.jetbrains.kotlin.android"
+        "org.jetbrains.kotlin.multiplatform"
     )
 
     override fun apply(target: Project) =
@@ -34,66 +27,45 @@ class LibraryConventionV1 : Plugin<Project> {
                 PLUGINS.forEach(::apply)
             }
 
-            extensions.configure<LibraryExtension> {
-                compileSdk = COMPILE_SDK
-                defaultConfig {
-                    minSdk = MIN_SDK
-                    testInstrumentationRunner = TEST_INST_RUNNER
-                    consumerProguardFiles(
-                        *PROGUARD_CONSUMER_FILES
-                    )
-                }
-                buildTypes {
-
-                    val signingConfigAll = getSigningConfig(
-                        project = project,
-                        extension = this@configure
-                    )
-
-                    release {
-                        if (signingConfigAll != null)
-                            this.signingConfig = signingConfigAll
-
-                        isMinifyEnabled = true
-                        isJniDebuggable = false
-                        proguardFiles(
-                            getDefaultProguardFile(
-                                PROGUARD_ANDROID_OPTIMIZE
-                            ),
-                            PROGUARD_RULES
-                        )
-                    }
-
-                    debug {
-                        if (signingConfigAll != null)
-                            this.signingConfig = signingConfigAll
-
-                        isMinifyEnabled = false
-                        isJniDebuggable = true
-                        proguardFiles(
-                            getDefaultProguardFile(
-                                PROGUARD_ANDROID_OPTIMIZE
-                            ),
-                            PROGUARD_RULES
-                        )
-                    }
-                    all {
-                        if (name.lowercase().endsWith("debug")) {
-                            setMatchingFallbacks("debug")
-                        } else {
-                            setMatchingFallbacks("release")
+            extensions.configure<KotlinMultiplatformExtension> {
+                androidTarget {
+                    compilations.all {
+                        kotlinOptions {
+                            jvmTarget = "11"
                         }
                     }
                 }
-                compileOptions {
-                    sourceCompatibility = JAVA_SOURCE_COMPAT
-                    targetCompatibility = JAVA_TARGET_COMPAT
-                }
+                listOf(
+                    iosX64(),
+                    iosArm64(),
+                    iosSimulatorArm64()
+                )
+            }
 
-                kotlinCompile {
-                    kotlinOptions {
-                        jvmTarget = JVM_TARGET
+            extensions.configure<LibraryExtension> {
+                compileSdk = DefaultConfigs.COMPILE_SDK
+
+                sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+                sourceSets["main"].res.srcDirs("src/androidMain/res")
+                sourceSets["main"].resources.srcDirs("src/commonMain/resources")
+
+                defaultConfig {
+                    minSdk = DefaultConfigs.MIN_SDK
+                    targetSdk = DefaultConfigs.TARGET_SDK
+                }
+                packaging {
+                    resources {
+                        excludes += "/META-INF/{AL2.0,LGPL2.1}"
                     }
+                }
+                buildTypes {
+                    getByName("release") {
+                        isMinifyEnabled = false
+                    }
+                }
+                compileOptions {
+                    sourceCompatibility = JavaVersion.VERSION_11
+                    targetCompatibility = JavaVersion.VERSION_11
                 }
             }
         }
