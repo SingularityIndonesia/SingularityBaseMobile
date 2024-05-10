@@ -69,6 +69,13 @@ Commit the lowest module first.
 
    ![Screenshot 2024-03-10 at 19.21.44.png](Docs%2FScreenshot%202024-03-10%20at%2019.21.44.png)
 
+## TIPS
+Create new scope in Appearance & Behavior > Scopes with following pattern:
+```
+!file[*]:iosApp//*&&!file[*]:.fleet//*&&!file[*]:gradle//*
+```
+That scopes will make it look better for KMP.
+
 ## FAQ
 - `#MissingSdk`, `#MissingLocalProperties`, `#LibraryIsNotAnAndroidModule`.
 
