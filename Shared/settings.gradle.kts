@@ -36,10 +36,12 @@ dependencyResolutionManagement {
 // include all libraries
 File(settingsDir, "./")
     .listFiles()
+    ?.asSequence()
     ?.filter { it.isDirectory }
     ?.filterNot { it.name.contains("gradle") }
     ?.filterNot { it.name.contains("build") }
     ?.filterNot { it.name.contains(".") }
+    ?.toList()
     ?.forEach { dir ->
         include(":${dir.name}")
     }
