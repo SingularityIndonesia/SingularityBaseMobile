@@ -5,45 +5,22 @@
  */
 package com.singularityindonesia.convention.features
 
-import com.android.build.api.dsl.ApplicationExtension
-import com.android.build.api.dsl.LibraryExtension
 import com.singularityindonesia.convention.companion.kotlinCompile
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
+import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 class FeatureContextReceiver : Plugin<Project> {
 
     override fun apply(target: Project) {
-        listOf(::setupLibrary, ::setupApplication)
-            .map {
-                runCatching {
-                    setupLibrary(target)
+        target.extensions.configure<KotlinMultiplatformExtension> {
+            target.kotlinCompile {
+                kotlinOptions {
+                    freeCompilerArgs += "-Xcontext-receivers"
                 }
             }
-            .also {
-                if (it.count { r -> r.isSuccess } == 0 )
-                    println("Error : Project is not android library or android application.")
-            }
+        }
     }
-
-    private fun setupLibrary(target: Project) =
-        target.extensions.configure<LibraryExtension> {
-            target.kotlinCompile {
-                kotlinOptions {
-                    freeCompilerArgs += "-Xcontext-receivers"
-                }
-            }
-        }
-
-
-    private fun setupApplication(target: Project) =
-        target.extensions.configure<ApplicationExtension> {
-            target.kotlinCompile {
-                kotlinOptions {
-                    freeCompilerArgs += "-Xcontext-receivers"
-                }
-            }
-        }
 
 }
