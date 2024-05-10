@@ -3,7 +3,7 @@
  * Created on 04/03/2024 12:00
  * You are not allowed to remove the copyright.
  */
-package example
+package example.presentation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue

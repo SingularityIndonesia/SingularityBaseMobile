@@ -3,7 +3,7 @@
  * Created on 04/03/2024 12:00
  * You are not allowed to remove the copyright.
  */
-package example
+package example.presentation
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -45,6 +45,7 @@ import com.singularity.data.VmSuccess
 import com.singularity.data.fold
 import example.data.GetTodos
 import example.model.Todo
+import example.util.getPlatform
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
@@ -165,6 +166,10 @@ fun ExampleTodoListScreen(
 
     val ioScope = rememberCoroutineScope()
 
+    val platformName = remember {
+        getPlatform().name
+    }
+
     var state: ExampleTodoListScreenState
             by remember {
                 mutableStateOf(ExampleTodoListScreenState())
@@ -241,6 +246,10 @@ fun ExampleTodoListScreen(
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
+
+        Text(
+            text = "Running on $platformName"
+        )
 
         val statusDisplay by remember {
             derivedStateOf {
