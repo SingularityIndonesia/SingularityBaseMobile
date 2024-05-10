@@ -19,3 +19,18 @@ includeBuild("System") {
             }
     }
 }
+includeBuild("Shared") {
+    dependencySubstitution {
+        // include all Library
+        File(settingsDir, "Shared")
+            .listFiles()
+            ?.filter { it.isDirectory }
+            ?.filterNot { it.name.contains("gradle") }
+            ?.filterNot { it.name.contains("build") }
+            ?.filterNot { it.name.contains("iosApp") }
+            ?.filterNot { it.name.contains(".") }
+            ?.forEach { dir ->
+                substitute(module("shared:${dir.name}")).using(project(":${dir.name}"))
+            }
+    }
+}
