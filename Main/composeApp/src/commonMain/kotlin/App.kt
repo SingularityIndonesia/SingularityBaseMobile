@@ -8,6 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -15,29 +16,40 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import com.singularity.contex.MainContext
+import com.singularity.contex.WebRepositoryContext
 import com.singularity.data.VmSuccess
 import com.singularity.designsystem.SingularityTheme
+import com.singularity.webrepository.webRepositoryContext
 import main.composeapp.generated.resources.Res
 import main.composeapp.generated.resources.compose_multiplatform
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 @Preview
 fun App() {
-    val greeting = remember { Greeting().greet() }
+    Screen()
+}
+
+@OptIn(ExperimentalResourceApi::class)
+@Composable
+fun Screen() {
+    val greeting = remember {
+        Greeting().greet()
+    }
     val testMultiProject = remember {
         VmSuccess(greeting)
     }
+    var showContent by remember {
+        mutableStateOf(
+            false
+        )
+    }
 
     SingularityTheme {
-        var showContent by remember {
-            mutableStateOf(
-                false
-            )
-        }
+
         Surface(
             modifier = Modifier.fillMaxSize()
         ) {
