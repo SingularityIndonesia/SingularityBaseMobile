@@ -205,6 +205,8 @@ fun ExampleTodoListScreen(
                     todoListDataState = VmProcessing()
                 )
                 with(webRepositoryContext) {
+                    // BUG: context receiver implementation is still not working.
+                    // You need to use basic composition pattern.
                     GetTodos(this.httpClient)
                 }
                     .onSuccess {
