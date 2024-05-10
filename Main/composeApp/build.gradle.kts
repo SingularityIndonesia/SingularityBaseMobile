@@ -1,8 +1,6 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-
 plugins {
     id("AppConventionV1")
-    alias(libs.plugins.jetbrainsCompose)
+    id("FeatureJetpackCompose")
 }
 
 kotlin {
