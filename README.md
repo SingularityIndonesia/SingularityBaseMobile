@@ -1,8 +1,14 @@
 # Singularity Mobile APP
-*Not for public. Still under the development process.*
+*Always under the development process.*
+
+I created this codebase to help startup companies kickstart their projects with Kotlin Multiplatform.
+This code is free to use and distribute under the Creative Commons License.
 
 ## Contributing
 Read [README_CONTRIBUTING.md](README_CONTRIBUTING.md)
 
+## Meet the author
+[Stefanus Ayudha](https://www.linkedin.com/in/stefanus-ayudha-447a98b5/).
+I would be happy to help you in creating an extraordinary starting.
 
   
