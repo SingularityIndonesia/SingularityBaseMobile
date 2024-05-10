@@ -3,6 +3,14 @@
  * Created on 04/03/2024 12:00
  * You are not allowed to remove the copyright.
  */
+dependencyResolutionManagement {
+    versionCatalogs {
+        create("libs2") {
+            from(files("gradle/libs.versions.toml"))
+        }
+    }
+}
+
 includeBuild("Main")
 includeBuild("System") {
     dependencySubstitution {
