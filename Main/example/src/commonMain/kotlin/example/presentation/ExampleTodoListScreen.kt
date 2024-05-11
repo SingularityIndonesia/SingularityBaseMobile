@@ -186,49 +186,8 @@ fun ExampleTodoListScreen(
                 )
             }
 
-    val onSearch =
-        remember {
-            { clue: String ->
-                state = state.copy(
-                    searchClue = clue
-                )
-            }
-        }
-
-    val onClearFilter =
-        remember {
-            {
-                state = state.copy(
-                    todoFilters = listOf()
-                )
-            }
-        }
-
-    val gotoTodoDetail = remember(pld) {
-        { todoID: TodoID ->
-            saveAbleState.push(state)
-            pld.goToTodoDetail.invoke(todoID)
-        }
-    }
-
-    val onItemClicked =
-        remember {
-            { todoDisplay: TodoDisplay ->
-                if (state.selectedTodo?.id == todoDisplay.todo.id)
-                    gotoTodoDetail.invoke(
-                        TodoID(
-                            todoDisplay.todo.id.toString()
-                        )
-                    )
-                else
-                    state = state.copy(
-                        selectedTodo = todoDisplay.todo
-                    )
-            }
-        }
-
     // fixme: cancel operation on resumed
-    val onReload = remember {
+    val onReload = remember(state) {
         {
             ioScope.launch(Dispatchers.IO) {
                 state = state.copy(
@@ -311,7 +270,11 @@ fun ExampleTodoListScreen(
 
         SearchComponent(
             clue = state.searchClue,
-            onSearch = onSearch
+            onSearch = { clue: String ->
+                state = state.copy(
+                    searchClue = clue
+                )
+            }
         )
 
         MediumSpacing()
@@ -327,7 +290,11 @@ fun ExampleTodoListScreen(
                         todoFilters = state.todoFilters + filter
                     )
             },
-            onClearFilter = onClearFilter
+            onClearFilter = {
+                state = state.copy(
+                    todoFilters = listOf()
+                )
+            }
         )
 
         LargeSpacing()
@@ -351,7 +318,20 @@ fun ExampleTodoListScreen(
             scrollState = scrollState,
             error = errorDisplay2,
             onReload = onReload,
-            onItemClicked = onItemClicked,
+            onItemClicked = { todoDisplay: TodoDisplay ->
+                if (state.selectedTodo?.id == todoDisplay.todo.id) {
+                    saveAbleState.push(state)
+                    pld.goToTodoDetail.invoke(
+                        TodoID(
+                            todoDisplay.todo.id.toString()
+                        )
+                    )
+                } else {
+                    state = state.copy(
+                        selectedTodo = todoDisplay.todo
+                    )
+                }
+            },
         )
     }
 }
