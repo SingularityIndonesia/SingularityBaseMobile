@@ -9,8 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.singularity.designsystem.SingularityTheme
-import example.presentation.ExampleNavigation
-import example.util.getPlatform
+import ExampleNavigation
+import com.singularity.common.getPlatform
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable

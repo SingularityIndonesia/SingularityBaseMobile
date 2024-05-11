@@ -1,4 +1,4 @@
-package example.util
+package com.singularity.common
 
 interface Platform {
     val name: String

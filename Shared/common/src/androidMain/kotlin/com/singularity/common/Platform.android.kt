@@ -1,4 +1,4 @@
-package example.util
+package com.singularity.common
 
 import android.os.Build
 

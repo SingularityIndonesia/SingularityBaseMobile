@@ -36,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.singularity.common.PrettyJson
+import com.singularity.common.getPlatform
 import com.singularity.contex.MainContext
 import com.singularity.data.VmFailed
 import com.singularity.data.VmIdle
@@ -45,7 +46,6 @@ import com.singularity.data.VmSuccess
 import com.singularity.data.fold
 import example.data.GetTodos
 import example.model.Todo
-import example.util.getPlatform
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
