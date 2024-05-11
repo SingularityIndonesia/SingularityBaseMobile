@@ -6,8 +6,15 @@
 package com.singularityindonesia.convention
 
 import com.android.build.gradle.LibraryExtension
-import com.singularityindonesia.convention.companion.DefaultConfigs
-import org.gradle.api.JavaVersion
+import VersionCatalog.COMPILE_SDK
+import VersionCatalog.JAVA_SOURCE_COMPAT
+import VersionCatalog.JAVA_TARGET_COMPAT
+import VersionCatalog.JUNIT_VERSION
+import VersionCatalog.JVM_TARGET
+import VersionCatalog.KOTLIN_VERSION
+import VersionCatalog.MIN_SDK
+import VersionCatalog.TARGET_SDK
+import com.singularityindonesia.convention.companion.DefaultConfigs.EXCLUDED_RESOURCES
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -31,7 +38,7 @@ class LibraryConventionV1 : Plugin<Project> {
                 androidTarget {
                     compilations.all {
                         kotlinOptions {
-                            jvmTarget = "11"
+                            jvmTarget = JVM_TARGET
                         }
                     }
                 }
@@ -42,26 +49,26 @@ class LibraryConventionV1 : Plugin<Project> {
                 )
 
                 sourceSets.commonTest.dependencies {
-                    implementation("org.jetbrains.kotlin:kotlin-test:1.9.23")
-                    implementation("org.jetbrains.kotlin:kotlin-test-junit:1.9.23")
-                    implementation("junit:junit:4.13.2")
+                    implementation("org.jetbrains.kotlin:kotlin-test:$KOTLIN_VERSION")
+                    implementation("org.jetbrains.kotlin:kotlin-test-junit:$KOTLIN_VERSION")
+                    implementation("junit:junit:$JUNIT_VERSION")
                 }
             }
 
             extensions.configure<LibraryExtension> {
-                compileSdk = DefaultConfigs.COMPILE_SDK
+                compileSdk = COMPILE_SDK
 
                 sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
                 sourceSets["main"].res.srcDirs("src/androidMain/res")
                 sourceSets["main"].resources.srcDirs("src/commonMain/resources")
 
                 defaultConfig {
-                    minSdk = DefaultConfigs.MIN_SDK
-                    targetSdk = DefaultConfigs.TARGET_SDK
+                    minSdk = MIN_SDK
+                    targetSdk = TARGET_SDK
                 }
                 packaging {
                     resources {
-                        excludes += "/META-INF/{AL2.0,LGPL2.1}"
+                        excludes += EXCLUDED_RESOURCES
                     }
                 }
                 buildTypes {
@@ -70,8 +77,8 @@ class LibraryConventionV1 : Plugin<Project> {
                     }
                 }
                 compileOptions {
-                    sourceCompatibility = JavaVersion.VERSION_11
-                    targetCompatibility = JavaVersion.VERSION_11
+                    sourceCompatibility = JAVA_SOURCE_COMPAT
+                    targetCompatibility = JAVA_TARGET_COMPAT
                 }
             }
         }

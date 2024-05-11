@@ -6,10 +6,15 @@
 package com.singularityindonesia.convention
 
 import com.android.build.api.dsl.ApplicationExtension
-import com.singularityindonesia.convention.companion.DefaultConfigs.COMPILE_SDK
-import com.singularityindonesia.convention.companion.DefaultConfigs.MIN_SDK
-import com.singularityindonesia.convention.companion.DefaultConfigs.TARGET_SDK
-import org.gradle.api.JavaVersion
+import com.singularityindonesia.convention.companion.DefaultConfigs.EXCLUDED_RESOURCES
+import VersionCatalog.COMPILE_SDK
+import VersionCatalog.JAVA_SOURCE_COMPAT
+import VersionCatalog.JAVA_TARGET_COMPAT
+import VersionCatalog.JUNIT_VERSION
+import VersionCatalog.JVM_TARGET
+import VersionCatalog.KOTLIN_VERSION
+import VersionCatalog.MIN_SDK
+import VersionCatalog.TARGET_SDK
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -33,7 +38,7 @@ class AppConventionV1 : Plugin<Project> {
                 androidTarget {
                     compilations.all {
                         kotlinOptions {
-                            jvmTarget = "11"
+                            jvmTarget = JVM_TARGET
                         }
                     }
                 }
@@ -50,9 +55,9 @@ class AppConventionV1 : Plugin<Project> {
                 }
 
                 sourceSets.commonTest.dependencies {
-                    implementation("org.jetbrains.kotlin:kotlin-test:1.9.23")
-                    implementation("org.jetbrains.kotlin:kotlin-test-junit:1.9.23")
-                    implementation("junit:junit:4.13.2")
+                    implementation("org.jetbrains.kotlin:kotlin-test:$KOTLIN_VERSION")
+                    implementation("org.jetbrains.kotlin:kotlin-test-junit:$KOTLIN_VERSION")
+                    implementation("junit:junit:$JUNIT_VERSION")
                 }
 
             }
@@ -69,7 +74,7 @@ class AppConventionV1 : Plugin<Project> {
                 }
                 packaging {
                     resources {
-                        excludes += "/META-INF/{AL2.0,LGPL2.1}"
+                        excludes += EXCLUDED_RESOURCES
                     }
                 }
                 buildTypes {
@@ -78,8 +83,8 @@ class AppConventionV1 : Plugin<Project> {
                     }
                 }
                 compileOptions {
-                    sourceCompatibility = JavaVersion.VERSION_11
-                    targetCompatibility = JavaVersion.VERSION_11
+                    sourceCompatibility = JAVA_SOURCE_COMPAT
+                    targetCompatibility = JAVA_TARGET_COMPAT
                 }
             }
         }

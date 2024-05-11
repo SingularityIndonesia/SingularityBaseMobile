@@ -18,6 +18,40 @@ java {
     }
 }
 
+// Define the build configuration
+tasks.register("generateBuildConfig") {
+    doLast {
+        val outputFile = file("src/main/kotlin/generated/VersionCatalog.kt")
+        outputFile.parentFile.mkdirs()
+        outputFile.writeText(
+            """
+
+            object VersionCatalog {
+                val TARGET_SDK = ${libs.versions.android.targetSdk.get()}
+                val COMPILE_SDK = ${libs.versions.android.compileSdk.get()}
+                val MIN_SDK = ${libs.versions.android.minSdk.get()}
+
+                // JAVA
+                val JAVA_SOURCE_COMPAT = org.gradle.api.JavaVersion.VERSION_11
+                val JAVA_TARGET_COMPAT = org.gradle.api.JavaVersion.VERSION_11
+                val JVM_TARGET = "${libs.versions.jvm.target.get()}"
+
+                // KOTLIN
+                val KOTLIN_VERSION = "${libs.versions.kotlin.get()}"
+                /*val KOTLIN_COMPILER_EXTENSION_VERSION = "1.5.10"*/
+
+                // JUNIT
+                val JUNIT_VERSION = "${libs.versions.junit.get()}"
+            }
+            """.trimIndent()
+        )
+    }
+}
+
+tasks.named("compileKotlin") {
+    dependsOn("generateBuildConfig")
+}
+
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:${libs.versions.kotlin.get()}")
     implementation("com.android.tools.build:gradle:${libs.versions.agp.get()}")
