@@ -5,7 +5,7 @@
  */
 package com.singularity.webrepository
 
-import com.singularity.contex.WebRepositoryContext
+import system.core.context.WebRepositoryContext
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
 

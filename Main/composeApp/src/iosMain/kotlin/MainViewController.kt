@@ -1,7 +1,7 @@
 import androidx.compose.runtime.remember
 import androidx.compose.ui.window.ComposeUIViewController
-import com.singularity.contex.MainContext
-import com.singularity.contex.WebRepositoryContext
+import system.core.context.MainContext
+import system.core.context.WebRepositoryContext
 import com.singularity.webrepository.webRepositoryContext
 
 fun MainViewController() = ComposeUIViewController {

@@ -20,7 +20,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.singularity.core"
+    namespace = "system.core"
 }
 
 task("testClasses")

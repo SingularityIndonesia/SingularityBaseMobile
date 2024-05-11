@@ -3,7 +3,7 @@
  * Created on 04/03/2024 12:00
  * You are not allowed to remove the copyright.
  */
-package com.singularity.contex
+package system.core.context
 
 interface MainContext {
     val webRepositoryContext: WebRepositoryContext

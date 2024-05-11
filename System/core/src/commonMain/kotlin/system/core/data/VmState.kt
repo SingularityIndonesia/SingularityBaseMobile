@@ -3,7 +3,7 @@
  * Created on 04/03/2024 12:00
  * You are not allowed to remove the copyright.
  */
-package com.singularity.data
+package system.core.data
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

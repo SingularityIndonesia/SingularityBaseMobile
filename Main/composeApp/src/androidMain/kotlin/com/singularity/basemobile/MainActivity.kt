@@ -9,8 +9,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.WindowCompat
-import com.singularity.contex.MainContext
-import com.singularity.contex.WebRepositoryContext
+import system.core.context.MainContext
+import system.core.context.WebRepositoryContext
 import com.singularity.webrepository.webRepositoryContext
 
 class MainActivity : ComponentActivity() {

@@ -7,19 +7,16 @@ package example.presentation
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import com.singularity.designsystem.LargePadding
-import com.singularity.designsystem.component.LargeSpacing
 import com.singularity.designsystem.component.TextBody
 import com.singularity.designsystem.component.TextHeadline1
 import com.singularity.designsystem.component.TextHeadline2
 import com.singularity.designsystem.component.TextHeadline3
 import com.singularity.designsystem.component.TextSubTitle
 import com.singularity.designsystem.component.TopAppBar
-import com.singularity.lifecycle.SaveAbleState
+import system.core.lifecycle.SaveAbleState
 
 data class ExampleTodoDetailScreenPld(
     val id: String,

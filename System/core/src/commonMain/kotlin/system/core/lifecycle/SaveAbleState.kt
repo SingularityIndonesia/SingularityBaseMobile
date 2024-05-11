@@ -1,4 +1,4 @@
-package com.singularity.lifecycle
+package system.core.lifecycle
 
 class SaveAbleState {
 
