@@ -47,6 +47,7 @@ import com.singularity.data.VmSuccess
 import com.singularity.data.fold
 import example.data.GetTodos
 import example.model.Todo
+import example.model.TodoID
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
@@ -66,7 +67,8 @@ data object ShowCompleteOnly : TodoFilter
 
 @Immutable
 data class ExampleTodoListScreenPld(
-    val unit: Unit = Unit
+    val unit: Unit = Unit,
+    val goToTodoDetail: (TodoID) -> Unit
 )
 
 @Immutable
@@ -158,7 +160,7 @@ data class ExampleTodoListScreenState(
 
 @Composable
 fun ExampleTodoListScreen(
-    pld: ExampleTodoListScreenPld = ExampleTodoListScreenPld(),
+    pld: ExampleTodoListScreenPld,
 ) {
     val webRepositoryContext: WebRepositoryContext = remember {
         MainContext()
@@ -193,12 +195,23 @@ fun ExampleTodoListScreen(
             }
         }
 
+    val gotoTodoDetail = remember(pld) {
+        pld.goToTodoDetail
+    }
+
     val onItemClicked =
         remember {
             { todoDisplay: TodoDisplay ->
-                state = state.copy(
-                    selectedTodo = todoDisplay.todo
-                )
+                if (state.selectedTodo?.id == todoDisplay.todo.id)
+                    gotoTodoDetail.invoke(
+                        TodoID(
+                            todoDisplay.todo.id.toString()
+                        )
+                    )
+                else
+                    state = state.copy(
+                        selectedTodo = todoDisplay.todo
+                    )
             }
         }
 
