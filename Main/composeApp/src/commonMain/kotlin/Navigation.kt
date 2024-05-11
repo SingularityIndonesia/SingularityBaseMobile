@@ -70,7 +70,8 @@ fun ExampleNavigation() {
             }
 
             ExampleTodoDetailScreen(
-                pld = payload
+                pld = payload,
+                saveAbleState = saveAbleState
             )
         }
     }

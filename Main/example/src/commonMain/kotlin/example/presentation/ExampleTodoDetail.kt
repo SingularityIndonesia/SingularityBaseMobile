@@ -7,6 +7,7 @@ package example.presentation
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import com.singularity.lifecycle.SaveAbleState
 
 data class ExampleTodoDetailScreenPld(
     val id: String
@@ -14,7 +15,8 @@ data class ExampleTodoDetailScreenPld(
 
 @Composable
 fun ExampleTodoDetailScreen(
-    pld: ExampleTodoDetailScreenPld
+    pld: ExampleTodoDetailScreenPld,
+    saveAbleState: SaveAbleState
 ) {
     Text(
         """
