@@ -1,4 +1,4 @@
 package com.singularity.regex
 
-val EmailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}\$\n".toRegex()
-val NotEmptyRegex = "^.+\$".toRegex()
+const val EmailPattern = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}$"
+const val NotEmptyPattern = "^.+\$"
