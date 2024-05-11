@@ -10,8 +10,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.singularity.designsystem.LargePadding
 import com.singularity.designsystem.component.LargeSpacing
+import com.singularity.designsystem.component.TextBody
+import com.singularity.designsystem.component.TextHeadline1
+import com.singularity.designsystem.component.TextHeadline2
+import com.singularity.designsystem.component.TextHeadline3
+import com.singularity.designsystem.component.TextSubTitle
 import com.singularity.designsystem.component.TopAppBar
 import com.singularity.lifecycle.SaveAbleState
 
@@ -30,13 +36,49 @@ fun ExampleTodoDetailScreen(
             "Todo List Title",
             onBack = pld.onBack
         )
-        LargeSpacing()
-        Text(
+        TextSubTitle(
             """
             This is detail screen for Todo with id = ${pld.id}.
             I'm too lazy to do it.
             But this is enough to demonstrate navigation.
         """.trimIndent(),
+            modifier = Modifier.padding(
+                horizontal = LargePadding
+            )
+        )
+        TextHeadline1(
+            "Headline 1",
+            modifier = Modifier.padding(
+                horizontal = LargePadding
+            )
+        )
+        TextBody(
+            "This is normal text. aksdnkj aslkd lakndl asl salkdnlak dnslkas dlak dlad landlk asd. askjdnoa dla dlaksd alsd las da.",
+            modifier = Modifier.padding(
+                horizontal = LargePadding
+            )
+        )
+        TextHeadline2(
+            "Headline 2",
+            modifier = Modifier.padding(
+                horizontal = LargePadding
+            )
+        )
+
+        TextBody(
+            "This is normal text. aksdnkj aslkd lakndl asl salkdnlak dnslkas dlak dlad landlk asd. askjdnoa dla dlaksd alsd las da.",
+            modifier = Modifier.padding(
+                horizontal = LargePadding
+            )
+        )
+        TextHeadline3(
+            "Headline 3",
+            modifier = Modifier.padding(
+                horizontal = LargePadding
+            )
+        )
+        TextBody(
+            "This is normal text. aksdnkj aslkd lakndl asl salkdnlak dnslkas dlak dlad landlk asd. askjdnoa dla dlaksd alsd las da.",
             modifier = Modifier.padding(
                 horizontal = LargePadding
             )
