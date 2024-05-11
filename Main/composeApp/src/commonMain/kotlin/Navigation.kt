@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.singularity.lifecycle.SaveAbleState
 import example.model.TodoID
 import example.presentation.ExampleTodoDetailScreen
 import example.presentation.ExampleTodoDetailScreenPld
@@ -19,6 +20,7 @@ import example.presentation.ExampleTodoListScreenPld
 
 @Composable
 fun ExampleNavigation() {
+    val saveAbleState = remember { SaveAbleState() }
     val navController = rememberNavController()
 
     val goToTodoDetail = remember {
@@ -43,7 +45,8 @@ fun ExampleNavigation() {
             }
 
             ExampleTodoListScreen(
-                pld = payload
+                pld = payload,
+                saveAbleState = saveAbleState
             )
         }
 
@@ -67,7 +70,8 @@ fun ExampleNavigation() {
             }
 
             ExampleTodoDetailScreen(
-                pld = payload
+                pld = payload,
+                saveAbleState = saveAbleState
             )
         }
     }

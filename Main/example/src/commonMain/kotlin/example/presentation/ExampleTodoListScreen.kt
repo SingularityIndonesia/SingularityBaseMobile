@@ -45,6 +45,7 @@ import com.singularity.data.VmProcessing
 import com.singularity.data.VmState
 import com.singularity.data.VmSuccess
 import com.singularity.data.fold
+import com.singularity.lifecycle.SaveAbleState
 import example.data.GetTodos
 import example.model.Todo
 import example.model.TodoID
@@ -161,6 +162,7 @@ data class ExampleTodoListScreenState(
 @Composable
 fun ExampleTodoListScreen(
     pld: ExampleTodoListScreenPld,
+    saveAbleState: SaveAbleState
 ) {
     val webRepositoryContext: WebRepositoryContext = remember {
         MainContext()
@@ -174,7 +176,9 @@ fun ExampleTodoListScreen(
 
     var state: ExampleTodoListScreenState
             by remember {
-                mutableStateOf(ExampleTodoListScreenState())
+                mutableStateOf(
+                    saveAbleState.pop() ?: ExampleTodoListScreenState()
+                )
             }
 
     val onSearch =
@@ -196,7 +200,10 @@ fun ExampleTodoListScreen(
         }
 
     val gotoTodoDetail = remember(pld) {
-        pld.goToTodoDetail
+        { todoID: TodoID ->
+            saveAbleState.push(state)
+            pld.goToTodoDetail.invoke(todoID)
+        }
     }
 
     val onItemClicked =
@@ -282,7 +289,7 @@ fun ExampleTodoListScreen(
             error = errorDisplay
         )
 
-        val appliedFilters by remember() {
+        val appliedFilters by remember {
             derivedStateOf {
                 state.appliedFilters
             }
