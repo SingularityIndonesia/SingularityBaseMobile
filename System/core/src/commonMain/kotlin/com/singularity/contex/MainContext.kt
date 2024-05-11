@@ -15,7 +15,7 @@ interface MainContext {
             mainContext = context
         }
 
-        inline operator fun <reified T> MainContext.invoke(): T =
+        inline operator fun <reified T> invoke(): T =
             when (T::class.qualifiedName) {
                 WebRepositoryContext::class.qualifiedName -> mainContext.webRepositoryContext as T
                 /*StorageContext::class.qualifiedName -> mainContext.storageContext as T*/
