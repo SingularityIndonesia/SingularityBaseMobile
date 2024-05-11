@@ -5,6 +5,7 @@
  */
 package example.presentation
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,7 +20,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
@@ -43,8 +43,13 @@ import com.singularity.data.VmState
 import com.singularity.data.VmSuccess
 import com.singularity.data.fold
 import com.singularity.designsystem.LargePadding
+import com.singularity.designsystem.MediumPadding
+import com.singularity.designsystem.SmallPadding
 import com.singularity.designsystem.component.LargeSpacing
 import com.singularity.designsystem.component.MediumSpacing
+import com.singularity.designsystem.component.TextBody
+import com.singularity.designsystem.component.TextLabel
+import com.singularity.designsystem.component.TextTitle
 import com.singularity.lifecycle.SaveAbleState
 import example.data.GetTodos
 import example.model.Todo
@@ -267,7 +272,7 @@ fun ExampleTodoListScreen(
         modifier = Modifier.fillMaxSize()
     ) {
 
-        Text(
+        TextTitle(
             text = "Running on $platformName",
             modifier = Modifier
                 .padding(
@@ -355,7 +360,7 @@ fun ExampleTodoListScreen(
 private fun Status(
     status: String
 ) {
-    Text(
+    TextLabel(
         text = status,
         modifier = Modifier
             .padding(
@@ -368,7 +373,7 @@ private fun Status(
 private fun Error(
     error: String
 ) {
-    Text(
+    TextLabel(
         text = error,
         modifier = Modifier
             .padding(
@@ -381,7 +386,7 @@ private fun Error(
 private fun AppliedFilters(
     appliedFilters: String
 ) {
-    Text(
+    TextLabel(
         text = appliedFilters,
         modifier = Modifier
             .padding(
@@ -443,7 +448,7 @@ fun Reload(
                         LargePadding
                     )
             ) {
-                Text(
+                TextLabel(
                     modifier = Modifier
                         .align(
                             Alignment.CenterHorizontally
@@ -460,7 +465,7 @@ fun Reload(
                         ),
                     onClick = onReload
                 ) {
-                    Text(
+                    TextLabel(
                         text = "Reload"
                     )
                 }
@@ -484,7 +489,7 @@ private fun ButtonFilters(
                 )
             }
         ) {
-            Text(
+            TextLabel(
                 text = "Completed"
             )
         }
@@ -495,7 +500,7 @@ private fun ButtonFilters(
                 onClearFilter.invoke()
             }
         ) {
-            Text(
+            TextLabel(
                 text = "Show All"
             )
         }
@@ -565,10 +570,31 @@ fun TodoCard(
                     LargePadding
                 )
         ) {
-            Text(
-                text = PrettyJson
-                    .encodeToString(todo)
-            )
+            Column {
+                TextBody(
+                    text = PrettyJson
+                        .encodeToString(todo)
+                )
+
+                if (todo.selected)
+                    MediumSpacing()
+
+                AnimatedVisibility(todo.selected) {
+                    Card(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        TextLabel(
+                            text = "Click again to open detail",
+                            modifier = Modifier
+                                .align(Alignment.CenterHorizontally)
+                                .padding(
+                                    horizontal = LargePadding,
+                                    vertical = MediumPadding
+                                )
+                        )
+                    }
+                }
+            }
         }
     }
 }
