@@ -8,11 +8,9 @@ package example.presentation
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
@@ -34,7 +32,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import com.singularity.common.PrettyJson
 import com.singularity.common.getPlatform
 import com.singularity.contex.MainContext
@@ -45,6 +42,9 @@ import com.singularity.data.VmProcessing
 import com.singularity.data.VmState
 import com.singularity.data.VmSuccess
 import com.singularity.data.fold
+import com.singularity.designsystem.LargePadding
+import com.singularity.designsystem.component.LargeSpacing
+import com.singularity.designsystem.component.MediumSpacing
 import com.singularity.lifecycle.SaveAbleState
 import example.data.GetTodos
 import example.model.Todo
@@ -268,7 +268,11 @@ fun ExampleTodoListScreen(
     ) {
 
         Text(
-            text = "Running on $platformName"
+            text = "Running on $platformName",
+            modifier = Modifier
+                .padding(
+                    horizontal = LargePadding
+                )
         )
 
         val statusDisplay by remember {
@@ -298,18 +302,14 @@ fun ExampleTodoListScreen(
             appliedFilters = appliedFilters
         )
 
-        Spacer(
-            modifier = Modifier.size(16.dp)
-        )
+        LargeSpacing()
 
         SearchComponent(
             clue = state.searchClue,
             onSearch = onSearch
         )
 
-        Spacer(
-            modifier = Modifier.size(8.dp)
-        )
+        MediumSpacing()
 
         ButtonFilters(
             onFilter = { filter: TodoFilter ->
@@ -325,9 +325,7 @@ fun ExampleTodoListScreen(
             onClearFilter = onClearFilter
         )
 
-        Spacer(
-            modifier = Modifier.size(16.dp)
-        )
+        LargeSpacing()
 
         val todoListDisplay by remember {
             derivedStateOf {
@@ -358,7 +356,11 @@ private fun Status(
     status: String
 ) {
     Text(
-        text = status
+        text = status,
+        modifier = Modifier
+            .padding(
+                horizontal = LargePadding
+            )
     )
 }
 
@@ -367,7 +369,11 @@ private fun Error(
     error: String
 ) {
     Text(
-        text = error
+        text = error,
+        modifier = Modifier
+            .padding(
+                horizontal = LargePadding
+            )
     )
 }
 
@@ -376,7 +382,11 @@ private fun AppliedFilters(
     appliedFilters: String
 ) {
     Text(
-        text = appliedFilters
+        text = appliedFilters,
+        modifier = Modifier
+            .padding(
+                horizontal = LargePadding
+            )
     )
 }
 
@@ -419,7 +429,7 @@ fun Reload(
     Box(
         modifier = Modifier
             .padding(
-                horizontal = 16.dp
+                horizontal = LargePadding
             )
             .fillMaxWidth()
     ) {
@@ -430,7 +440,7 @@ fun Reload(
             Column(
                 modifier = Modifier
                     .padding(
-                        16.dp
+                        LargePadding
                     )
             ) {
                 Text(
@@ -443,7 +453,7 @@ fun Reload(
                 Button(
                     modifier = Modifier
                         .padding(
-                            top = 16.dp
+                            top = LargePadding
                         )
                         .align(
                             Alignment.End
@@ -466,12 +476,7 @@ private fun ButtonFilters(
 ) {
     Row {
 
-        Spacer(
-            modifier = Modifier
-                .size(
-                    16.dp
-                )
-        )
+        LargeSpacing()
         Button(
             onClick = {
                 onFilter.invoke(
@@ -484,12 +489,7 @@ private fun ButtonFilters(
             )
         }
 
-        Spacer(
-            modifier = Modifier
-                .size(
-                    8.dp
-                )
-        )
+        MediumSpacing()
         Button(
             onClick = {
                 onClearFilter.invoke()
@@ -511,7 +511,7 @@ private fun SearchComponent(
     TextField(
         modifier = Modifier
             .padding(
-                horizontal = 16.dp
+                horizontal = LargePadding
             )
             .fillMaxWidth(),
         value = clue,
@@ -527,19 +527,14 @@ fun TodoItem(
     Column(
         modifier = Modifier
             .padding(
-                horizontal = 16.dp
+                horizontal = LargePadding
             )
     ) {
         TodoCard(
             todo = item,
             onClick = onClick
         )
-        Spacer(
-            modifier = Modifier
-                .size(
-                    8.dp
-                )
-        )
+        MediumSpacing()
     }
 }
 
@@ -567,7 +562,7 @@ fun TodoCard(
         Column(
             modifier = Modifier
                 .padding(
-                    16.dp
+                    LargePadding
                 )
         ) {
             Text(
