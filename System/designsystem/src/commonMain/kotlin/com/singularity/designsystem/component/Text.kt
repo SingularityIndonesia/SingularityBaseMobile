@@ -106,3 +106,16 @@ fun TextBody(
             .then(modifier)
     )
 }
+
+@Composable
+fun TextLabel(
+    text: String,
+    modifier: Modifier = Modifier
+) {
+    Text(
+        text = text,
+        style = MaterialTheme.typography.labelLarge,
+        modifier = Modifier
+            .then(modifier)
+    )
+}
