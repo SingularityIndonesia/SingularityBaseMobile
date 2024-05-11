@@ -1,4 +1,4 @@
-package com.singularity.designsystem.component
+package system.designsystem.component
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth

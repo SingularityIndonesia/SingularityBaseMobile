@@ -3,7 +3,7 @@
  * Created on 04/03/2024 12:00
  * You are not allowed to remove the copyright.
  */
-package com.singularity.designsystem
+package system.designsystem
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

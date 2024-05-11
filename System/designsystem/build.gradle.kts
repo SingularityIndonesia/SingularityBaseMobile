@@ -22,7 +22,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.singularity.designsystem"
+    namespace = "system.designsystem"
     dependencies {
         debugImplementation(libs.compose.ui.tooling)
     }
