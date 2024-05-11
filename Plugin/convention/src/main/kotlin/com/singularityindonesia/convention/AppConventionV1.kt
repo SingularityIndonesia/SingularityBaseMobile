@@ -6,7 +6,6 @@
 package com.singularityindonesia.convention
 
 import com.android.build.api.dsl.ApplicationExtension
-import com.singularityindonesia.convention.companion.DefaultConfigs
 import com.singularityindonesia.convention.companion.DefaultConfigs.COMPILE_SDK
 import com.singularityindonesia.convention.companion.DefaultConfigs.MIN_SDK
 import com.singularityindonesia.convention.companion.DefaultConfigs.TARGET_SDK
@@ -48,6 +47,12 @@ class AppConventionV1 : Plugin<Project> {
                         baseName = "ComposeApp"
                         isStatic = true
                     }
+                }
+
+                sourceSets.commonTest.dependencies {
+                    implementation("org.jetbrains.kotlin:kotlin-test:1.9.23")
+                    implementation("org.jetbrains.kotlin:kotlin-test-junit:1.9.23")
+                    implementation("junit:junit:4.13.2")
                 }
 
             }

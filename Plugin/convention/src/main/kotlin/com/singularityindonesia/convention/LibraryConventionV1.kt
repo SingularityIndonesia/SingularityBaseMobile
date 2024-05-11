@@ -40,6 +40,12 @@ class LibraryConventionV1 : Plugin<Project> {
                     iosArm64(),
                     iosSimulatorArm64()
                 )
+
+                sourceSets.commonTest.dependencies {
+                    implementation("org.jetbrains.kotlin:kotlin-test:1.9.23")
+                    implementation("org.jetbrains.kotlin:kotlin-test-junit:1.9.23")
+                    implementation("junit:junit:4.13.2")
+                }
             }
 
             extensions.configure<LibraryExtension> {

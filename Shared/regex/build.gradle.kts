@@ -1,5 +1,3 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-
 plugins {
     id("LibraryConventionV1")
 }
@@ -11,10 +9,6 @@ kotlin {
         }
         commonMain.dependencies {
 
-        }
-        commonTest.dependencies {
-            implementation(libs.kotlin.test)
-            implementation(libs.junit)
         }
         iosMain.dependencies {
 
