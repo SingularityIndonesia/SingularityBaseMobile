@@ -1,4 +1,4 @@
-package example.util
+package com.singularity.common
 
 import platform.UIKit.UIDevice
 
