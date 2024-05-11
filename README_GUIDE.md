@@ -47,7 +47,7 @@ The entire application should be expressible in function composition notation.
 For example: `App = Scaffold o Navigation o Screen o Widget o Component o ...`, don't be crazy with fancy pattern, just use composition.
 
 ## Library Based
-No module can have a context except the `composeApp` module; therefore, all modules other than `composeApp` will be referred to as "Library Modules."
+No module can have a business context except the `composeApp` module; therefore, all modules other than `composeApp` will be referred to as "Library Modules."
 
 Library is a collection; In this codebase, a library should only contain homogeneous collections.
 For example: the `screen` module is a collection of screens.
