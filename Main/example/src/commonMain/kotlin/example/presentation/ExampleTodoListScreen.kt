@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import com.singularity.common.PrettyJson
 import com.singularity.common.getPlatform
 import com.singularity.contex.MainContext
+import com.singularity.contex.WebRepositoryContext
 import com.singularity.data.VmFailed
 import com.singularity.data.VmIdle
 import com.singularity.data.VmProcessing
@@ -159,10 +160,9 @@ data class ExampleTodoListScreenState(
 fun ExampleTodoListScreen(
     pld: ExampleTodoListScreenPld = ExampleTodoListScreenPld(),
 ) {
-    val webRepositoryContext =
-        remember {
-            MainContext.mainContext.webRepositoryContext
-        }
+    val webRepositoryContext: WebRepositoryContext = remember {
+        MainContext()
+    }
 
     val ioScope = rememberCoroutineScope()
 
@@ -224,12 +224,12 @@ fun ExampleTodoListScreen(
                     }
                     .onFailure {
                         it.also { e ->
-                                state = state.copy(
-                                    todoListDataState = VmFailed(
-                                        e = Exception(e)
-                                    )
+                            state = state.copy(
+                                todoListDataState = VmFailed(
+                                    e = Exception(e)
                                 )
-                            }
+                            )
+                        }
                     }
             }
             Unit
