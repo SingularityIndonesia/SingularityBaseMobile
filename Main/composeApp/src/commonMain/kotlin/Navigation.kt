@@ -65,7 +65,10 @@ fun ExampleNavigation() {
 
             val payload = remember(userID) {
                 ExampleTodoDetailScreenPld(
-                    id = userID
+                    id = userID,
+                    onBack = {
+                        navController.popBackStack()
+                    }
                 )
             }
 
