@@ -56,7 +56,16 @@ Library Modules should not have instances within them.
 Any instances such as Services should only exist within the `composeApp` module.
 
 ## Contextual programming.
-A library can requires an instance but never a context. Library should not have business context.
+A library can requires an interface but never a context. Library should not have business context.
+You can use the context wrapping method to pass the interface from an instance with context to the function.
+
+Example:
+```kotlin
+with(storageInterface) {
+  saveToLocalStorage(file)
+}
+```
+The `saveToLocalStorage(arg)` function is context-less; its intention is only to save a file. The function should not concern itself with context or have any context within it.
 
 # Don't
 ## Local Properties & Build Variables
