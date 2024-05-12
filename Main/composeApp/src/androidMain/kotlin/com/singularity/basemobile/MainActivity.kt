@@ -11,7 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.WindowCompat
 import system.core.context.MainContext
 import system.core.context.WebRepositoryContext
-import com.singularity.webrepository.webRepositoryContext
+import shared.webrepository.webRepositoryContext
 
 class MainActivity : ComponentActivity() {
 

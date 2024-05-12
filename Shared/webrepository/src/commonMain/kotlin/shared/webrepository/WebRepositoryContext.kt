@@ -3,7 +3,7 @@
  * Created on 04/03/2024 12:00
  * You are not allowed to remove the copyright.
  */
-package com.singularity.webrepository
+package shared.webrepository
 
 import system.core.context.WebRepositoryContext
 import io.ktor.client.HttpClient
