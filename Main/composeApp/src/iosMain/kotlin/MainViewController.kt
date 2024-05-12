@@ -1,8 +1,8 @@
 import androidx.compose.runtime.remember
 import androidx.compose.ui.window.ComposeUIViewController
-import com.singularity.contex.MainContext
-import com.singularity.contex.WebRepositoryContext
-import com.singularity.webrepository.webRepositoryContext
+import system.core.context.MainContext
+import system.core.context.WebRepositoryContext
+import shared.webrepository.webRepositoryContext
 
 fun MainViewController() = ComposeUIViewController {
     val initMainContext = remember {

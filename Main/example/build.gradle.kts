@@ -36,7 +36,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.singularity.example"
+    namespace = "main.example"
     dependencies {
         debugImplementation(libs.compose.ui.tooling)
     }

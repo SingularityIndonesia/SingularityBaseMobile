@@ -10,12 +10,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.singularity.lifecycle.SaveAbleState
-import example.model.TodoID
-import example.presentation.ExampleTodoDetailScreen
-import example.presentation.ExampleTodoDetailScreenPld
-import example.presentation.ExampleTodoListScreen
-import example.presentation.ExampleTodoListScreenPld
+import system.core.lifecycle.SaveAbleState
+import main.example.model.TodoID
+import main.example.presentation.ExampleTodoDetailScreen
+import main.example.presentation.ExampleTodoDetailScreenPld
+import main.example.presentation.ExampleTodoListScreen
+import main.example.presentation.ExampleTodoListScreenPld
 
 
 @Composable

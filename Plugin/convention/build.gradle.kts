@@ -7,7 +7,7 @@ plugins {
     `kotlin-dsl`
 }
 
-group = "com.singularityindonesia.convention"
+group = "plugin.convention"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
@@ -61,19 +61,19 @@ gradlePlugin {
     plugins {
         register("AppConventionV1") {
             id = "AppConventionV1"
-            implementationClass = "com.singularityindonesia.convention.AppConventionV1"
+            implementationClass = "plugin.convention.AppConventionV1"
         }
         register("LibraryConventionV1") {
             id = "LibraryConventionV1"
-            implementationClass = "com.singularityindonesia.convention.LibraryConventionV1"
+            implementationClass = "plugin.convention.LibraryConventionV1"
         }
         register("FeatureJetpackCompose") {
             id = "FeatureJetpackCompose"
-            implementationClass = "com.singularityindonesia.convention.features.FeatureJetpackCompose"
+            implementationClass = "plugin.convention.features.FeatureJetpackCompose"
         }
         register("FeatureContextReceiver") {
             id = "FeatureContextReceiver"
-            implementationClass = "com.singularityindonesia.convention.features.FeatureContextReceiver"
+            implementationClass = "plugin.convention.features.FeatureContextReceiver"
         }
     }
 }

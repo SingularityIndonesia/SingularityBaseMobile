@@ -21,7 +21,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.singularity.webrepository"
+    namespace = "shared.webrepository"
 }
 
 task("testClasses")
