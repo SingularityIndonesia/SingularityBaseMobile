@@ -8,7 +8,9 @@ fun MainViewController() = ComposeUIViewController {
     val initMainContext = remember {
         MainContext.init(
             object : MainContext {
-                override val webRepositoryContext: WebRepositoryContext by webRepositoryContext()
+                override val webRepositoryContext: WebRepositoryContext by webRepositoryContext(
+                    baseUrl = "https://jsonplaceholder.typicode.com/"
+                )
                 /*override val storageContext: StorageContext by lazy { TODO() }*/
             }
         )

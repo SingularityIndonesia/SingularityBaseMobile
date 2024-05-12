@@ -30,7 +30,8 @@ suspend fun GetTodos(
 ): Result<List<Todo>> = withContext(Dispatchers.IO) {
     kotlin.runCatching {
 
-        val response = httpClient.get("https://jsonplaceholder.typicode.com/todos/")
+        val response = httpClient
+            .get("todos/")
 
         response
             .bodyAsText()

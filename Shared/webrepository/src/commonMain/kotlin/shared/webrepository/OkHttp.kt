@@ -5,11 +5,17 @@
  */
 package shared.webrepository
 
-import io.ktor.client.*
+import io.ktor.client.HttpClient
+import io.ktor.client.HttpClientConfig
+import io.ktor.client.plugins.defaultRequest
 
 fun createHttpClient(
+    baseUrl: String,
     builders: List<HttpClientConfig<*>.() -> Unit> = listOf()
 ) = HttpClient {
+    defaultRequest {
+        url(baseUrl)
+    }
     builders.forEach {
         it.invoke(this)
     }

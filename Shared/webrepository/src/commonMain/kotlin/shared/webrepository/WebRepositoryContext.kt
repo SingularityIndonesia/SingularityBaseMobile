@@ -9,13 +9,16 @@ import system.core.context.WebRepositoryContext
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
 
-fun webRepositoryContext(): Lazy<WebRepositoryContext> =
+fun webRepositoryContext(
+    baseUrl: String
+): Lazy<WebRepositoryContext> =
     lazy {
         object : WebRepositoryContext {
             private val builders = mutableListOf<HttpClientConfig<*>.() -> Unit>()
 
             override val httpClient: HttpClient by lazy {
                 createHttpClient(
+                    baseUrl = baseUrl,
                     builders = builders
                 )
             }
