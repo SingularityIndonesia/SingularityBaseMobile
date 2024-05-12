@@ -1,5 +1,7 @@
 plugins {
     id("LibraryConventionV1")
+    id("ApiGenerator")
+    id("org.jetbrains.kotlin.multiplatform")
     kotlin("plugin.serialization")
 }
 
@@ -19,8 +21,7 @@ kotlin {
             implementation("shared:common")
             implementation("shared:webrepository")
 
-            implementation(project(":example:model"))
-            implementation(project(":ex_apigenerator:data"))
+            implementation(project(":ex_apigenerator:model"))
         }
         iosMain.dependencies {
           implementation(libs.ktor.client.ios)
@@ -32,7 +33,7 @@ kotlin {
 android {
 
 
-    namespace = "main.example.data"
+    namespace = "main.ex_apigenerator.data"
     dependencies {
 
     }

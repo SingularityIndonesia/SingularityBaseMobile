@@ -64,3 +64,16 @@ File(settingsDir, "./example")
     ?.forEach { dir ->
         include(":example:${dir.name}")
     }
+
+
+File(settingsDir, "./ex_apigenerator")
+    .listFiles()
+    ?.asSequence()
+    ?.filter { it.isDirectory }
+    ?.filterNot { it.name.contains("gradle") }
+    ?.filterNot { it.name.contains("build") }
+    ?.filterNot { it.name.contains(".") }
+    ?.toList()
+    ?.forEach { dir ->
+        include(":ex_apigenerator:${dir.name}")
+    }

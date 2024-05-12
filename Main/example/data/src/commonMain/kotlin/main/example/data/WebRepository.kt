@@ -1,8 +1,8 @@
 package main.example.data
 
-import io.ktor.client.*
-import io.ktor.client.request.*
-import io.ktor.client.statement.*
+import io.ktor.client.HttpClient
+import io.ktor.client.request.get
+import io.ktor.client.statement.bodyAsText
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
@@ -30,7 +30,8 @@ suspend fun GetTodos(
 ): Result<List<Todo>> = withContext(Dispatchers.IO) {
     kotlin.runCatching {
 
-        val response = httpClient.get("https://jsonplaceholder.typicode.com/todos/")
+        val response = httpClient
+            .get("todos/")
 
         response
             .bodyAsText()
