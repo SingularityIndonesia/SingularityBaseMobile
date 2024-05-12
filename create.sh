@@ -24,6 +24,11 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
+# Check if the target is unrecognized or not one of the allowed targets
+if [[ ! "$TYPE" =~ ^(main|shared|system)$ ]]; then
+  echo "Unrecognized or invalid target"
+  exit 1
+fi
 
 # PRESENTATION SCRIPT
 presentation_script_pt1=$(cat <<'EOF'
@@ -178,6 +183,44 @@ EOF
 
 model_script="$model_pt1$model_pt2$model_pt3"
 
+common_library_pt1=$(cat <<'EOF'
+plugins {
+    id("LibraryConventionV1")
+}
+
+kotlin {
+    sourceSets {
+        androidMain.dependencies {
+
+        }
+        commonMain.dependencies {
+
+        }
+        iosMain.dependencies {
+
+        }
+    }
+}
+
+android {
+
+EOF
+)
+common_library_pt2="
+    namespace = \"$TYPE.$NAME\""
+common_library_pt3=$(cat <<'EOF'
+
+    dependencies {
+
+    }
+}
+
+task("testClasses")
+EOF
+)
+
+common_library_scipt="$common_library_pt1$common_library_pt2$common_library_pt3"
+
 manifest_script=$(cat <<'EOF'
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
@@ -268,5 +311,49 @@ File(settingsDir, \"./$NAME\")
   cd ..
 }
 
+createCommonLibrary() {
+  cd "$TYPE"
+  mkdir "$NAME"
+  mkdir "$NAME/src"
+  mkdir "$NAME/src/androidMain"
+  mkdir "$NAME/src/androidMain/res"
+  mkdir "$NAME/src/androidMain/res/mipmap-mdpi"
+  mkdir "$NAME/src/androidMain/res/drawable-v24"
+  mkdir "$NAME/src/androidMain/res/mipmap-hdpi"
+  mkdir "$NAME/src/androidMain/res/drawable"
+  mkdir "$NAME/src/androidMain/res/mipmap-xxxhdpi"
+  mkdir "$NAME/src/androidMain/res/mipmap-xxhdpi"
+  mkdir "$NAME/src/androidMain/res/values"
+  mkdir "$NAME/src/androidMain/res/mipmap-xhdpi"
+  mkdir "$NAME/src/androidMain/res/mipmap-anydpi-v26"
+  mkdir "$NAME/src/androidMain/kotlin"
 
-createMain
+  mkdir "$NAME/src/commonMain"
+  mkdir "$NAME/src/commonMain/composeResources"
+  mkdir "$NAME/src/commonMain/composeResources/drawable"
+  mkdir "$NAME/src/commonMain/kotlin"
+  mkdir "$NAME/src/commonMain/kotlin/$TYPE"
+  mkdir "$NAME/src/commonMain/kotlin/$TYPE/$NAME"
+
+  mkdir "$NAME/src/iosMain"
+  mkdir "$NAME/src/iosMain/kotlin"
+
+  echo "$manifest_script" > "$NAME/src/androidMain/AndroidManifest.xml"
+  echo "$common_library_scipt" > "$NAME/build.gradle.kts"
+
+  # back to root
+  cd ..
+}
+
+# Run the appropriate create function based on the target
+case "$TYPE" in
+  "main")
+    createMain
+    ;;
+  "shared")
+    createCommonLibrary
+    ;;
+  "system")
+    createCommonLibrary
+    ;;
+esac
