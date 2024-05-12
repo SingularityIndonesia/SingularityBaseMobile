@@ -30,6 +30,7 @@ presentation_script_pt1=$(cat <<'EOF'
 plugins {
     id("LibraryConventionV1")
     id("FeatureJetpackCompose")
+    kotlin("plugin.serialization")
 }
 
 kotlin {
@@ -46,6 +47,11 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
 
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.cio)
+
+            implementation(libs.kotlinx.serialization.json)
+
             implementation("system:core")
             implementation("system:designsystem")
             implementation("shared:common")
@@ -57,7 +63,7 @@ presentation_script_pt2="
             implementation(project(\":$NAME:model\"))
         }
         iosMain.dependencies {
-
+          implementation(libs.ktor.client.ios)
         }
     }
 }
