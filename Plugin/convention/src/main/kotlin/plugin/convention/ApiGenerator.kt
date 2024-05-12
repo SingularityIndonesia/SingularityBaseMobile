@@ -11,10 +11,8 @@ import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.internal.impldep.com.amazonaws.partitions.model.Endpoint
 import org.gradle.kotlin.dsl.configure
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
-import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.util.distsDirectory
 import java.io.File
 
 class ApiGenerator : Plugin<Project> {
@@ -162,7 +160,7 @@ class ApiGenerator : Plugin<Project> {
 
     // fixme: response tidak bisa menggunakan knownSystemKeys karena ambigu dengan kontrak key
     private val knownSystemKeys = listOf("type", "value", "values")
-    private val knownTypes = listOf("String", "Int", "Boolean", "Float", "Double")
+    private val knownTypes = listOf("String", "Int", "Boolean", "Float", "Double", "List")
     private fun toResponseDataClass(
         objectName: String,
         schema: JsonObject
@@ -173,18 +171,31 @@ class ApiGenerator : Plugin<Project> {
             .filter { !knownSystemKeys.contains(it) }
 
         val propertyTypes = properties
-            .map { prop ->
-                val type = schema[prop]?.jsonObject?.get("type")
+            .map { key ->
+                val prop = schema[key]?.jsonObject
+                val type = prop?.get("type")
                     .toString()
                     .replace("\"", "")
 
-                if (type == "object")
-                    prop.replaceFirstChar { it.toString().uppercase() }
-                else
-                    type
-            }
-            .map {
-                toActualType(it)
+                val name = prop?.get("name")
+                    .toString()
+                    .replace("\"", "")
+
+                when(type) {
+                    "object" -> {
+                        key.replaceFirstChar { it.toString().uppercase() }
+                            .let {
+                                "${it}Response"
+                            }
+                    }
+
+                    "list" -> {
+                        "List<${name}Response>"
+                    }
+
+                    else -> toActualType(type)
+                }
+
             }
 
         val propVsType = properties.zip(propertyTypes)
@@ -205,12 +216,17 @@ class ApiGenerator : Plugin<Project> {
         val subObject = propVsType
             .filter { !knownTypes.contains(it.second) }
             .map {
+                val type = it.second
+                    // in case of type list
+                    .replace("List<","")
+                    .replace(">","")
+
                 val obj = schema[it.first]?.jsonObject
-                    ?.get("value")?.jsonObject
+                    ?.get("schema")?.jsonObject
                     ?: throw NullPointerException("data for ${it.first} is null")
 
                 toResponseDataClass(
-                    it.second,
+                    type,
                     obj
                 )
             }

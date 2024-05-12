@@ -21,15 +21,26 @@
         }
       },
       "response": {
-        "success" : {
+        "type": "object",
+        "success": {
           "type": "boolean"
         },
-        "data" : {
+        "test_list": {
+          "type": "list",
+          "name": "TestListItem",
+          "schema": {
+            "id": {
+              "type": "string"
+            }
+          }
+        },
+        "data": {
           "type": "object",
-          "value": {
-            "echo": {
-              "type": "object",
-              "value": {
+          "schema": {
+            "items": {
+              "type": "list",
+              "name": "CartItem",
+              "schema": {
                 "productID": {
                   "type": "string"
                 },
@@ -61,15 +72,15 @@
         }
       },
       "response": {
-        "success" : {
+        "success": {
           "type": "boolean"
         },
-        "data" : {
+        "data": {
           "type": "object",
-          "value": {
+          "schema": {
             "echo": {
               "type": "object",
-              "value": {
+              "schema": {
                 "productID": {
                   "type": "string"
                 },
