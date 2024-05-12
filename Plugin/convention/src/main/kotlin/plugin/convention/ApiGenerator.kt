@@ -180,6 +180,9 @@ class ApiGenerator : Plugin<Project> {
 
                 if (type == "object")
                     prop.replaceFirstChar { it.toString().uppercase() }
+                        .let {
+                            "${it}Response"
+                        }
                 else
                     type
             }
