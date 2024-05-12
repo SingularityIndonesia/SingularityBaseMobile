@@ -1,5 +1,5 @@
 plugins {
-    id("AppConventionV1")
+    id("LibraryConventionV1")
     id("FeatureJetpackCompose")
     kotlin("plugin.serialization")
 }
@@ -9,7 +9,6 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
-            implementation(libs.ktor.client.okhttp)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -23,31 +22,26 @@ kotlin {
             implementation(libs.ktor.client.cio)
 
             implementation(libs.kotlinx.serialization.json)
-            implementation(libs.compose.navigation)
 
             implementation("system:core")
             implementation("system:designsystem")
             implementation("shared:common")
-            implementation("shared:webrepository")
 
-            implementation(project(":example:presentation"))
+            implementation(project(":example:data"))
             implementation(project(":example:model"))
         }
         iosMain.dependencies {
-            implementation(libs.ktor.client.ios)
+          implementation(libs.ktor.client.ios)
         }
     }
 }
 
 android {
-    namespace = "com.singularity.basemobile"
-    defaultConfig {
-        applicationId = "com.singularity.basemobile"
-        versionCode = 1
-        versionName = "1.0"
-    }
+
+
+    namespace = "main.example.presentation"
     dependencies {
-        debugImplementation(libs.compose.ui.tooling)
+      debugImplementation(libs.compose.ui.tooling)
     }
 }
 
