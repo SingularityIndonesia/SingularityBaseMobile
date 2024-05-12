@@ -32,8 +32,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.singularity.common.PrettyJson
-import com.singularity.common.getPlatform
+import shared.common.PrettyJson
+import shared.common.getPlatform
 import system.core.context.MainContext
 import system.core.context.WebRepositoryContext
 import system.core.data.VmFailed

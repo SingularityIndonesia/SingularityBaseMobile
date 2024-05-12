@@ -1,4 +1,4 @@
-package com.singularity.common
+package shared.common
 
 interface Platform {
     val name: String

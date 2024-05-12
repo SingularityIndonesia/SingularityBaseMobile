@@ -21,7 +21,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.singularity.common"
+    namespace = "shared.common"
 }
 
 task("testClasses")

@@ -3,7 +3,7 @@
  * Created on 04/03/2024 12:00
  * You are not allowed to remove the copyright.
  */
-package com.singularity.common
+package shared.common
 
 import kotlinx.serialization.json.Json
 
