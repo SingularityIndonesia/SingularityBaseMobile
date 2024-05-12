@@ -17,6 +17,9 @@ This guide will help you to shape the thinking framework and understanding the c
 ## Promises
 More module will be added in the future such camera, biometic, etc.
 
+## Request a Feature
+I would love to know what you need. If you need a module, feel free to request for it.
+
 ## Contributing
 Read [README_CONTRIBUTING.md](README_CONTRIBUTING.md)
 
