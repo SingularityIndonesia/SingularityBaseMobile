@@ -3,7 +3,7 @@
  * Created on 04/03/2024 12:00
  * You are not allowed to remove the copyright.
  */
-package com.singularityindonesia.convention.companion
+package plugin.convention.companion
 
 import com.android.build.api.dsl.ApkSigningConfig
 import com.android.build.api.dsl.CommonExtension

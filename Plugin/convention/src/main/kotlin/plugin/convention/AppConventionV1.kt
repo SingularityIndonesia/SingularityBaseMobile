@@ -3,9 +3,10 @@
  * Created on 04/03/2024 12:00
  * You are not allowed to remove the copyright.
  */
-package com.singularityindonesia.convention
+package plugin.convention
 
-import com.android.build.gradle.LibraryExtension
+import com.android.build.api.dsl.ApplicationExtension
+import plugin.convention.companion.DefaultConfigs.EXCLUDED_RESOURCES
 import VersionCatalog.COMPILE_SDK
 import VersionCatalog.JAVA_SOURCE_COMPAT
 import VersionCatalog.JAVA_TARGET_COMPAT
@@ -14,17 +15,16 @@ import VersionCatalog.JVM_TARGET
 import VersionCatalog.KOTLIN_VERSION
 import VersionCatalog.MIN_SDK
 import VersionCatalog.TARGET_SDK
-import com.singularityindonesia.convention.companion.DefaultConfigs.EXCLUDED_RESOURCES
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.get
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
-class LibraryConventionV1 : Plugin<Project> {
+class AppConventionV1 : Plugin<Project> {
 
     private val PLUGINS = listOf(
-        "com.android.library",
+        "com.android.application",
         "org.jetbrains.kotlin.multiplatform"
     )
 
@@ -42,20 +42,26 @@ class LibraryConventionV1 : Plugin<Project> {
                         }
                     }
                 }
+
                 listOf(
                     iosX64(),
                     iosArm64(),
                     iosSimulatorArm64()
-                )
+                ).forEach { iosTarget ->
+                    iosTarget.binaries.framework {
+                        baseName = "ComposeApp"
+                        isStatic = true
+                    }
+                }
 
                 sourceSets.commonTest.dependencies {
                     implementation("org.jetbrains.kotlin:kotlin-test:$KOTLIN_VERSION")
                     implementation("org.jetbrains.kotlin:kotlin-test-junit:$KOTLIN_VERSION")
                     implementation("junit:junit:$JUNIT_VERSION")
                 }
-            }
 
-            extensions.configure<LibraryExtension> {
+            }
+            extensions.configure<ApplicationExtension> {
                 compileSdk = COMPILE_SDK
 
                 sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
@@ -82,5 +88,5 @@ class LibraryConventionV1 : Plugin<Project> {
                 }
             }
         }
-
+    
 }
