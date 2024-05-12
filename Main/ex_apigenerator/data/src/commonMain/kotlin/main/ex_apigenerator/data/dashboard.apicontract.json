@@ -22,20 +22,22 @@
       },
       "response": {
         "type": "object",
-        "success" : {
-          "type": "boolean"
-        },
-        "data" : {
-          "type": "object",
-          "schema": {
-            "echo": {
-              "type": "object",
-              "schema": {
-                "productID": {
-                  "type": "string"
-                },
-                "amount": {
-                  "type": "int"
+        "schema": {
+          "success" : {
+            "type": "boolean"
+          },
+          "data" : {
+            "type": "object",
+            "schema": {
+              "echo": {
+                "type": "object",
+                "schema": {
+                  "productID": {
+                    "type": "string"
+                  },
+                  "amount": {
+                    "type": "int"
+                  }
                 }
               }
             }
@@ -62,20 +64,23 @@
         }
       },
       "response": {
-        "success" : {
-          "type": "boolean"
-        },
-        "data" : {
-          "type": "object",
-          "schema": {
-            "echo": {
-              "type": "object",
-              "schema": {
-                "productID": {
-                  "type": "string"
-                },
-                "amount": {
-                  "type": "int"
+        "type": "object",
+        "schema": {
+          "success" : {
+            "type": "boolean"
+          },
+          "data" : {
+            "type": "object",
+            "schema": {
+              "echo": {
+                "type": "object",
+                "schema": {
+                  "productID": {
+                    "type": "string"
+                  },
+                  "amount": {
+                    "type": "int"
+                  }
                 }
               }
             }

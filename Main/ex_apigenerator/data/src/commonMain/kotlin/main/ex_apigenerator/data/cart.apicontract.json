@@ -21,71 +21,34 @@
         }
       },
       "response": {
-        "type": "object",
-        "success": {
-          "type": "boolean"
-        },
-        "test_list": {
-          "type": "list",
-          "name": "TestListItem",
-          "schema": {
-            "id": {
-              "type": "string"
-            }
-          }
-        },
-        "data": {
-          "type": "object",
-          "schema": {
-            "items": {
-              "type": "list",
-              "name": "CartItem",
-              "schema": {
-                "productID": {
-                  "type": "string"
-                },
-                "amount": {
-                  "type": "int"
-                }
+        "type": "list",
+        "name": "Item",
+        "schema" : {
+          "success": {
+            "type": "boolean"
+          },
+          "test_list": {
+            "type": "list",
+            "name": "TestListItem",
+            "schema": {
+              "id": {
+                "type": "string"
               }
             }
-          }
-        }
-      }
-    },
-    {
-      "method": "GET",
-      "header": {
-        "barer": {
-          "type": "string",
-          "optional": false
-        }
-      },
-      "request": {
-        "productID": {
-          "type": "string",
-          "optional": true
-        },
-        "amount": {
-          "type": "int",
-          "optional": false
-        }
-      },
-      "response": {
-        "success": {
-          "type": "boolean"
-        },
-        "data": {
-          "type": "object",
-          "schema": {
-            "echo": {
-              "type": "object",
-              "schema": {
-                "productID": {
-                  "type": "string"
-                },
-                "amount": {
-                  "type": "int"
+          },
+          "data": {
+            "type": "object",
+            "schema": {
+              "items": {
+                "type": "list",
+                "name": "CartItem",
+                "schema": {
+                  "productID": {
+                    "type": "string"
+                  },
+                  "amount": {
+                    "type": "int"
+                  }
                 }
               }
             }

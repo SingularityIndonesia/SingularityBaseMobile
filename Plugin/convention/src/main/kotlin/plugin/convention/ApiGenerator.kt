@@ -113,22 +113,39 @@ class ApiGenerator : Plugin<Project> {
         val responseModels = methods
             .map {
                 it as JsonObject
-                val objectName = it["method"]
+
+                val reference = it["response"]
+                    ?.jsonObject
+
+                val schema = reference?.get("schema")
+                    ?.jsonObject ?: throw NullPointerException("Schema for response is null")
+
+                val type = reference?.get("type")
                     .toString()
                     .replace("\"", "")
-                    .let { method ->
+
+                val method = it["method"].toString().replace("\"", "")
+
+                val objectName = when (type) {
+                    "object" -> {
                         "$context${method}Response"
                     }
 
-                val fileContent = it["response"]
-                    ?.jsonObject
-                    ?.let {
-                        toResponseDataClass(
-                            objectName,
-                            it
-                        )
+                    "list" -> {
+                        reference?.get("name").toString()
+                            .replace("\"", "")
+                            .let {
+                                "$context$method${it}Response"
+                            }
                     }
-                    ?: "ERROR EMPTY"
+
+                    else -> throw IllegalArgumentException("Type $type is not supported for response.")
+                }
+
+                val fileContent = toResponseDataClass(
+                    objectName,
+                    schema
+                )
 
                 val fileName = "$objectName.kt"
 
@@ -181,7 +198,7 @@ class ApiGenerator : Plugin<Project> {
                     .toString()
                     .replace("\"", "")
 
-                when(type) {
+                when (type) {
                     "object" -> {
                         key.replaceFirstChar { it.toString().uppercase() }
                             .let {
@@ -218,8 +235,8 @@ class ApiGenerator : Plugin<Project> {
             .map {
                 val type = it.second
                     // in case of type list
-                    .replace("List<","")
-                    .replace(">","")
+                    .replace("List<", "")
+                    .replace(">", "")
 
                 val obj = schema[it.first]?.jsonObject
                     ?.get("schema")?.jsonObject
@@ -281,7 +298,29 @@ class ApiGenerator : Plugin<Project> {
                     .let { m ->
                         "$context$m"
                     }
-                val responseModel = "$context${method.uppercase()}Response"
+
+                val responseModel = it["response"]
+                    ?.jsonObject
+                    ?.get("type")
+                    .toString().replace("\"", "")
+                    .let { type ->
+                        when (type) {
+                            "object" -> {
+                                "$context${method.uppercase()}Response"
+                            }
+
+                            "list" -> {
+                                val name = it["response"]
+                                    ?.jsonObject
+                                    ?.get("name")
+                                    .toString().replace("\"", "")
+
+                                "List<$context${method.uppercase()}${name}Response>"
+                            }
+
+                            else -> throw IllegalArgumentException("Type $type is not supported for response.")
+                        }
+                    }
 
                 generateApiClient(
                     functionName,
@@ -300,7 +339,29 @@ class ApiGenerator : Plugin<Project> {
                     .map {
                         it as JsonObject
                         val method = it["method"].toString().replace("\"", "").uppercase()
-                        "import $namespace.model.${context}${method}Response"
+                        val responseModel = it["response"]
+                            ?.jsonObject
+                            ?.get("type")
+                            .toString().replace("\"", "")
+                            .let { type ->
+                                when (type) {
+                                    "object" -> {
+                                        "$context${method.uppercase()}Response"
+                                    }
+
+                                    "list" -> {
+                                        val name = it["response"]
+                                            ?.jsonObject
+                                            ?.get("name")
+                                            .toString().replace("\"", "")
+
+                                        "$context${method.uppercase()}${name}Response"
+                                    }
+
+                                    else -> throw IllegalArgumentException("Type $type is not supported for response.")
+                                }
+                            }
+                        "import $namespace.model.$responseModel"
                     }
                     .fold("") { acc, v ->
                         "$acc\n$v"
