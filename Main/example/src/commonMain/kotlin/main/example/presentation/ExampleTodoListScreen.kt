@@ -3,7 +3,7 @@
  * Created on 04/03/2024 12:00
  * You are not allowed to remove the copyright.
  */
-package example.presentation
+package main.example.presentation
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
@@ -50,9 +50,9 @@ import system.designsystem.component.TextBody
 import system.designsystem.component.TextLabel
 import system.designsystem.component.TextTitle
 import system.core.lifecycle.SaveAbleState
-import example.data.GetTodos
-import example.model.Todo
-import example.model.TodoID
+import main.example.data.GetTodos
+import main.example.model.Todo
+import main.example.model.TodoID
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch

@@ -1,4 +1,4 @@
-package example.model
+package main.example.model
 
 import kotlin.jvm.JvmInline
 

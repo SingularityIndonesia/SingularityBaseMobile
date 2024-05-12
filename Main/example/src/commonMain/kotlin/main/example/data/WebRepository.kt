@@ -1,6 +1,6 @@
-package example.data
+package main.example.data
 
-import example.model.Todo
+import main.example.model.Todo
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
