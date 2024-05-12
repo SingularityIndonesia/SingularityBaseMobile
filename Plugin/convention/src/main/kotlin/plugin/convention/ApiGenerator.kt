@@ -13,6 +13,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.util.distsDirectory
 import java.io.File
 
 class ApiGenerator : Plugin<Project> {
@@ -37,6 +38,10 @@ class ApiGenerator : Plugin<Project> {
     private fun execute(
         target: Project
     ) {
+        val namespace = target.group
+            .toString()
+            .lowercase()
+
         val projectDir = target.projectDir
         val filePaths = scanDirectory(projectDir, projectDir)
 
@@ -52,6 +57,7 @@ class ApiGenerator : Plugin<Project> {
                 val content = file.readText()
                 val json = Json.decodeFromString<JsonObject>(content)
                 evaluate(
+                    namespace,
                     projectDir,
                     file,
                     json
@@ -81,46 +87,62 @@ class ApiGenerator : Plugin<Project> {
     }
 
     private fun evaluate(
+        namespace: String,
         projectDir: File,
         contractDir: File,
         json: JsonObject,
     ) {
         generateResponseModel(
+            namespace,
             projectDir,
             json
         )
     }
 
     private fun generateResponseModel(
+        namespace: String,
         outputDir: File,
         json: JsonObject
     ) {
         val context = json["context"].toString().replace("\"", "")
         val methods = json["methods"]?.jsonArray ?: return // no method found
 
-        val responseModels = methods.map {
-            it as JsonObject
-            val objectName = it["method"]
-                .toString()
-                .replace("\"", "")
-                .let { method ->
-                    "$context${method}Response"
-                }
+        val responseModels = methods
+            .map {
+                it as JsonObject
+                val objectName = it["method"]
+                    .toString()
+                    .replace("\"", "")
+                    .let { method ->
+                        "$context${method}Response"
+                    }
 
-            val fileContent = it["response"]
-                ?.jsonObject
-                ?.let {
-                    toResponseDataClass(
-                        objectName,
-                        it
-                    )
-                }
-                ?: "ERROR EMPTY"
+                val fileContent = it["response"]
+                    ?.jsonObject
+                    ?.let {
+                        toResponseDataClass(
+                            objectName,
+                            it
+                        )
+                    }
+                    ?: "ERROR EMPTY"
 
-            val fileName = "$objectName.kt"
+                val fileName = "$objectName.kt"
 
-            fileName to fileContent
-        }
+                fileName to fileContent
+            }
+
+            // attach package name
+            .map {
+                val newValue = """
+                    package $namespace
+                    
+                    ${it.second}
+                """.trimIndent()
+
+                it.first to newValue
+            }
+
 
         responseModels.forEach {
             val outputFile = File(
