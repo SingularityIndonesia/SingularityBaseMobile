@@ -1,5 +1,4 @@
-import com.singularity.regex.EmailPattern
-import com.singularity.regex.NotEmptyPattern
+import shared.regex.NotEmptyPattern
 import kotlin.test.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue

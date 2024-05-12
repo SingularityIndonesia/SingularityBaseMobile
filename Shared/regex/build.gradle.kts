@@ -17,7 +17,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.singularity.regex"
+    namespace = "shared.regex"
 }
 
 task("testClasses")

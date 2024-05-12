@@ -1,6 +1,6 @@
 package shared.validation
 
-import com.singularity.regex.EmailPattern
+import shared.regex.EmailPattern
 
 typealias Pattern = String
 typealias Validator = Map<Pattern, ValidationError>
