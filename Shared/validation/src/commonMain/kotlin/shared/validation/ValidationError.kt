@@ -1,4 +1,4 @@
-package shared
+package shared.validation
 
 sealed interface ValidationError
 

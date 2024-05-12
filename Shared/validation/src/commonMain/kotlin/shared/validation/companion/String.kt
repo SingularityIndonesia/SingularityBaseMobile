@@ -1,12 +1,12 @@
 package shared.validation.companion
 
-import shared.ValidationError
-import shared.Validator
+import shared.validation.ValidationError
+import shared.validation.Validator
 
 fun String.validateWith(validator: Validator): ValidationError? {
     return validator.asIterable()
         .firstOrNull {
-            this.matches(it.key)
+            this.matches(it.key.toRegex())
         }
         ?.value
 }

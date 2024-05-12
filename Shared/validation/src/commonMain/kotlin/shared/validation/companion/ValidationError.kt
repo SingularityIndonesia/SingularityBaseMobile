@@ -1,8 +1,8 @@
 package shared.validation.companion
 
-import shared.InvalidEmpty
-import shared.InvalidFormat
-import shared.ValidationError
+import shared.validation.InvalidEmpty
+import shared.validation.InvalidFormat
+import shared.validation.ValidationError
 
 fun<T> ValidationError.tryFoldEmailValidationError(
     onFormatError: (() -> T)? = null,
