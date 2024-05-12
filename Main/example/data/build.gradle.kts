@@ -1,5 +1,6 @@
 plugins {
     id("LibraryConventionV1")
+    id("ApiGenerator")
     kotlin("plugin.serialization")
 }
 

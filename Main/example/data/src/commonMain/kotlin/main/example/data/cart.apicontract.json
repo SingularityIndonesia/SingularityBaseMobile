@@ -1,0 +1,86 @@
+{
+  "context": "Cart",
+  "endpoint": "cart.php",
+  "methods": [
+    {
+      "method": "PUT",
+      "header": {
+        "barer": {
+          "type": "string",
+          "optional": false
+        }
+      },
+      "request": {
+        "productID": {
+          "type": "string",
+          "optional": true
+        },
+        "amount": {
+          "type": "int",
+          "optional": false
+        }
+      },
+      "response": {
+        "success" : {
+          "type": "boolean"
+        },
+        "data" : {
+          "type": "object",
+          "value": {
+            "echo": {
+              "type": "object",
+              "value": {
+                "productID": {
+                  "type": "string"
+                },
+                "amount": {
+                  "type": "int"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "method": "GET",
+      "header": {
+        "barer": {
+          "type": "string",
+          "optional": false
+        }
+      },
+      "request": {
+        "productID": {
+          "type": "string",
+          "optional": true
+        },
+        "amount": {
+          "type": "int",
+          "optional": false
+        }
+      },
+      "response": {
+        "success" : {
+          "type": "boolean"
+        },
+        "data" : {
+          "type": "object",
+          "value": {
+            "echo": {
+              "type": "object",
+              "value": {
+                "productID": {
+                  "type": "string"
+                },
+                "amount": {
+                  "type": "int"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}
