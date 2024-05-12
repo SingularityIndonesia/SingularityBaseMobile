@@ -1,7 +1,6 @@
 plugins {
     id("LibraryConventionV1")
     id("ApiGenerator")
-    id("org.jetbrains.kotlin.multiplatform")
     kotlin("plugin.serialization")
 }
 
