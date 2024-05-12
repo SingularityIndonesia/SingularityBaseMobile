@@ -30,7 +30,8 @@ kotlin {
             implementation("shared:common")
             implementation("shared:webrepository")
 
-            implementation(project(":example"))
+            implementation(project(":example:presentation"))
+            implementation(project(":example:model"))
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.ios)

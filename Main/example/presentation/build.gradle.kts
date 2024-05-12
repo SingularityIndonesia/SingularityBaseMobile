@@ -9,7 +9,6 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
-            implementation(libs.ktor.client.okhttp)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -22,23 +21,27 @@ kotlin {
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.cio)
 
+            implementation(libs.kotlinx.serialization.json)
+
             implementation("system:core")
             implementation("system:designsystem")
             implementation("shared:common")
-            implementation("shared:webrepository")
 
-            implementation(libs.kotlinx.serialization.json)
+            implementation(project(":example:data"))
+            implementation(project(":example:model"))
         }
         iosMain.dependencies {
-            implementation(libs.ktor.client.ios)
+          implementation(libs.ktor.client.ios)
         }
     }
 }
 
 android {
-    namespace = "main.example"
+
+
+    namespace = "main.example.presentation"
     dependencies {
-        debugImplementation(libs.compose.ui.tooling)
+      debugImplementation(libs.compose.ui.tooling)
     }
 }
 
