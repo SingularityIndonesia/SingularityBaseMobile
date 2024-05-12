@@ -25,6 +25,11 @@ It's unfortunate that the Kotlin context receiver feature is currently only avai
 However, the Kotlin team is actively working on it. Once the context receiver is ready, the design of this codebase will be finalized.
 
 ## Tips
+Create new workspace scope to make it look better in Intelij/Android studio, you can use this pattern:
+```
+!file[*]:gradle//*&&!file[*]:iosApp//*&&!file[*]:.fleet//*&&!file[*]:gradle.properties&&!file[*]:gradlew&&!file[*]:.gitignore&&!file[*]:gradlew.bat&&!file[*]:.idea//*&&!file[*]:settings.gradle.kts
+```
+
 You can use create.sh to create a module easily.
 ```bash
 # create example module in Main project.
