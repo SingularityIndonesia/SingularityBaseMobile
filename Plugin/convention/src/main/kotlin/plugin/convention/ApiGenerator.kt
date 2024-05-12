@@ -11,6 +11,7 @@ import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.internal.impldep.com.amazonaws.partitions.model.Endpoint
 import org.gradle.kotlin.dsl.configure
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.util.distsDirectory
@@ -59,7 +60,6 @@ class ApiGenerator : Plugin<Project> {
                 evaluate(
                     namespace,
                     projectDir,
-                    file,
                     json
                 )
             }
@@ -89,10 +89,15 @@ class ApiGenerator : Plugin<Project> {
     private fun evaluate(
         namespace: String,
         projectDir: File,
-        contractDir: File,
         json: JsonObject,
     ) {
         generateResponseModel(
+            namespace,
+            projectDir,
+            json
+        )
+
+        generateClient(
             namespace,
             projectDir,
             json
@@ -135,12 +140,11 @@ class ApiGenerator : Plugin<Project> {
             // attach package name
             .map {
                 val newValue = """
-                    package $namespace
+                    package $namespace.model
                     
-                    ${it.second}
                 """.trimIndent()
 
-                it.first to newValue
+                it.first to "$newValue\n${it.second}"
             }
 
 
@@ -163,8 +167,6 @@ class ApiGenerator : Plugin<Project> {
         objectName: String,
         schema: JsonObject
     ): String {
-
-        println("eadsa Eval : $objectName $schema")
 
         // evaluation
         val properties = schema.keys.toList()
@@ -216,13 +218,17 @@ class ApiGenerator : Plugin<Project> {
                 "$acc\n$v"
             }
 
-        if (subObject.isNotEmpty())
-            dataClass =
+        if (subObject.isNotEmpty()) {
+            val subObj =
                 """
-                    $dataClass{
+                    {
                         $subObject
                     }
                 """.trimIndent()
+
+            dataClass = "$dataClass\n$subObj"
+        }
+
 
         return dataClass
     }
@@ -238,5 +244,105 @@ class ApiGenerator : Plugin<Project> {
             "double" -> "Double"
             else -> type
         }
+    }
+
+    private fun generateClient(
+        namespace: String,
+        outputDir: File,
+        json: JsonObject
+    ) {
+        val context = json["context"].toString().replace("\"", "")
+        val methods = json["methods"]?.jsonArray ?: return // no method f
+        val endpoint = json["endpoint"].toString().replace("\"", "")
+        val fileName = "${context}Client.kt"
+
+        val clients = methods
+            .map {
+                it as JsonObject
+
+                val method = it["method"].toString().replace("\"", "").lowercase()
+                val functionName = method.replaceFirstChar { it.uppercase() }
+                    .let { m ->
+                        "$context$m"
+                    }
+                val responseModel = "$context${method.uppercase()}Response"
+
+                generateApiClient(
+                    functionName,
+                    method,
+                    endpoint,
+                    responseModel
+                )
+            }
+            .fold("") { acc, v ->
+                "$acc\n\n$v"
+            }
+
+            // attach package name and dependencies
+            .let {
+                val modelDependencies = methods
+                    .map {
+                        it as JsonObject
+                        val method = it["method"].toString().replace("\"", "").uppercase()
+                        "import $namespace.model.${context}${method}Response"
+                    }
+                    .fold("") { acc, v ->
+                        "$acc\n$v"
+                    }
+
+                val pt1 = """
+                    package $namespace
+                    
+                    import io.ktor.client.HttpClient
+                    import io.ktor.client.request.*
+                    import io.ktor.client.statement.bodyAsText
+                    import kotlinx.coroutines.Dispatchers
+                    import kotlinx.coroutines.IO
+                    import kotlinx.coroutines.withContext
+                    import kotlinx.serialization.json.Json
+                """.trimIndent()
+
+                val pt2 = modelDependencies
+                val pt3 = it
+
+                "$pt1$pt2$pt3"
+            }
+
+        val outputFile = File(
+            outputDir,
+            "${targetDir}/${fileName}"
+        )
+        outputFile.parentFile.mkdirs()
+        outputFile.writeText(
+            clients
+        )
+    }
+
+    private fun generateApiClient(
+        functionName: String,
+        method: String,
+        endpoint: String,
+        responseModel: String
+    ): String {
+        val client =
+            """
+                suspend fun $functionName(
+                    httpClient: HttpClient
+                ): Result<$responseModel> = withContext(Dispatchers.IO) {
+                    kotlin.runCatching {
+
+                        val response = httpClient
+                            .${method.lowercase()}("$endpoint")
+
+                        response
+                            .bodyAsText()
+                            .let {
+                                Json.decodeFromString<$responseModel>(it)
+                            }
+                    }
+                }
+            """.trimIndent()
+
+        return client
     }
 }
