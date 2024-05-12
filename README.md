@@ -12,6 +12,7 @@ This guide will help you to shape the thinking framework and understanding the c
 - Bussiness Context is **designed to be scaled horizontally**. No matter how many modules you add, the build performance will be fine during the development process. This is possible because the architecture of this codebase is designed to scale horizontally to optimize the **Gradle Caching**.
 - Using the **Gradle Convention Plugin**. Although you may not need it much during the development process as it is automated, for more advanced developers, you can create your own conventions.
 - Design system ready in **material3**.
+- This codebase is designed to serve as the foundation **for large-scale projects**. You don't need to worry about how to scale up your codebase, because it's designed for that.
 
 ## Promises
 More module will be added in the future such camera, biometic, etc.
