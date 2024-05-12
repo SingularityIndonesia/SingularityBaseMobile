@@ -1,4 +1,4 @@
-package com.singularity.validation
+package shared
 
 sealed interface ValidationError
 

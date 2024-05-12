@@ -1,8 +1,8 @@
-package com.singularity.validation.companion
+package shared.validation.companion
 
-import com.singularity.validation.InvalidEmpty
-import com.singularity.validation.InvalidFormat
-import com.singularity.validation.ValidationError
+import shared.InvalidEmpty
+import shared.InvalidFormat
+import shared.ValidationError
 
 fun<T> ValidationError.tryFoldEmailValidationError(
     onFormatError: (() -> T)? = null,

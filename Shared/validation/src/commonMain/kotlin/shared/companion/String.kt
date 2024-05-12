@@ -1,7 +1,7 @@
-package com.singularity.validation.companion
+package shared.validation.companion
 
-import com.singularity.validation.ValidationError
-import com.singularity.validation.Validator
+import shared.ValidationError
+import shared.Validator
 
 fun String.validateWith(validator: Validator): ValidationError? {
     return validator.asIterable()

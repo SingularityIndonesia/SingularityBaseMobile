@@ -17,7 +17,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.singularity.validation"
+    namespace = "shared.validation"
 }
 
 task("testClasses")

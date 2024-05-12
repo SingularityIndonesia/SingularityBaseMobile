@@ -1,4 +1,4 @@
-package com.singularity.validation
+package shared
 
 import com.singularity.regex.EmailRegex
 import com.singularity.regex.NotEmptyRegex
