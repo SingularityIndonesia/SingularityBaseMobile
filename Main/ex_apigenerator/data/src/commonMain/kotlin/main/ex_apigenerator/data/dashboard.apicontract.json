@@ -21,15 +21,16 @@
         }
       },
       "response": {
+        "type": "object",
         "success" : {
           "type": "boolean"
         },
         "data" : {
           "type": "object",
-          "value": {
+          "schema": {
             "echo": {
               "type": "object",
-              "value": {
+              "schema": {
                 "productID": {
                   "type": "string"
                 },
@@ -66,10 +67,10 @@
         },
         "data" : {
           "type": "object",
-          "value": {
+          "schema": {
             "echo": {
               "type": "object",
-              "value": {
+              "schema": {
                 "productID": {
                   "type": "string"
                 },
