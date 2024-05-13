@@ -11,7 +11,7 @@
         }
       },
       "request": {
-        "productID": {
+        "product_id": {
           "type": "string",
           "optional": true
         },
@@ -43,7 +43,7 @@
                 "type": "list",
                 "name": "CartItem",
                 "schema": {
-                  "productID": {
+                  "product_id": {
                     "type": "string"
                   },
                   "amount": {

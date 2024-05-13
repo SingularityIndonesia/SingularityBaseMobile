@@ -95,6 +95,12 @@ class ApiGenerator : Plugin<Project> {
             json
         )
 
+        generateRequestModel(
+            namespace,
+            projectDir,
+            json
+        )
+
         generateClient(
             namespace,
             projectDir,
@@ -276,6 +282,99 @@ class ApiGenerator : Plugin<Project> {
             "float" -> "Float"
             "double" -> "Double"
             else -> type
+        }
+    }
+
+    private fun generateRequestModel(
+        namespace: String,
+        outputDir: File,
+        json: JsonObject
+    ) {
+        val context = json["context"].toString().replace("\"", "")
+        val methods = json["methods"]?.jsonArray ?: return // no method f
+
+        val requestModels = methods
+            .map {
+                it as JsonObject
+
+                val method = it["method"].toString().replace("\"", "")
+                val requestModelName = "$context${method}Request"
+
+                val requestModel = it["request"]
+                    ?.jsonObject
+                    ?.let {
+                        val keyVsType = run {
+                            val keys = it.keys.toList()
+                            val optionalTypes = it.values.map {
+                                it as JsonObject
+                                it["optional"].toString()
+                                    .replace("\"", "")
+                                    .toBoolean()
+                                    .let {
+                                        if (true)
+                                            "?"
+                                        else
+                                            ""
+                                    }
+                            }
+                            val types = it.values
+                                .map {
+                                    it as JsonObject
+                                    it["type"].toString()
+                                        .replace("\"", "")
+                                        .let {
+                                            when (it) {
+                                                "list" -> throw IllegalArgumentException("List request not yet supported.")
+                                                else -> it.replaceFirstChar {
+                                                    it.toString().uppercase()
+                                                }
+                                            }
+                                        }
+                                }
+                                .zip(optionalTypes)
+                                .flatMap {
+                                    listOf("${it.first}${it.second}")
+                                }
+
+                            keys.zip(types)
+                        }
+
+                        val pt1 = """
+                            package $namespace.request
+                            
+                            data class $requestModelName(
+                        """.trimIndent()
+
+                        val pt2 = keyVsType
+                            .map {
+                                "\tval ${it.first}: ${it.second}"
+                            }
+                            .fold("") {
+                                acc, v ->
+                                "$acc\n$v,"
+                            }
+
+                        val pt3 = """
+                            
+                            )
+                        """.trimIndent()
+
+                        "$pt1$pt2$pt3"
+                    }
+
+                requestModelName to requestModel
+            }
+
+        requestModels.forEach {
+            val fileName = "${it.first}.kt"
+            val outputFile = File(
+                outputDir,
+                "${targetDir}request/${fileName}"
+            )
+            outputFile.parentFile.mkdirs()
+            outputFile.writeText(
+                it.second ?: ""
+            )
         }
     }
 
