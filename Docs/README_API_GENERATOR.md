@@ -31,11 +31,11 @@ Next, you only need to create the API contracts and place them anywhere you want
 Contract Example:
 ``` json
 {
-  "context": "Cart",
-  "endpoint": "cart.php",
+  "context": "UserSomething",
+  "endpoint": "user/{userId}/{userSomething}",
   "methods": [
     {
-      "method": "PUT",
+      "method": "GET",
 
       // header
       "header": {
@@ -45,9 +45,9 @@ Contract Example:
         }
       },
 
-      // request 
+      // request
       "request": {
-        "productID": {
+        "product_id": {
           "type": "string",
           "optional": true
         },
@@ -59,7 +59,8 @@ Contract Example:
 
       // response
       "response": {
-        "type": "object",
+        "type": "list",
+        "name": "Item",
         "schema" : {
           "success": {
             "type": "boolean"
@@ -78,9 +79,9 @@ Contract Example:
             "schema": {
               "items": {
                 "type": "list",
-                "name": "CartItem", // important! for type string you need to define name
+                "name": "CartItem", // important!, for type list, you need to add name parameter
                 "schema": {
-                  "productID": {
+                  "product_id": {
                     "type": "string"
                   },
                   "amount": {
