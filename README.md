@@ -7,6 +7,7 @@ This code is free to use and distribute under the Creative Commons License.
 This guide will help you to shape the thinking framework and understanding the codebase: [README_GUIDE.md](README_GUIDE.md)
 
 ## What is so cool
+- **WebClient Generator Gradle Plugin**. The codebase is equipped with the web ApiGenerator gradle plugin. Once you enable this plugin in module gradle, all you need to do is define the api contract and this plugin will automatically convert the API contracts into web clients and generate all the response models automatically. See [ApiGenerator plugin](Docs/README_API_GENERATOR.md).
 - Using **Gradle Composite Build**. This project is a Gradle **multi-project**. We separate the layers into several projects to allow for further development scaling. You can open whole project or each project individually.
 - Is **multi-module**. This will make build process faster.
 - Bussiness Context is **designed to be scaled horizontally**. No matter how many modules you add, the build performance will be fine during the development process. This is possible because the architecture of this codebase is designed to scale horizontally to optimize the **Gradle Caching**.
