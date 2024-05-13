@@ -163,6 +163,8 @@ class ApiGenerator : Plugin<Project> {
                 val newValue = """
                     package $namespace.model
                     
+                    import kotlinx.serialization.Serializable
+                    
                 """.trimIndent()
 
                 it.first to "$newValue\n${it.second}"
@@ -225,7 +227,11 @@ class ApiGenerator : Plugin<Project> {
 
         // generate class
         var dataClass = run {
-            val pt1 = "data class $objectName("
+            val pt1 =
+                """
+                    @Serializable
+                    data class $objectName(
+                """.trimIndent()
             val pt2 = propVsType.map {
                 "val ${it.first}: ${it.second}"
             }.fold("") { acc, v ->
@@ -342,6 +348,9 @@ class ApiGenerator : Plugin<Project> {
                         val pt1 = """
                             package $namespace.request
                             
+                            import kotlinx.serialization.Serializable
+                            
+                            @Serializable
                             data class $requestModelName(
                                 val unit: Unit = Unit,
                         """.trimIndent()
@@ -350,8 +359,7 @@ class ApiGenerator : Plugin<Project> {
                             .map {
                                 "\tval ${it.first}: ${it.second}"
                             }
-                            .fold("") {
-                                acc, v ->
+                            .fold("") { acc, v ->
                                 "$acc\n$v,"
                             }
 
@@ -491,6 +499,8 @@ class ApiGenerator : Plugin<Project> {
                     import kotlinx.coroutines.IO
                     import kotlinx.coroutines.withContext
                     import kotlinx.serialization.json.Json
+                    import kotlinx.serialization.json.encodeToJsonElement
+                    import kotlinx.serialization.json.jsonObject
                 """.trimIndent()
 
                 val pt2 = modelDependencies
@@ -517,16 +527,54 @@ class ApiGenerator : Plugin<Project> {
         responseModelName: String,
         requestModelName: String
     ): String {
-        val client =
+        val endpointHavePath = endpoint.contains("{")
+
+        val pathKeys = endpoint
+            .replace("/", "")
+            .split("{")
+            .filter { it.contains("}") }
+            .map {
+                it.replace("}", "")
+            }
+
+        val pathParams = pathKeys.map {
+            "$it: String"
+        }.fold("") { acc, v ->
+            "$acc\t$v,\n"
+        }
+
+        println("alsdknaldn $endpoint $pathParams")
+        val finalEndpoint = if (endpointHavePath) {
+            endpoint.replace("{", "$" + "{")
+        } else {
+            endpoint
+        }
+
+        val pt1 =
             """
                 suspend fun $functionName(
                     httpClient: HttpClient,
-                    request: $requestModelName
+            """
+        val pt2 = if (endpointHavePath) {
+            pathParams
+        } else {
+            ""
+        }
+        val pt3 =
+            """
+                request: $requestModelName
                 ): Result<$responseModelName> = withContext(Dispatchers.IO) {
                     kotlin.runCatching {
 
                         val response = httpClient
-                            .${method.lowercase()}("$endpoint")
+                            .${method.lowercase()}("$finalEndpoint") {
+                                url {
+                                    Json.encodeToJsonElement(request).jsonObject
+                                        .forEach {
+                                            parameters.append(it.key, it.value.toString())
+                                        }
+                                }
+                            }
 
                         response
                             .bodyAsText()
@@ -537,6 +585,6 @@ class ApiGenerator : Plugin<Project> {
                 }
             """.trimIndent()
 
-        return client
+        return "$pt1$pt2$pt3"
     }
 }
