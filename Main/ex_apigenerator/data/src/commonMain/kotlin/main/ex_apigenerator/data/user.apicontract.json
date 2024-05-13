@@ -1,5 +1,5 @@
 {
-  "context": "User",
+  "context": "UserSomething",
   "endpoint": "user/{userId}/{userSomething}",
   "methods": [
     {
