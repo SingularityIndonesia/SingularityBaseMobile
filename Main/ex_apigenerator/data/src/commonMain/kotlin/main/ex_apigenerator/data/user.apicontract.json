@@ -1,9 +1,9 @@
 {
-  "context": "Cart",
-  "endpoint": "cart.php",
+  "context": "User",
+  "endpoint": "user/{userId}/{userSomething}",
   "methods": [
     {
-      "method": "PUT",
+      "method": "GET",
       "header": {
         "barer": {
           "type": "string",

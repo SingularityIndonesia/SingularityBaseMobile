@@ -95,6 +95,12 @@ class ApiGenerator : Plugin<Project> {
             json
         )
 
+        generateRequestModel(
+            namespace,
+            projectDir,
+            json
+        )
+
         generateClient(
             namespace,
             projectDir,
@@ -156,6 +162,8 @@ class ApiGenerator : Plugin<Project> {
             .map {
                 val newValue = """
                     package $namespace.model
+                    
+                    import kotlinx.serialization.Serializable
                     
                 """.trimIndent()
 
@@ -219,7 +227,11 @@ class ApiGenerator : Plugin<Project> {
 
         // generate class
         var dataClass = run {
-            val pt1 = "data class $objectName("
+            val pt1 =
+                """
+                    @Serializable
+                    data class $objectName(
+                """.trimIndent()
             val pt2 = propVsType.map {
                 "val ${it.first}: ${it.second}"
             }.fold("") { acc, v ->
@@ -279,6 +291,102 @@ class ApiGenerator : Plugin<Project> {
         }
     }
 
+    private fun generateRequestModel(
+        namespace: String,
+        outputDir: File,
+        json: JsonObject
+    ) {
+        val context = json["context"].toString().replace("\"", "")
+        val methods = json["methods"]?.jsonArray ?: return // no method f
+
+        val requestModels = methods
+            .map {
+                it as JsonObject
+
+                val method = it["method"].toString().replace("\"", "")
+                val requestModelName = "$context${method}Request"
+
+                val requestModel = it["request"]
+                    ?.jsonObject
+                    ?.let {
+                        val keyVsType = run {
+                            val keys = it.keys.toList()
+                            val optionalTypes = it.values.map {
+                                it as JsonObject
+                                it["optional"].toString()
+                                    .replace("\"", "")
+                                    .toBoolean()
+                                    .let {
+                                        if (true)
+                                            "?"
+                                        else
+                                            ""
+                                    }
+                            }
+                            val types = it.values
+                                .map {
+                                    it as JsonObject
+                                    it["type"].toString()
+                                        .replace("\"", "")
+                                        .let {
+                                            when (it) {
+                                                "list" -> throw IllegalArgumentException("List request not yet supported.")
+                                                else -> it.replaceFirstChar {
+                                                    it.toString().uppercase()
+                                                }
+                                            }
+                                        }
+                                }
+                                .zip(optionalTypes)
+                                .flatMap {
+                                    listOf("${it.first}${it.second}")
+                                }
+
+                            keys.zip(types)
+                        }
+
+                        val pt1 = """
+                            package $namespace.request
+                            
+                            import kotlinx.serialization.Serializable
+                            
+                            @Serializable
+                            data class $requestModelName(
+                                val unit: Unit = Unit,
+                        """.trimIndent()
+
+                        val pt2 = keyVsType
+                            .map {
+                                "\tval ${it.first}: ${it.second}"
+                            }
+                            .fold("") { acc, v ->
+                                "$acc\n$v,"
+                            }
+
+                        val pt3 = """
+                            
+                            )
+                        """.trimIndent()
+
+                        "$pt1$pt2$pt3"
+                    }
+
+                requestModelName to requestModel
+            }
+
+        requestModels.forEach {
+            val fileName = "${it.first}.kt"
+            val outputFile = File(
+                outputDir,
+                "${targetDir}request/${fileName}"
+            )
+            outputFile.parentFile.mkdirs()
+            outputFile.writeText(
+                it.second ?: ""
+            )
+        }
+    }
+
     private fun generateClient(
         namespace: String,
         outputDir: File,
@@ -299,7 +407,7 @@ class ApiGenerator : Plugin<Project> {
                         "$context$m"
                     }
 
-                val responseModel = it["response"]
+                val responseModelName = it["response"]
                     ?.jsonObject
                     ?.get("type")
                     .toString().replace("\"", "")
@@ -322,11 +430,14 @@ class ApiGenerator : Plugin<Project> {
                         }
                     }
 
+                val requestModelName = "$context${method.uppercase()}Request"
+
                 generateApiClient(
                     functionName,
                     method,
                     endpoint,
-                    responseModel
+                    responseModelName,
+                    requestModelName
                 )
             }
             .fold("") { acc, v ->
@@ -367,6 +478,17 @@ class ApiGenerator : Plugin<Project> {
                         "$acc\n$v"
                     }
 
+                val requestDependencies = methods
+                    .map {
+                        it as JsonObject
+                        val method = it["method"].toString().replace("\"", "").uppercase()
+                        val requestModelName = "$context${method}Request"
+                        "import $namespace.request.$requestModelName"
+                    }
+                    .fold("") { acc, v ->
+                        "$acc\n$v"
+                    }
+
                 val pt1 = """
                     package $namespace
                     
@@ -377,12 +499,15 @@ class ApiGenerator : Plugin<Project> {
                     import kotlinx.coroutines.IO
                     import kotlinx.coroutines.withContext
                     import kotlinx.serialization.json.Json
+                    import kotlinx.serialization.json.encodeToJsonElement
+                    import kotlinx.serialization.json.jsonObject
                 """.trimIndent()
 
                 val pt2 = modelDependencies
-                val pt3 = it
+                val pt3 = requestDependencies
+                val pt4 = it
 
-                "$pt1$pt2$pt3"
+                "$pt1$pt2$pt3$pt4"
             }
 
         val outputFile = File(
@@ -399,27 +524,67 @@ class ApiGenerator : Plugin<Project> {
         functionName: String,
         method: String,
         endpoint: String,
-        responseModel: String
+        responseModelName: String,
+        requestModelName: String
     ): String {
-        val client =
+        val endpointHavePath = endpoint.contains("{")
+
+        val pathKeys = endpoint
+            .replace("/", "")
+            .split("{")
+            .filter { it.contains("}") }
+            .map {
+                it.replace("}", "")
+            }
+
+        val pathParams = pathKeys.map {
+            "$it: String"
+        }.fold("") { acc, v ->
+            "$acc\t$v,\n"
+        }
+
+        println("alsdknaldn $endpoint $pathParams")
+        val finalEndpoint = if (endpointHavePath) {
+            endpoint.replace("{", "$" + "{")
+        } else {
+            endpoint
+        }
+
+        val pt1 =
             """
                 suspend fun $functionName(
-                    httpClient: HttpClient
-                ): Result<$responseModel> = withContext(Dispatchers.IO) {
+                    httpClient: HttpClient,
+            """
+        val pt2 = if (endpointHavePath) {
+            pathParams
+        } else {
+            ""
+        }
+        val pt3 =
+            """
+                request: $requestModelName
+                ): Result<$responseModelName> = withContext(Dispatchers.IO) {
                     kotlin.runCatching {
 
                         val response = httpClient
-                            .${method.lowercase()}("$endpoint")
+                            .${method.lowercase()}("$finalEndpoint") {
+                                url {
+                                    Json.encodeToJsonElement(request).jsonObject
+                                        .forEach {
+                                            parameters.append(it.key, it.value.toString())
+                                        }
+                                }
+                            }
 
                         response
                             .bodyAsText()
                             .let {
-                                Json.decodeFromString<$responseModel>(it)
+                                Json.decodeFromString<$responseModelName>(it)
                             }
                     }
                 }
             """.trimIndent()
 
-        return client
+        return "$pt1$pt2$pt3"
     }
 }
