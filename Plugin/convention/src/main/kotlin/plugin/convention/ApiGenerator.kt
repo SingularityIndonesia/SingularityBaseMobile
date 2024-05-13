@@ -317,7 +317,7 @@ class ApiGenerator : Plugin<Project> {
                                     .replace("\"", "")
                                     .toBoolean()
                                     .let {
-                                        if (true)
+                                        if (it)
                                             "?"
                                         else
                                             ""
