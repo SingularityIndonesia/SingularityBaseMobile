@@ -343,6 +343,7 @@ class ApiGenerator : Plugin<Project> {
                             package $namespace.request
                             
                             data class $requestModelName(
+                                val unit: Unit = Unit,
                         """.trimIndent()
 
                         val pt2 = keyVsType
@@ -398,7 +399,7 @@ class ApiGenerator : Plugin<Project> {
                         "$context$m"
                     }
 
-                val responseModel = it["response"]
+                val responseModelName = it["response"]
                     ?.jsonObject
                     ?.get("type")
                     .toString().replace("\"", "")
@@ -421,11 +422,14 @@ class ApiGenerator : Plugin<Project> {
                         }
                     }
 
+                val requestModelName = "$context${method.uppercase()}Request"
+
                 generateApiClient(
                     functionName,
                     method,
                     endpoint,
-                    responseModel
+                    responseModelName,
+                    requestModelName
                 )
             }
             .fold("") { acc, v ->
@@ -466,6 +470,17 @@ class ApiGenerator : Plugin<Project> {
                         "$acc\n$v"
                     }
 
+                val requestDependencies = methods
+                    .map {
+                        it as JsonObject
+                        val method = it["method"].toString().replace("\"", "").uppercase()
+                        val requestModelName = "$context${method}Request"
+                        "import $namespace.request.$requestModelName"
+                    }
+                    .fold("") { acc, v ->
+                        "$acc\n$v"
+                    }
+
                 val pt1 = """
                     package $namespace
                     
@@ -479,9 +494,10 @@ class ApiGenerator : Plugin<Project> {
                 """.trimIndent()
 
                 val pt2 = modelDependencies
-                val pt3 = it
+                val pt3 = requestDependencies
+                val pt4 = it
 
-                "$pt1$pt2$pt3"
+                "$pt1$pt2$pt3$pt4"
             }
 
         val outputFile = File(
@@ -498,13 +514,15 @@ class ApiGenerator : Plugin<Project> {
         functionName: String,
         method: String,
         endpoint: String,
-        responseModel: String
+        responseModelName: String,
+        requestModelName: String
     ): String {
         val client =
             """
                 suspend fun $functionName(
-                    httpClient: HttpClient
-                ): Result<$responseModel> = withContext(Dispatchers.IO) {
+                    httpClient: HttpClient,
+                    request: $requestModelName
+                ): Result<$responseModelName> = withContext(Dispatchers.IO) {
                     kotlin.runCatching {
 
                         val response = httpClient
@@ -513,7 +531,7 @@ class ApiGenerator : Plugin<Project> {
                         response
                             .bodyAsText()
                             .let {
-                                Json.decodeFromString<$responseModel>(it)
+                                Json.decodeFromString<$responseModelName>(it)
                             }
                     }
                 }
