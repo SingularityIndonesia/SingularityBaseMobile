@@ -543,7 +543,6 @@ class ApiGenerator : Plugin<Project> {
             "$acc\t$v,\n"
         }
 
-        println("alsdknaldn $endpoint $pathParams")
         val finalEndpoint = if (endpointHavePath) {
             endpoint.replace("{", "$" + "{")
         } else {
