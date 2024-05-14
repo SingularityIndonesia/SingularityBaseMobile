@@ -184,18 +184,24 @@
 						"method": "PATCH",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/books/{{bookID}}?bookName=New Name",
+							"raw": "{{baseUrl}}/books/:bookID?bookName=New Name",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"books",
-								"{{bookID}}"
+								":bookID"
 							],
 							"query": [
 								{
 									"key": "bookName",
 									"value": "New Name"
+								}
+							],
+							"variable": [
+								{
+									"key": "bookID",
+									"value": "test"
 								}
 							]
 						}

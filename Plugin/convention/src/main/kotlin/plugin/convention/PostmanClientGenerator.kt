@@ -3,19 +3,13 @@ package plugin.convention
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonArray
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.buildJsonArray
-import kotlinx.serialization.json.jsonArray
-import kotlinx.serialization.json.jsonObject
-import kotlinx.serialization.json.jsonPrimitive
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import plugin.convention.RequestModel.Companion.generateRequestModel
 import plugin.convention.companion.addToSourceSet
 import plugin.convention.companion.find
 import plugin.convention.postmanclientgenerator.Postman
 import java.io.File
+import java.util.regex.Pattern
 
 @Serializable
 private data class PostmanClient(
@@ -140,6 +134,9 @@ class PostmanClientGenerator : Plugin<Project> {
                 ?.filter {
                     !it.contains(":")
                 }
+                ?.filter {
+                    !it.contains("{")
+                }
                 ?.map { path ->
                     path.replaceFirstChar { it.uppercase() }
                 }
@@ -147,12 +144,12 @@ class PostmanClientGenerator : Plugin<Project> {
                 ?: throw UnknownError("Fail to decode ${request.url} to name.")
         )
 
+        if (name.contains("{"))
+            throw error(request)
+
         val strategy = when (method) {
-            "GET" -> GETClientGenerator
-            "POST" -> POSTClientGenerator
-            "PUT" -> PUTClientGenerator
-            "PATCH" -> PATCHClientGenerator
-            "DELETE" -> DELETEClientGenerator
+            "GET","POST", "PUT", "PATCH", "DELETE" ->
+                CommonClientGenerator
             "HEAD" -> HEADClientGenerator
             "OPTIONS" -> OPTIONSClientGenerator
             else -> throw IllegalArgumentException("Unknown method: $method")
@@ -176,7 +173,7 @@ private sealed interface ClientGeneratorStrategy {
     ): PostmanClient
 }
 
-private object POSTClientGenerator : ClientGeneratorStrategy {
+private object CommonClientGenerator : ClientGeneratorStrategy {
     override fun generateClient(
         contexts: List<Context>,
         name: String,
@@ -212,9 +209,9 @@ private object POSTClientGenerator : ClientGeneratorStrategy {
         val query = url.query ?: listOf()
         val requestModelName = "${name}Request"
         val requestModel =
-            generateRequestModel(
+            RequestModel(
                 name = requestModelName,
-                queryBlock = query.filterNotNull()
+                queries = query.filterNotNull()
             )
 
         val responseModelName = "${name}Response"
@@ -236,72 +233,19 @@ private object POSTClientGenerator : ClientGeneratorStrategy {
     }
 }
 
-
 @JvmInline
-private value class Name(val value: String)
-
-@JvmInline
-private value class TypeName(val value: String)
+private value class TypeToken(val value: String)
 
 private data class RequestModel(
     val name: String,
-    val params: Map<Name, TypeName>
+    val queries: List<Postman.QueryItem>
 ) {
     companion object {
-        /**
-         * ```
-         * "query": [
-         * 		{
-         * 			"key": "sort_by",
-         * 			"value": "name"
-         * 		},
-         * 		{
-         * 			"key": "limit",
-         * 			"value": "10"
-         * 		},
-         * 		{
-         * 			"key": "page",
-         * 			"value": "1"
-         * 		},
-         * 		{
-         * 			"key": "q",
-         * 			"value": "Super Man"
-         * 		}
-         * 	]
-         * ```
-         */
-        fun generateRequestModel(
-            name: String,
-            queryBlock: List<Postman.QueryItem>
-        ): RequestModel {
-
-            val params: Map<Name, TypeName> =
-                if (queryBlock.isEmpty())
-                // put unit, cz dataclass require minimum of one parameter
-                    mapOf(Name("unit") to TypeName("Unit"))
-                else
-                    queryBlock
-                        .map {
-                            Pair(
-                                Name(it.key!!),
-                                resolveType(it.value!!)
-                            )
-                        }
-                        .let {
-                            mapOf(*it.toTypedArray())
-                        }
-
-            return RequestModel(
-                name = name,
-                params = params
-            )
-        }
-
         fun resolveType(
             clue: String
-        ): TypeName {
+        ): TypeToken {
             // fixme: for now everything is string
-            return TypeName("String")
+            return TypeToken("String")
         }
     }
 
@@ -324,9 +268,9 @@ private data class RequestModel(
         """.trimIndent()
 
         val pt2 =
-            params
+            queries
                 .map {
-                    "\tval ${it.key.value}: ${it.value.value}?"
+                    "\tval ${it.key}: ${resolveType(it.value!!).value}?"
                 }
                 .fold("") { acc, v -> "$acc\n$v," }
 
@@ -344,9 +288,35 @@ private fun generateFunction(
     endpoint: String
 ): String {
 
-    return """
+    val pathArguments = run {
+        val pattern = Pattern.compile("""\{(.*?)\}""")
+        val matcher = pattern.matcher(endpoint)
+        val results = mutableListOf<String>()
+
+        while (matcher.find()) {
+            results.add(matcher.group(1))
+        }
+
+        results
+    }
+
+    val pt1 = """
         suspend fun $functionName(
             httpClient: HttpClient,
+    """.trimIndent()
+
+    val pt2 = pathArguments
+        .joinToString(",\n") {
+            "\t$it: String"
+        }
+        .let {
+            if (it.isNotEmpty())
+                it.plus(",")
+            else
+                it
+        }
+
+    val pt3 = """
             request: $requestModelName
         ): Result<$responseModelName> = withContext(Dispatchers.IO) {
             kotlin.runCatching {
@@ -369,62 +339,8 @@ private fun generateFunction(
             }
         }
     """.trimIndent()
-}
 
-private object GETClientGenerator : ClientGeneratorStrategy {
-    override fun generateClient(
-        contexts: List<Context>,
-        name: String,
-        request: Postman.Request
-    ): PostmanClient {
-        // fixme
-        return PostmanClient(
-            name = "Dummy$name",
-            content = ""
-        )
-    }
-}
-
-private object PUTClientGenerator : ClientGeneratorStrategy {
-    override fun generateClient(
-        contexts: List<Context>,
-        name: String,
-        request: Postman.Request
-    ): PostmanClient {
-        // fixme
-        return PostmanClient(
-            name = "Dummy$name",
-            content = ""
-        )
-    }
-}
-
-private object PATCHClientGenerator : ClientGeneratorStrategy {
-    override fun generateClient(
-        contexts: List<Context>,
-        name: String,
-        request: Postman.Request
-    ): PostmanClient {
-        // fixme
-        return PostmanClient(
-            name = "Dummy$name",
-            content = ""
-        )
-    }
-}
-
-private object DELETEClientGenerator : ClientGeneratorStrategy {
-    override fun generateClient(
-        contexts: List<Context>,
-        name: String,
-        request: Postman.Request
-    ): PostmanClient {
-        // fixme
-        return PostmanClient(
-            name = "Dummy$name",
-            content = ""
-        )
-    }
+    return "$pt1\n$pt2\n$pt3"
 }
 
 private object HEADClientGenerator : ClientGeneratorStrategy {
