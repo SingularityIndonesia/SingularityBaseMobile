@@ -11,23 +11,21 @@ import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.internal.impldep.org.apache.ivy.plugins.namespace.Namespace
 import plugin.convention.RequestModel.Companion.generateRequestModel
 import plugin.convention.companion.addToSourceSet
 import plugin.convention.companion.find
+import plugin.convention.postmanclientgenerator.Postman
 import java.io.File
-
-@Serializable
-private data class PostmanProtoClient(
-    val context: List<String>,
-    val name: String,
-    val request: JsonObject,
-)
 
 @Serializable
 private data class PostmanClient(
     val name: String,
     val content: String
+)
+
+@JvmInline
+private value class Context(
+    val value: String
 )
 
 
@@ -69,7 +67,7 @@ class PostmanClientGenerator : Plugin<Project> {
         namespace: String,
         postmanClient: PostmanClient
     ) {
-        val file = File(outputDir,"${postmanClient.name}.kt")
+        val file = File(outputDir, "${postmanClient.name}.kt")
         file.parentFile.mkdir()
 
         val content = "package $namespace\n\n${postmanClient.content}"
@@ -85,107 +83,106 @@ class PostmanClientGenerator : Plugin<Project> {
     private fun generateClients(
         file: File
     ): Sequence<PostmanClient> {
-        val content = file.readText()
-        val json =
-            Json.decodeFromString<JsonObject>(content)
-        val protoClients =
-            run {
-                val item =
-                    json["item"]?.jsonArray ?: throw IllegalArgumentException("item is undefined")
-                val itemName = file.name.split(".").first().replaceFirstChar { it.uppercase() }
-                proceedItems(listOf(itemName), item)
+        val postman = json.decodeFromString<Postman>(file.readText())
+
+        val items = postman.item?.asSequence()?.filterNotNull() ?: return sequenceOf()
+
+        val requests = dumpRequest(
+            contexts = listOf(),
+            items = items
+        )
+
+        val clients = requests
+            .map {
+                toClient(
+                    it.first,
+                    it.second
+                )
             }
-        val clients =
-            protoClients.map(::generateClient)
 
         return clients
     }
 
-    private fun proceedItems(
-        context: List<String>,
-        items: JsonArray
-    ): Sequence<PostmanProtoClient> {
+    private fun dumpRequest(
+        contexts: List<Context>,
+        items: Sequence<Postman.ItemItem>
+    ): Sequence<Pair<List<Context>, Postman.Request>> {
 
-        val result = items
-            .asSequence()
-            .map { json ->
-                json as JsonObject
-                proceedItem(context, json)
+        return items
+            .map {
+                val newContexts =
+                    contexts.plus(Context(it.name.toString()))
+
+                if (it.request != null)
+                    sequenceOf(
+                        Pair(
+                            newContexts,
+                            it.request
+                        )
+                    )
+                else
+                    dumpRequest(
+                        contexts = newContexts,
+                        items = it.item?.asSequence()?.filterNotNull() ?: sequenceOf()
+                    )
             }
             .flatten()
-
-        return result
     }
 
-    private fun proceedItem(
-        context: List<String>,
-        json: JsonObject
-    ): List<PostmanProtoClient> {
-        val results = mutableListOf<PostmanProtoClient>()
-
-        if (json.keys.contains("item")) {
-            val subItems =
-                json["item"]?.jsonArray ?: throw UnknownError("subItem is undefined")
-            val subItemContext =
-                json["name"]?.jsonPrimitive?.content
-                    ?.replaceFirstChar { it.uppercase() }
-                    ?.let { context.plus(it) }
-                    ?: throw UnknownError("subItemName is undefined")
-            results.addAll(proceedItems(subItemContext, subItems))
-        } else {
-            val requestObj =
-                json["request"]?.jsonObject
-                    ?: throw IllegalArgumentException("request is undefined")
-            val requestName =
-                json["name"]?.jsonPrimitive?.content
-                    ?: throw IllegalArgumentException("name is undefined")
-            val protoClient = PostmanProtoClient(
-                context, requestName, requestObj
-            )
-
-            results.add(protoClient)
-        }
-
-        return results
-    }
-
-    private fun generateClient(
-        protoClient: PostmanProtoClient
+    private fun toClient(
+        context: List<Context>,
+        request: Postman.Request
     ): PostmanClient {
-        val request =
-            protoClient.request
-        val method =
-            request["method"]?.jsonPrimitive?.content
-                ?: throw NullPointerException("method is null: \n$request")
+        val method = request.method ?: ""
+        val name = method.plus(
+            request.url?.path
+                ?.filterNotNull()
+                ?.filter {
+                    !it.contains(":")
+                }
+                ?.map { path ->
+                    path.replaceFirstChar { it.uppercase() }
+                }
+                ?.fold("") { acc, v -> "$acc$v" }
+                ?: throw UnknownError("Fail to decode ${request.url} to name.")
+        )
 
         val strategy = when (method) {
-            "POST" -> POSTClientGenerator
             "GET" -> GETClientGenerator
+            "POST" -> POSTClientGenerator
             "PUT" -> PUTClientGenerator
             "PATCH" -> PATCHClientGenerator
             "DELETE" -> DELETEClientGenerator
             "HEAD" -> HEADClientGenerator
             "OPTIONS" -> OPTIONSClientGenerator
-            else -> throw IllegalArgumentException("Unknown method $method")
+            else -> throw IllegalArgumentException("Unknown method: $method")
         }
 
-        return strategy.generateClient(protoClient)
+        return strategy.generateClient(
+            contexts = context,
+            name = name,
+            request = request
+        )
     }
+
 }
 
 
 private sealed interface ClientGeneratorStrategy {
     fun generateClient(
-        protoClient: PostmanProtoClient
+        contexts: List<Context>,
+        name: String,
+        request: Postman.Request
     ): PostmanClient
 }
 
 private object POSTClientGenerator : ClientGeneratorStrategy {
     override fun generateClient(
-        protoClient: PostmanProtoClient
+        contexts: List<Context>,
+        name: String,
+        request: Postman.Request
     ): PostmanClient {
-        val url = protoClient.request["url"]?.jsonObject
-            ?: throw NullPointerException("url is null: \n$protoClient")
+        val url = request.url
 
         /**
          * ```
@@ -196,80 +193,34 @@ private object POSTClientGenerator : ClientGeneratorStrategy {
          * ]
          * Into : books/${bookID}/comments
          */
-        val path = url["path"]?.jsonArray
+        val path = url?.path
+            ?.filterNotNull()
             ?.map {
-                val p = it.jsonPrimitive.content
-                if (p.contains(":")) {
-                    val pureName = p.replaceFirstChar { "" }
+                if (it.contains(":")) {
+                    val pureName = it.replaceFirstChar { "" }
                     "\${$pureName}"
                 } else {
-                    p
+                    it
                 }
             }
             ?.fold("") { acc, v -> "$acc/$v" }
-            ?: throw IllegalArgumentException("path is null:\n $protoClient")
+            ?: throw IllegalArgumentException("path is null:\n $request")
 
-        val method = protoClient.request["method"]?.jsonPrimitive?.content
-            ?: throw NullPointerException("method is null:\n$protoClient")
+        val method = request.method
+            ?: throw NullPointerException("method is null:\n$request")
 
-        /**
-         * ```
-         * "path": [
-         * 	"books",
-         * 	":bookID",
-         * 	"comments"
-         * ],
-         * "method": "POST"
-         * ```
-         * Into POSTBooksComments.
-         * Path variable will be ignored
-         */
-        val functionName =
-            method
-                .plus(
-                    url["path"]?.jsonArray
-                        ?.filter {
-                            !it.jsonPrimitive.content.contains(":")
-                        }
-                        ?.fold("") { acc, v ->
-                            "$acc${v.jsonPrimitive.content.replaceFirstChar { it.uppercase() }}"
-                        }
-                )
-
-        /**
-         * ```
-         * "query": [
-         * 		{
-         * 			"key": "sort_by",
-         * 			"value": "name"
-         * 		},
-         * 		{
-         * 			"key": "limit",
-         * 			"value": "10"
-         * 		},
-         * 		{
-         * 			"key": "page",
-         * 			"value": "1"
-         * 		},
-         * 		{
-         * 			"key": "q",
-         * 			"value": "Super Man"
-         * 		}
-         * 	]
-         * ```
-         */
-        val query = url["query"]?.jsonArray ?: buildJsonArray { }
-        val requestModelName = "${functionName}Request"
+        val query = url.query ?: listOf()
+        val requestModelName = "${name}Request"
         val requestModel =
             generateRequestModel(
                 name = requestModelName,
-                queryBlock = query
+                queryBlock = query.filterNotNull()
             )
 
-        val responseModelName = "${functionName}Response"
+        val responseModelName = "${name}Response"
 
         val function = generateFunction(
-            functionName = functionName,
+            functionName = name,
             method = method,
             requestModelName = requestModelName,
             responseModelName = responseModelName,
@@ -279,7 +230,7 @@ private object POSTClientGenerator : ClientGeneratorStrategy {
         val final = "${requestModel.print()}\n\n$function"
 
         return PostmanClient(
-            name = functionName,
+            name = name,
             content = final
         )
     }
@@ -321,7 +272,7 @@ private data class RequestModel(
          */
         fun generateRequestModel(
             name: String,
-            queryBlock: JsonArray
+            queryBlock: List<Postman.QueryItem>
         ): RequestModel {
 
             val params: Map<Name, TypeName> =
@@ -331,10 +282,9 @@ private data class RequestModel(
                 else
                     queryBlock
                         .map {
-                            it as JsonObject
                             Pair(
-                                Name(it["key"]!!.jsonPrimitive.content),
-                                resolveType(it["value"]!!.jsonPrimitive.content)
+                                Name(it.key!!),
+                                resolveType(it.value!!)
                             )
                         }
                         .let {
@@ -423,11 +373,13 @@ private fun generateFunction(
 
 private object GETClientGenerator : ClientGeneratorStrategy {
     override fun generateClient(
-        protoClient: PostmanProtoClient
+        contexts: List<Context>,
+        name: String,
+        request: Postman.Request
     ): PostmanClient {
         // fixme
         return PostmanClient(
-            name = "Dummy${protoClient.name}",
+            name = "Dummy$name",
             content = ""
         )
     }
@@ -435,11 +387,13 @@ private object GETClientGenerator : ClientGeneratorStrategy {
 
 private object PUTClientGenerator : ClientGeneratorStrategy {
     override fun generateClient(
-        protoClient: PostmanProtoClient
+        contexts: List<Context>,
+        name: String,
+        request: Postman.Request
     ): PostmanClient {
         // fixme
         return PostmanClient(
-            name = "Dummy${protoClient.name}",
+            name = "Dummy$name",
             content = ""
         )
     }
@@ -447,11 +401,13 @@ private object PUTClientGenerator : ClientGeneratorStrategy {
 
 private object PATCHClientGenerator : ClientGeneratorStrategy {
     override fun generateClient(
-        protoClient: PostmanProtoClient
+        contexts: List<Context>,
+        name: String,
+        request: Postman.Request
     ): PostmanClient {
         // fixme
         return PostmanClient(
-            name = "Dummy${protoClient.name}",
+            name = "Dummy$name",
             content = ""
         )
     }
@@ -459,11 +415,13 @@ private object PATCHClientGenerator : ClientGeneratorStrategy {
 
 private object DELETEClientGenerator : ClientGeneratorStrategy {
     override fun generateClient(
-        protoClient: PostmanProtoClient
+        contexts: List<Context>,
+        name: String,
+        request: Postman.Request
     ): PostmanClient {
         // fixme
         return PostmanClient(
-            name = "Dummy${protoClient.name}",
+            name = "Dummy$name",
             content = ""
         )
     }
@@ -471,11 +429,13 @@ private object DELETEClientGenerator : ClientGeneratorStrategy {
 
 private object HEADClientGenerator : ClientGeneratorStrategy {
     override fun generateClient(
-        protoClient: PostmanProtoClient
+        contexts: List<Context>,
+        name: String,
+        request: Postman.Request
     ): PostmanClient {
         // fixme
         return PostmanClient(
-            name = "Dummy${protoClient.name}",
+            name = "Dummy$name",
             content = ""
         )
     }
@@ -483,11 +443,13 @@ private object HEADClientGenerator : ClientGeneratorStrategy {
 
 private object OPTIONSClientGenerator : ClientGeneratorStrategy {
     override fun generateClient(
-        protoClient: PostmanProtoClient
+        contexts: List<Context>,
+        name: String,
+        request: Postman.Request
     ): PostmanClient {
         // fixme
         return PostmanClient(
-            name = "Dummy${protoClient.name}",
+            name = "Dummy$name",
             content = ""
         )
     }

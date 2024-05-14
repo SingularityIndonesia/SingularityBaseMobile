@@ -56,7 +56,6 @@ tasks.named("compileKotlin") {
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:${libs.versions.kotlin.get()}")
     implementation("com.android.tools.build:gradle:${libs.versions.agp.get()}")
-    implementation("com.google.code.gson:gson:${libs.versions.gson.get()}")
     implementation(libs.kotlinx.serialization.json)
 }
 
