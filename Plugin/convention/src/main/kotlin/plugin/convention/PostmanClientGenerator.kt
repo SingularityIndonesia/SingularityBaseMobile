@@ -130,6 +130,7 @@ class PostmanClientGenerator : Plugin<Project> {
         val method = request.method ?: ""
         val name = method.plus(
             request.url?.path
+                ?.asSequence()
                 ?.filterNotNull()
                 ?.filter {
                     !it.contains(":")
@@ -140,6 +141,10 @@ class PostmanClientGenerator : Plugin<Project> {
                 ?.map { path ->
                     path.replaceFirstChar { it.uppercase() }
                 }
+                ?.map {
+                    val regex = Regex("""[^A-Za-z0-9]""")
+                    regex.replace(it, "")
+                }
                 ?.fold("") { acc, v -> "$acc$v" }
                 ?: throw UnknownError("Fail to decode ${request.url} to name.")
         )
@@ -148,8 +153,9 @@ class PostmanClientGenerator : Plugin<Project> {
             throw error(request)
 
         val strategy = when (method) {
-            "GET","POST", "PUT", "PATCH", "DELETE" ->
+            "GET", "POST", "PUT", "PATCH", "DELETE" ->
                 CommonClientGenerator
+
             "HEAD" -> HEADClientGenerator
             "OPTIONS" -> OPTIONSClientGenerator
             else -> throw IllegalArgumentException("Unknown method: $method")
@@ -209,22 +215,41 @@ private object CommonClientGenerator : ClientGeneratorStrategy {
         val query = url.query ?: listOf()
         val requestModelName = "${name}Request"
         val requestModel =
-            RequestModel(
-                name = requestModelName,
-                queries = query.filterNotNull()
-            )
+            if (query.isEmpty())
+                null
+            else
+                RequestModel(
+                    name = requestModelName,
+                    queries = query.filterNotNull()
+                ).print()
 
         val responseModelName = "${name}Response"
 
         val function = generateFunction(
             functionName = name,
             method = method,
-            requestModelName = requestModelName,
+            requestModelName = if (requestModel != null) requestModelName else null,
             responseModelName = responseModelName,
             endpoint = path
         )
 
-        val final = "${requestModel.print()}\n\n$function"
+        val dependencies = """
+            
+            import io.ktor.client.HttpClient
+            import io.ktor.client.request.*
+            import io.ktor.client.statement.bodyAsText
+            import kotlinx.coroutines.Dispatchers
+            import kotlinx.coroutines.IO
+            import kotlinx.serialization.Serializable
+            import kotlinx.coroutines.withContext
+            import kotlinx.serialization.json.Json
+            import kotlinx.serialization.json.encodeToJsonElement
+            import kotlinx.serialization.json.jsonObject
+            import kotlinx.serialization.json.jsonPrimitive
+            
+        """.trimIndent()
+
+        val final = "$dependencies\n${requestModel ?: ""}\n\n$function"
 
         return PostmanClient(
             name = name,
@@ -252,18 +277,6 @@ private data class RequestModel(
     fun print(): String {
 
         val pt1 = """
-            import io.ktor.client.HttpClient
-            import io.ktor.client.request.*
-            import io.ktor.client.statement.bodyAsText
-            import kotlinx.coroutines.Dispatchers
-            import kotlinx.coroutines.IO
-            import kotlinx.serialization.Serializable
-            import kotlinx.coroutines.withContext
-            import kotlinx.serialization.json.Json
-            import kotlinx.serialization.json.encodeToJsonElement
-            import kotlinx.serialization.json.jsonObject
-            import kotlinx.serialization.json.jsonPrimitive
-            
             @Serializable
             data class $name(
         """.trimIndent()
@@ -275,16 +288,16 @@ private data class RequestModel(
                 }
                 .fold("") { acc, v -> "$acc\n$v," }
 
-        val pt3 = ")"
+        val pt3 = "\n)"
 
-        return "$pt1\n$pt2\n$pt3"
+        return "$pt1$pt2$pt3"
     }
 }
 
 private fun generateFunction(
     functionName: String,
     method: String,
-    requestModelName: String,
+    requestModelName: String?,
     responseModelName: String,
     endpoint: String
 ): String {
@@ -312,25 +325,39 @@ private fun generateFunction(
         }
         .let {
             if (it.isNotEmpty())
-                it.plus(",")
+                "\n$it,"
             else
                 it
         }
 
-    val pt3 = """
-            request: $requestModelName
+    val pt3 = if (requestModelName != null)
+        "\n\trequest: $requestModelName"
+    else ""
+
+    val pt4 = """
+        
         ): Result<$responseModelName> = withContext(Dispatchers.IO) {
             kotlin.runCatching {
 
                 val response = httpClient
-                    .${method.lowercase()}("$endpoint") {
-                        url {
-                            Json.encodeToJsonElement(request).jsonObject
-                                .forEach {
-                                    parameters.append(it.key, it.value.jsonPrimitive.content)
-                                }
+                    .${method.lowercase()}("$endpoint")
+    """.trimIndent()
+
+    val pt5 = if (requestModelName == null)
+        ""
+    else
+        """ {
+                url {
+                    Json.encodeToJsonElement(request).jsonObject
+                        .forEach {
+                            parameters.append(it.key, it.value.jsonPrimitive.content)
                         }
                     }
+                }
+        """.trimIndent()
+
+    val pt6 = """
+
 
                 response
                     .bodyAsText()
@@ -341,7 +368,7 @@ private fun generateFunction(
         }
     """.trimIndent()
 
-    return "$pt1\n$pt2\n$pt3"
+    return "$pt1$pt2$pt3$pt4$pt5$pt6"
 }
 
 private object HEADClientGenerator : ClientGeneratorStrategy {
