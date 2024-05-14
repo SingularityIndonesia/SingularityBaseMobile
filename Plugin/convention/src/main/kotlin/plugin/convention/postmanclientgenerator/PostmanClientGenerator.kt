@@ -153,9 +153,6 @@ class PostmanClientGenerator : Plugin<Project> {
                 ?: throw UnknownError("Fail to decode ${request.url} to name.")
         )
 
-        if (name.contains("{"))
-            throw error(request)
-
         val strategy = when (method) {
             "GET", "POST", "PUT", "PATCH", "DELETE" ->
                 CommonClientGenerator
