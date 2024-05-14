@@ -262,6 +262,7 @@ private data class RequestModel(
             import kotlinx.serialization.json.Json
             import kotlinx.serialization.json.encodeToJsonElement
             import kotlinx.serialization.json.jsonObject
+            import kotlinx.serialization.json.jsonPrimitive
             
             @Serializable
             data class $name(
