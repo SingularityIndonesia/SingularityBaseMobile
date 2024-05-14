@@ -121,7 +121,7 @@ object CommonClientGenerator : ClientGeneratorStrategy {
             
         """.trimIndent()
 
-        val final = "$dependencies\n${requestModel ?: ""}\n\n$function"
+        val final = "$dependencies\n$function\n\n${requestModel ?: ""}"
 
         return PostmanClient(
             name = name,
