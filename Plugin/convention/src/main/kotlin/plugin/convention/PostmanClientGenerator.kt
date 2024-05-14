@@ -14,6 +14,7 @@ import org.gradle.api.Project
 import org.gradle.internal.impldep.org.apache.ivy.plugins.namespace.Namespace
 import plugin.convention.RequestModel.Companion.generateRequestModel
 import plugin.convention.companion.addToSourceSet
+import plugin.convention.companion.find
 import java.io.File
 
 @Serializable
@@ -45,9 +46,7 @@ class PostmanClientGenerator : Plugin<Project> {
         setup(target)
 
         val postmanFiles =
-            scanPostmanFiles(
-                target.projectDir
-            )
+            target.projectDir.find("postman_collection.json")
 
         val result = postmanFiles
             .map(::generateClients)
@@ -81,26 +80,6 @@ class PostmanClientGenerator : Plugin<Project> {
         project: Project
     ) {
         project.addToSourceSet(targetDir)
-    }
-
-    private fun scanPostmanFiles(
-        sourceDir: File,
-    ): Sequence<File> {
-        return sourceDir.listFiles()
-            ?.asSequence()
-            ?.mapNotNull { file ->
-                if (file.isDirectory) {
-                    // If it's a directory, recursively scan it
-                    scanPostmanFiles(file)
-                } else {
-                    if (file.name.contains("postman_collection.json"))
-                        sequenceOf(file)
-                    else
-                        null
-                }
-            }
-            ?.flatten()
-            ?: sequenceOf()
     }
 
     private fun generateClients(
