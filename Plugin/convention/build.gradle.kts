@@ -81,5 +81,9 @@ gradlePlugin {
             id = "ApiGenerator"
             implementationClass = "plugin.convention.ApiGenerator"
         }
+        register("PostmanClientGenerator") {
+            id = "PostmanClientGenerator"
+            implementationClass = "plugin.convention.PostmanClientGenerator"
+        }
     }
 }
