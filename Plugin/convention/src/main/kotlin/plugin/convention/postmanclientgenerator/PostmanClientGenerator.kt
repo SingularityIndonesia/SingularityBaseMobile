@@ -1,6 +1,5 @@
 package plugin.convention.postmanclientgenerator
 
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -44,8 +43,8 @@ class PostmanClientGenerator : Plugin<Project> {
 
                 clients
                     .map { client ->
-                        println("Generating Client -----------------------------------------------------------")
-                        println(json.encodeToString(client))
+                        // println("Generating Client -----------------------------------------------------------")
+                        // println(json.encodeToString(client))
                         generateFile(
                             outputDir = groupDir,
                             namespace = namespace,

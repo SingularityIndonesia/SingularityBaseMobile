@@ -83,7 +83,7 @@ gradlePlugin {
         }
         register("PostmanClientGenerator") {
             id = "PostmanClientGenerator"
-            implementationClass = "plugin.convention.PostmanClientGenerator"
+            implementationClass = "plugin.convention.postmanclientgenerator.PostmanClientGenerator"
         }
     }
 }
