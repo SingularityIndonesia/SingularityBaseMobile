@@ -7,6 +7,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import plugin.convention.companion.addToSourceSet
 import plugin.convention.companion.find
+import plugin.convention.companion.removeNonAlphaNumeric
 import plugin.convention.postmanclientgenerator.Postman
 import java.io.File
 import java.util.regex.Pattern
@@ -38,20 +39,35 @@ class PostmanClientGenerator : Plugin<Project> {
         setup(target)
 
         val postmanFiles =
-            target.projectDir.find("postman_collection.json")
+            target.projectDir.find(".postman_collection.json")
 
         val result = postmanFiles
-            .map(::generateClients)
-            .flatten()
-            .onEach {
-                println("Generating Client -----------------------------------------------------------")
-                println(json.encodeToString(it))
-                generateFile(
-                    outputDir = File(target.projectDir, targetDir),
-                    namespace = target.namespace,
-                    postmanClient = it
-                )
+            .map {
+                val clients = generateClients(it)
+                val groupName = it.name
+                    .replace(".postman_collection.json", "")
+                    .split(".")
+                    .joinToString("") { s ->
+                        s.replaceFirstChar { c -> c.uppercase() }
+                    }
+                    .removeNonAlphaNumeric()
+
+                val groupDir = File(target.projectDir, "$targetDir$groupName/")
+
+                val namespace = "${target.namespace}.$groupName"
+
+                clients
+                    .map { client ->
+                        println("Generating Client -----------------------------------------------------------")
+                        println(json.encodeToString(client))
+                        generateFile(
+                            outputDir = groupDir,
+                            namespace = namespace,
+                            postmanClient = client
+                        )
+                    }
             }
+            .flatten()
             .toList()
 
     }
@@ -62,7 +78,7 @@ class PostmanClientGenerator : Plugin<Project> {
         postmanClient: PostmanClient
     ) {
         val file = File(outputDir, "${postmanClient.name}.kt")
-        file.parentFile.mkdir()
+        file.parentFile.mkdirs()
 
         val content = "package $namespace\n\n${postmanClient.content}"
         file.writeText(content)
