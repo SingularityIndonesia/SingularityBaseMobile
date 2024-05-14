@@ -62,12 +62,14 @@ class PostmanClientGenerator : Plugin<Project> {
         outputDir: File,
         namespace: String,
         postmanClient: PostmanClient
-    ) {
+    ): File {
         val file = File(outputDir, "${postmanClient.name}.kt")
         file.parentFile.mkdirs()
 
         val content = "package $namespace\n\n${postmanClient.content}"
         file.writeText(content)
+
+        return file
     }
 
     private fun setup(
