@@ -1,6 +1,5 @@
 package plugin.convention.postmanclientgenerator
 
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.gradle.api.Plugin
@@ -9,8 +8,6 @@ import plugin.convention.companion.addToSourceSet
 import plugin.convention.companion.find
 import plugin.convention.companion.removeNonAlphaNumeric
 import java.io.File
-import java.util.regex.Pattern
-
 
 
 class PostmanClientGenerator : Plugin<Project> {
