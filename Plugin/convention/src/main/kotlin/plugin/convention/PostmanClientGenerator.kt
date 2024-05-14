@@ -326,7 +326,7 @@ private fun generateFunction(
                         url {
                             Json.encodeToJsonElement(request).jsonObject
                                 .forEach {
-                                    parameters.append(it.key, it.value)
+                                    parameters.append(it.key, it.value.jsonPrimitive.content)
                                 }
                         }
                     }
