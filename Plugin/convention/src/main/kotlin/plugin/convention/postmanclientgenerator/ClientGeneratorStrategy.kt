@@ -14,6 +14,93 @@ import plugin.convention.companion.removeNonAlphaNumeric
 import plugin.convention.companion.resolveType
 import java.util.regex.Pattern
 
+fun template(
+    functionName: String,
+    method: String,
+    headerModelName: String?,
+    headerModel: Header?,
+    requestModelName: String?,
+    requestModel: RequestModel?,
+    responseModelName: String,
+    responseModel: ResponseModel,
+    pathArguments: List<String>,
+    endpoint: String,
+): String {
+
+    val headerContent = headerModel?.print()
+    val requestContent = requestModel?.print()
+    val responseContent = responseModel.print()
+
+    return listOf(
+        """
+import io.ktor.client.HttpClient
+import io.ktor.client.request.*
+import io.ktor.client.statement.bodyAsText
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.coroutines.withContext
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.encodeToJsonElement
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
+
+suspend fun $functionName(
+    httpClient: HttpClient""",
+        headerContent?.let {
+            """,
+    header: $headerModelName"""
+        },
+        requestContent?.let {
+            """,
+    request: $requestModelName
+        """
+        },
+        pathArguments.map {
+            """,
+    $it: String"""
+        }.fold("") { acc, v -> "$acc$v" },
+        """
+): Result<$responseModelName> = withContext(Dispatchers.IO) {
+    kotlin.runCatching {
+        httpClient
+            .${method.lowercase()}("$endpoint") {
+                url {""",
+        headerModelName?.let {
+            """
+                    headers {
+                        Json.encodeToJsonElement(header).jsonObject.forEach { (key, value) ->
+                            append(key, value.jsonPrimitive.content)
+                        }
+                    }
+        """
+        },
+        requestModelName?.let {
+            """
+                    Json.encodeToJsonElement(request).jsonObject
+					    .forEach {
+					        parameters.append(it.key, it.value.jsonPrimitive.content)
+					    }
+        """
+        },
+        """
+                }
+            }
+            .bodyAsText()
+            .let {
+                Json.decodeFromString<$responseModelName>(it)
+            }
+    }
+}""",
+        headerContent?.let { "\n\n$it" },
+        requestContent?.let { "\n\n$it" },
+        responseContent.let { "\n\n$it" }
+    )
+        .filterNotNull()
+        .fold("") { acc, v -> "$acc$v" }
+}
+
 @Serializable
 data class PostmanClient(
     val name: String,
@@ -254,6 +341,94 @@ sealed interface ClientGeneratorStrategy {
         request: Postman.Request,
         response: Postman.ResponseItem
     ): PostmanClient
+}
+
+object CommonClientGeneratorV2 : ClientGeneratorStrategy {
+    override fun generateClient(
+        contexts: List<Context>,
+        name: String,
+        request: Postman.Request,
+        response: Postman.ResponseItem
+    ): PostmanClient {
+
+        /**
+         * ```
+         * "path": [
+         * 	"books",
+         * 	":bookID",
+         * 	"comments"
+         * ]
+         * Into : books/${bookID}/comments
+         */
+        val endpoint = request.url?.path
+            ?.filterNotNull()
+            ?.map {
+                if (it.contains(":")) {
+                    val pureName = it.replaceFirstChar { "" }
+                    "\${$pureName}"
+                } else {
+                    it
+                }
+            }
+            ?.fold("") { acc, v -> "$acc/$v" }
+            ?: throw IllegalArgumentException("path is null:\n $request")
+
+        val pathArguments = run {
+            val pattern = Pattern.compile("""\{(.*?)}""")
+            val matcher = pattern.matcher(endpoint)
+            val results = mutableListOf<String>()
+
+            while (matcher.find()) {
+                results.add(matcher.group(1))
+            }
+
+            results
+        }
+
+        val method = request.method
+            ?: throw NullPointerException("method is null:\n$request")
+
+        val requestModelName = "${name}Request"
+        val requestModel =
+            RequestModel(
+                name = requestModelName,
+                request = request
+            )
+
+        val responseModelName = "${name}Response"
+        val responseModel =
+            ResponseModel(
+                name = responseModelName,
+                response = response
+            )
+
+        val headers = request.header?.filterNotNull() ?: listOf()
+        val headerModelName = "${name}Header"
+
+        val headerModel =
+            Header(
+                name = headerModelName,
+                headers = headers
+            )
+
+        val content = template(
+            functionName = name,
+            method = method,
+            headerModelName = headerModelName,
+            headerModel = headerModel,
+            requestModelName = requestModelName,
+            requestModel = requestModel,
+            responseModelName = responseModelName,
+            responseModel = responseModel,
+            pathArguments = pathArguments,
+            endpoint = endpoint
+        )
+
+        return PostmanClient(
+            name = name,
+            content = content
+        )
+    }
 }
 
 object CommonClientGenerator : ClientGeneratorStrategy {
