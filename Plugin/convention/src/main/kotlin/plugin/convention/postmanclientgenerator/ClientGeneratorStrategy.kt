@@ -388,12 +388,12 @@ object CommonClientGenerator : ClientGeneratorStrategy {
             }
 
         val pt3 = if (headerModelName != null)
-            "\n\theader: $headerModelName"
+            "\n\theader: $headerModelName,"
         else
             ""
 
         val pt4 = if (requestModelName != null)
-            "\n\trequest: $requestModelName"
+            "\n\trequest: $requestModelName,"
         else ""
 
         val pt5 =
