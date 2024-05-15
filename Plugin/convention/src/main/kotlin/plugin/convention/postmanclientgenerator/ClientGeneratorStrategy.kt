@@ -1,6 +1,10 @@
 package plugin.convention.postmanclientgenerator
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.jsonObject
+import plugin.convention.postmanclientgenerator.RequestModel.Companion.resolveType
 import java.util.regex.Pattern
 
 @Serializable
@@ -9,6 +13,29 @@ data class PostmanClient(
     val content: String
 )
 
+data class ResponseModel(
+    val name: String,
+    val response: Postman.ResponseItem
+) {
+    fun print(): String {
+        val pt1 = "data class $name("
+        val pt2 = decodeResponseBodyParam(response.body ?: "{}")
+        val pt3 = ")"
+        return "$pt1\n$pt2\n$pt3"
+    }
+
+    private fun decodeResponseBodyParam(
+        bodyJson: String
+    ): String {
+        val json = Json.parseToJsonElement(bodyJson).jsonObject
+        val params = json.keys.map {
+            "\tval $it: ${resolveType(json[it]!!).value}?"
+        }.joinToString(",\n")
+
+        return params
+    }
+}
+
 data class RequestModel(
     val name: String,
     val queries: List<Postman.QueryItem>
@@ -16,6 +43,13 @@ data class RequestModel(
     companion object {
         fun resolveType(
             clue: String
+        ): TypeToken {
+            // fixme: for now everything is string
+            return TypeToken("String")
+        }
+
+        fun resolveType(
+            clue: JsonElement
         ): TypeToken {
             // fixme: for now everything is string
             return TypeToken("String")
@@ -47,7 +81,8 @@ sealed interface ClientGeneratorStrategy {
     fun generateClient(
         contexts: List<Context>,
         name: String,
-        request: Postman.Request
+        request: Postman.Request,
+        response: Postman.ResponseItem
     ): PostmanClient
 }
 
@@ -55,7 +90,8 @@ object CommonClientGenerator : ClientGeneratorStrategy {
     override fun generateClient(
         contexts: List<Context>,
         name: String,
-        request: Postman.Request
+        request: Postman.Request,
+        response: Postman.ResponseItem
     ): PostmanClient {
         val url = request.url
 
@@ -96,6 +132,11 @@ object CommonClientGenerator : ClientGeneratorStrategy {
                 ).print()
 
         val responseModelName = "${name}Response"
+        val responseModel =
+            ResponseModel(
+                name = responseModelName,
+                response = response
+            ).print()
 
         val function = generateFunction(
             functionName = name,
@@ -121,7 +162,7 @@ object CommonClientGenerator : ClientGeneratorStrategy {
             
         """.trimIndent()
 
-        val final = "$dependencies\n$function\n\n${requestModel ?: ""}"
+        val final = "$dependencies\n$function\n\n${requestModel ?: ""}\n\n$responseModel"
 
         return PostmanClient(
             name = name,
@@ -211,7 +252,8 @@ object HEADClientGenerator : ClientGeneratorStrategy {
     override fun generateClient(
         contexts: List<Context>,
         name: String,
-        request: Postman.Request
+        request: Postman.Request,
+        response: Postman.ResponseItem
     ): PostmanClient {
         // fixme
         return PostmanClient(
@@ -225,7 +267,8 @@ object OPTIONSClientGenerator : ClientGeneratorStrategy {
     override fun generateClient(
         contexts: List<Context>,
         name: String,
-        request: Postman.Request
+        request: Postman.Request,
+        response: Postman.ResponseItem
     ): PostmanClient {
         // fixme
         return PostmanClient(

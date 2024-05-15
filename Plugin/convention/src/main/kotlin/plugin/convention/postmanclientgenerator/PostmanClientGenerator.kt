@@ -84,18 +84,10 @@ class PostmanClientGenerator : Plugin<Project> {
 
         val items = postman.item?.asSequence()?.filterNotNull() ?: return sequenceOf()
 
-        val requests = dumpRequest(
+        val clients = dumpRequest(
             contexts = listOf(),
             items = items
         )
-
-        val clients = requests
-            .map {
-                toClient(
-                    it.first,
-                    it.second
-                )
-            }
 
         return clients
     }
@@ -103,7 +95,7 @@ class PostmanClientGenerator : Plugin<Project> {
     private fun dumpRequest(
         contexts: List<Context>,
         items: Sequence<Postman.ItemItem>
-    ): Sequence<Pair<List<Context>, Postman.Request>> {
+    ): Sequence<PostmanClient> {
 
         return items
             .map {
@@ -112,9 +104,10 @@ class PostmanClientGenerator : Plugin<Project> {
 
                 if (it.request != null)
                     sequenceOf(
-                        Pair(
-                            newContexts,
-                            it.request
+                        createClient(
+                            context = newContexts,
+                            request = it.request,
+                            response = it.response?.first()!!
                         )
                     )
                 else
@@ -126,9 +119,10 @@ class PostmanClientGenerator : Plugin<Project> {
             .flatten()
     }
 
-    private fun toClient(
+    private fun createClient(
         context: List<Context>,
-        request: Postman.Request
+        request: Postman.Request,
+        response: Postman.ResponseItem
     ): PostmanClient {
         val method = request.method ?: ""
         val name = method.plus(
@@ -164,7 +158,8 @@ class PostmanClientGenerator : Plugin<Project> {
         return strategy.generateClient(
             contexts = context,
             name = name,
-            request = request
+            request = request,
+            response = response
         )
     }
 
