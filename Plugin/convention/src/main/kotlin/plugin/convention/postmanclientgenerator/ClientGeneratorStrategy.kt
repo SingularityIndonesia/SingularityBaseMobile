@@ -65,7 +65,7 @@ suspend fun $functionName(
         httpClient
             .${method.lowercase()}("$endpoint") {
                 url {""",
-        headerModelName?.let {
+        headerContent?.let {
             """
                     headers {
                         Json.encodeToJsonElement(header).jsonObject.forEach { (key, value) ->
@@ -74,7 +74,7 @@ suspend fun $functionName(
                     }
         """
         },
-        requestModelName?.let {
+        requestContent?.let {
             """
                     Json.encodeToJsonElement(request).jsonObject
 					    .forEach {
