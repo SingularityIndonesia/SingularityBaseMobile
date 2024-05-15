@@ -46,19 +46,23 @@ import kotlinx.serialization.json.jsonPrimitive
 
 suspend fun $functionName(
     httpClient: HttpClient""",
-        headerContent?.let {
-            """,
+        headerContent
+            ?.let {
+                """,
     header: $headerModelName"""
-        },
-        requestContent?.let {
-            """,
-    request: $requestModelName
-        """
-        },
-        pathArguments.map {
-            """,
+            },
+        requestContent
+            ?.let {
+                """,
+    request: $requestModelName"""
+            },
+        pathArguments
+            .ifEmpty { null }
+            ?.map {
+                """,
     $it: String"""
-        }.fold("") { acc, v -> "$acc$v" },
+            }
+            ?.fold("") { acc, v -> "$acc$v" },
         """
 ): Result<$responseModelName> = withContext(Dispatchers.IO) {
     kotlin.runCatching {
