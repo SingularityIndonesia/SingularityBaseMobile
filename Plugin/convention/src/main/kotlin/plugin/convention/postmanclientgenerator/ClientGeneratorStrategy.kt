@@ -3,8 +3,11 @@ package plugin.convention.postmanclientgenerator
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.boolean
+import kotlinx.serialization.json.double
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
 import plugin.convention.companion.ListType
 import plugin.convention.companion.ObjectType
 import plugin.convention.companion.removeNonAlphaNumeric
@@ -136,21 +139,71 @@ data class ResponseModel(
     }
 }
 
+sealed interface PayloadType
+object TypeQuery : PayloadType
+object TypeBodyJson : PayloadType
+
 data class RequestModel(
     val name: String,
-    val queries: List<Postman.QueryItem>
+    val request: Postman.Request,
+    /*val queries: List<Postman.QueryItem>*/
 ) {
     companion object {
 
     }
 
     fun print(): String? {
-        if (queries.isEmpty())
-            return null
+
+        // validate
+        val queryIsValid = !request.url?.query.isNullOrEmpty()
+        val bodyIsValid = run {
+            !request.body?.raw.isNullOrBlank() && request.body?.options?.raw?.language == "json"
+        }
+
+        // for now request only support query or body json
+        val queries = request.let {
+            if (queryIsValid)
+                return@let request.url?.query?.filterNotNull()
+
+            if (bodyIsValid)
+                return@let request.body?.raw?.let { body ->
+                    runCatching { Json.parseToJsonElement(body) }
+                        .getOrElse { throw Error("error parsing $body") }
+                        .jsonObject.map { entry ->
+                            val value = resolveType(entry.value)
+                                .fold(
+                                    ifString = { entry.value.jsonPrimitive.content },
+                                    ifNumber = { entry.value.jsonPrimitive.content },
+                                    ifBoolean = { entry.value.jsonPrimitive.content },
+                                    ifList = {
+                                        // FIXME: support for this
+                                        println("Warning: List argument is not yet supported.")
+                                        entry.value.jsonArray.toString()
+                                    },
+                                    ifObject = {
+                                        // FIXME: multi dimensional object not yet supported
+                                        println("Warning: Multi dimensional object is not supported")
+                                        entry.value.jsonObject.toString()
+                                    }
+                                )
+
+                            Postman.QueryItem(
+                                key = entry.key,
+                                value = value
+                            )
+                        }
+                }
+
+            // none is valid
+            null
+        } ?: return null
+
+        println("checking3 $queries")
 
         val pt1 = """
             @Serializable
             data class $name(
+            
         """.trimIndent()
 
         val pt2 =
@@ -237,12 +290,11 @@ object CommonClientGenerator : ClientGeneratorStrategy {
         val method = request.method
             ?: throw NullPointerException("method is null:\n$request")
 
-        val query = url.query ?: listOf()
         val requestModelName = "${name}Request"
         val requestModel =
             RequestModel(
                 name = requestModelName,
-                queries = query.filterNotNull()
+                request = request
             ).print()
 
         val responseModelName = "${name}Response"
@@ -362,7 +414,7 @@ object CommonClientGenerator : ClientGeneratorStrategy {
                     {
                         url {
                 """.trimIndent()
-                    .replace("\n","\n\t\t\t")
+                    .replace("\n", "\n\t\t\t")
             val x2 = if (headerModelName == null)
                 ""
             else
@@ -374,7 +426,7 @@ object CommonClientGenerator : ClientGeneratorStrategy {
                         }
                     }
                 """.trimIndent()
-                    .replace("\n","\n\t\t\t\t\t")
+                    .replace("\n", "\n\t\t\t\t\t")
 
             val x3 = if (requestModelName == null)
                 ""
@@ -386,7 +438,7 @@ object CommonClientGenerator : ClientGeneratorStrategy {
                             parameters.append(it.key, it.value.jsonPrimitive.content)
                         }
                 """.trimIndent()
-                    .replace("\n","\n\t\t\t\t\t")
+                    .replace("\n", "\n\t\t\t\t\t")
 
             val x4 =
                 """
@@ -394,7 +446,7 @@ object CommonClientGenerator : ClientGeneratorStrategy {
                         }
                     }
                 """.trimIndent()
-                    .replace("\n","\n\t\t\t")
+                    .replace("\n", "\n\t\t\t")
 
             "$x1$x2$x3$x4"
         }
