@@ -144,7 +144,9 @@ data class RequestModel(
 
     }
 
-    fun print(): String {
+    fun print(): String? {
+        if (queries.isEmpty())
+            return null
 
         val pt1 = """
             @Serializable
@@ -164,6 +166,32 @@ data class RequestModel(
         return "$pt1$pt2$pt3"
     }
 
+}
+
+data class Header(
+    val name: String,
+    val headers: List<Postman.HeaderItem>
+) {
+    fun print(): String? {
+
+        if (headers.isEmpty())
+            return null
+
+        val pt1 = """
+            @Serializable
+            data class ${name}(
+        """.trimIndent()
+
+        // todo: header is currently only support string
+        val pt2 = headers.map {
+            "\t@SerialName(\"${it.key}\")" +
+                    "\n\tval ${it.key?.removeNonAlphaNumeric()}: String?"
+        }.joinToString(",\n\n")
+
+        val pt3 = ")"
+
+        return "$pt1\n$pt2\n$pt3"
+    }
 }
 
 sealed interface ClientGeneratorStrategy {
@@ -212,13 +240,10 @@ object CommonClientGenerator : ClientGeneratorStrategy {
         val query = url.query ?: listOf()
         val requestModelName = "${name}Request"
         val requestModel =
-            if (query.isEmpty())
-                null
-            else
-                RequestModel(
-                    name = requestModelName,
-                    queries = query.filterNotNull()
-                ).print()
+            RequestModel(
+                name = requestModelName,
+                queries = query.filterNotNull()
+            ).print()
 
         val responseModelName = "${name}Response"
         val responseModel =
@@ -227,9 +252,19 @@ object CommonClientGenerator : ClientGeneratorStrategy {
                 response = response
             ).print()
 
+        val headers = request.header?.filterNotNull() ?: listOf()
+        val headerModelName = "${name}Header"
+
+        val headerModel =
+            Header(
+                name = headerModelName,
+                headers = headers
+            ).print()
+
         val function = generateFunction(
             functionName = name,
             method = method,
+            headerModelName = if (headerModel != null) headerModelName else null,
             requestModelName = if (requestModel != null) requestModelName else null,
             responseModelName = responseModelName,
             endpoint = path
@@ -249,10 +284,13 @@ object CommonClientGenerator : ClientGeneratorStrategy {
             import kotlinx.serialization.json.encodeToJsonElement
             import kotlinx.serialization.json.jsonObject
             import kotlinx.serialization.json.jsonPrimitive
-            
         """.trimIndent()
 
-        val final = "$dependencies\n$function\n\n${requestModel ?: ""}\n\n$responseModel"
+        val final = dependencies
+            .plus("\n\n$function")
+            .plus(headerModel?.let { "\n\n$it" } ?: "")
+            .plus(requestModel?.let { "\n\n$it" } ?: "")
+            .plus("\n\n$responseModel")
 
         return PostmanClient(
             name = name,
@@ -263,6 +301,7 @@ object CommonClientGenerator : ClientGeneratorStrategy {
     private fun generateFunction(
         functionName: String,
         method: String,
+        headerModelName: String?,
         requestModelName: String?,
         responseModelName: String,
         endpoint: String
@@ -296,33 +335,71 @@ object CommonClientGenerator : ClientGeneratorStrategy {
                     it
             }
 
-        val pt3 = if (requestModelName != null)
+        val pt3 = if (headerModelName != null)
+            "\n\theader: $headerModelName"
+        else
+            ""
+
+        val pt4 = if (requestModelName != null)
             "\n\trequest: $requestModelName"
         else ""
 
-        val pt4 = """
+        val pt5 =
+            """
         
-        ): Result<$responseModelName> = withContext(Dispatchers.IO) {
-            kotlin.runCatching {
+                ): Result<$responseModelName> = withContext(Dispatchers.IO) {
+                    kotlin.runCatching {
+        
+                        val response = httpClient
+                            .${method.lowercase()}("$endpoint")
+            """.trimIndent()
 
-                val response = httpClient
-                    .${method.lowercase()}("$endpoint")
-    """.trimIndent()
-
-        val pt5 = if (requestModelName == null)
+        val pt6 = if (requestModelName == null && headerModelName == null)
             ""
-        else
-            """ {
-                url {
+        else {
+            val x1 =
+                """
+                    {
+                        url {
+                """.trimIndent()
+                    .replace("\n","\n\t\t\t")
+            val x2 = if (headerModelName == null)
+                ""
+            else
+                """
+                    
+                    headers {
+                        Json.encodeToJsonElement(header).jsonObject.forEach { (key, value) ->
+                            append(key, value.jsonPrimitive.content)
+                        }
+                    }
+                """.trimIndent()
+                    .replace("\n","\n\t\t\t\t\t")
+
+            val x3 = if (requestModelName == null)
+                ""
+            else
+                """
+                    
                     Json.encodeToJsonElement(request).jsonObject
                         .forEach {
                             parameters.append(it.key, it.value.jsonPrimitive.content)
                         }
-                    }
-                }
-        """.trimIndent()
+                """.trimIndent()
+                    .replace("\n","\n\t\t\t\t\t")
 
-        val pt6 = """
+            val x4 =
+                """
+                    
+                        }
+                    }
+                """.trimIndent()
+                    .replace("\n","\n\t\t\t")
+
+            "$x1$x2$x3$x4"
+        }
+
+        val pt7 = """
 
 
                 response
@@ -334,7 +411,7 @@ object CommonClientGenerator : ClientGeneratorStrategy {
         }
     """.trimIndent()
 
-        return "$pt1$pt2$pt3$pt4$pt5$pt6"
+        return "$pt1$pt2$pt3$pt4$pt5$pt6$pt7"
     }
 }
 
