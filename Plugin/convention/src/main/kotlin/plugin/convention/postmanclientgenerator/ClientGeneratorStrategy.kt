@@ -2,18 +2,8 @@ package plugin.convention.postmanclientgenerator
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonArray
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonPrimitive
-import kotlinx.serialization.json.booleanOrNull
-import kotlinx.serialization.json.contentOrNull
-import kotlinx.serialization.json.doubleOrNull
-import kotlinx.serialization.json.floatOrNull
-import kotlinx.serialization.json.intOrNull
 import kotlinx.serialization.json.jsonObject
-import kotlinx.serialization.json.longOrNull
-import plugin.convention.postmanclientgenerator.RequestModel.Companion.resolveType
+import plugin.convention.companion.resolveType
 import java.util.regex.Pattern
 
 @Serializable
@@ -50,40 +40,7 @@ data class RequestModel(
     val queries: List<Postman.QueryItem>
 ) {
     companion object {
-        fun resolveType(
-            clue: String
-        ): TypeToken {
-            // fixme: for now everything is string
-            return TypeToken("String")
-        }
 
-        fun resolveType(
-            clue: JsonElement
-        ): TypeToken {
-            // fixme: for now everything is string
-            val type = when (clue) {
-                is JsonPrimitive -> {
-                    when {
-                        clue.doubleOrNull != null -> TypeToken("Double")
-                        clue.floatOrNull != null -> TypeToken("Double")
-                        clue.booleanOrNull != null -> TypeToken("Boolean")
-                        clue.longOrNull != null -> TypeToken("Long")
-                        clue.intOrNull != null -> TypeToken("Long")
-                        clue.contentOrNull != null -> TypeToken("String")
-                        else -> TypeToken("String")
-                    }
-                }
-
-                is JsonObject -> {
-                    TypeToken("object")
-                }
-
-                is JsonArray -> {
-                    TypeToken("list")
-                }
-            }
-            return type
-        }
     }
 
     fun print(): String {
