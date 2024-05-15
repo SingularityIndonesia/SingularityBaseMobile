@@ -2,8 +2,10 @@ package plugin.convention.postmanclientgenerator
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
-import org.gradle.api.reflect.TypeOf
+import plugin.convention.companion.ListType
 import plugin.convention.companion.ObjectType
 import plugin.convention.companion.removeNonAlphaNumeric
 import plugin.convention.companion.resolveType
@@ -20,13 +22,13 @@ data class ResponseModel(
     val response: Postman.ResponseItem
 ) {
     fun print(): String {
-        return toDataClass(
+        return decodeDataClass(
             name,
             response.body ?: "{}"
         )
     }
 
-    private fun toDataClass(
+    private fun decodeDataClass(
         name: String,
         body: String
     ): String {
@@ -51,11 +53,13 @@ data class ResponseModel(
     private fun decodeResponseBodyParam(
         bodyJson: String
     ): String {
-        val json = runCatching {
-            Json.parseToJsonElement(bodyJson).jsonObject
-        }.getOrElse {
-            throw Error("not a JsonObject : $bodyJson")
-        }
+        val json = Json.parseToJsonElement(bodyJson)
+            .let {
+                if (it is JsonArray)
+                    it.first().jsonObject
+                else
+                    it.jsonObject
+            }
 
         val params = json.keys.map { key ->
             val type = resolveType(json[key]!!)
@@ -64,8 +68,24 @@ data class ResponseModel(
                     ifNumber = { it.value },
                     ifBoolean = { it.value },
                     ifList = {
-                        // fixme
-                        it.value
+                        val arr = json[key]!!.jsonArray
+                        if (arr.isEmpty())
+                            return@fold "List<Any?>"
+
+                        val listItemType = resolveType(arr.first())
+                            .fold(
+                                ifString = { "String" },
+                                ifNumber = { "Number" },
+                                ifBoolean = { "Boolean" },
+                                ifList = {
+                                    throw IllegalArgumentException("Multi dimensional list is not supported. Error at: $arr")
+                                },
+                                ifObject = {
+                                    key.removeNonAlphaNumeric()
+                                        .replaceFirstChar { it.uppercase() } + "Response"
+                                }
+                            )
+                        "List<${listItemType}?>"
                     },
                     ifObject = {
                         key.removeNonAlphaNumeric().replaceFirstChar { it.uppercase() } + "Response"
@@ -82,10 +102,18 @@ data class ResponseModel(
     private fun decodeSubClasses(
         jsonBody: String
     ): List<String> {
-        val json = Json.parseToJsonElement(jsonBody).jsonObject
+        val json = Json.parseToJsonElement(jsonBody)
+            .let {
+                if (it is JsonArray) {
+                    it.first().jsonObject
+                } else {
+                    it.jsonObject
+                }
+            }
         val subClassesMap = json.keys
             .filter { key ->
-                resolveType(json[key]!!) == ObjectType
+                val type = resolveType(json[key]!!)
+                type == ObjectType || type == ListType
             }
             .map { key ->
                 key to json[key]!!
@@ -93,7 +121,7 @@ data class ResponseModel(
 
         val subClasses = subClassesMap
             .map { (key, value) ->
-                toDataClass(
+                decodeDataClass(
                     key.removeNonAlphaNumeric().replaceFirstChar { it.uppercase() } + "Response",
                     value.toString()
                 )
