@@ -17,7 +17,7 @@ data class ResponseModel(
     val response: Postman.ResponseItem
 ) {
     fun print(): String {
-        val pt1 = "data class $name("
+        val pt1 = "@Serializable\ndata class $name("
         val pt2 = decodeResponseBodyParam(response.body ?: "{}")
         val pt3 = ")"
         return "$pt1\n$pt2\n$pt3"
@@ -28,8 +28,9 @@ data class ResponseModel(
     ): String {
         val json = Json.parseToJsonElement(bodyJson).jsonObject
         val params = json.keys.map {
-            "\tval $it: ${resolveType(json[it]!!).value}?"
-        }.joinToString(",\n")
+            "\t@SerialName(\"${it}\")" +
+                    "\n\tval $it: ${resolveType(json[it]!!).value}?"
+        }.joinToString(",\n\n")
 
         return params
     }
@@ -53,9 +54,10 @@ data class RequestModel(
         val pt2 =
             queries
                 .map {
-                    "\tval ${it.key}: ${resolveType(it.value!!).value}?"
+                    "\t@SerialName(\"${it.key}\")" +
+                            "\n\tval ${it.key}: ${resolveType(it.value!!).value}?"
                 }
-                .fold("") { acc, v -> "$acc\n$v," }
+                .joinToString(",\n\n")
 
         val pt3 = "\n)"
 
@@ -141,6 +143,7 @@ object CommonClientGenerator : ClientGeneratorStrategy {
             import kotlinx.coroutines.Dispatchers
             import kotlinx.coroutines.IO
             import kotlinx.serialization.Serializable
+            import kotlinx.serialization.SerialName
             import kotlinx.coroutines.withContext
             import kotlinx.serialization.json.Json
             import kotlinx.serialization.json.encodeToJsonElement
