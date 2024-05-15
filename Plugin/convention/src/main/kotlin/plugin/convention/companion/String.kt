@@ -29,7 +29,7 @@ fun isObject(
     return objectPattern.matches(clue)
 }
 
-val arrayPattern = Regex("""^\[.*\]$""")
+val arrayPattern = Regex("""^\s*\[.*\]\s*$""")
 
 fun isList(
     clue: String

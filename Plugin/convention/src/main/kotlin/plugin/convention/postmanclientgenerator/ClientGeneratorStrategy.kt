@@ -3,6 +3,9 @@ package plugin.convention.postmanclientgenerator
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
+import org.gradle.api.reflect.TypeOf
+import plugin.convention.companion.ObjectType
+import plugin.convention.companion.removeNonAlphaNumeric
 import plugin.convention.companion.resolveType
 import java.util.regex.Pattern
 
@@ -17,22 +20,91 @@ data class ResponseModel(
     val response: Postman.ResponseItem
 ) {
     fun print(): String {
+        return toDataClass(
+            name,
+            response.body ?: "{}"
+        )
+    }
+
+    private fun toDataClass(
+        name: String,
+        body: String
+    ): String {
         val pt1 = "@Serializable\ndata class $name("
-        val pt2 = decodeResponseBodyParam(response.body ?: "{}")
+        val pt2 = decodeResponseBodyParam(body)
         val pt3 = ")"
-        return "$pt1\n$pt2\n$pt3"
+
+        val subclasses = decodeSubClasses(body)
+
+        val pt4 = if (subclasses.isEmpty())
+            ""
+        else
+            subclasses.joinToString("\n\n")
+                // add extra indent
+                .replace("\n", "\n\t")
+                .let {
+                    "{\n\n\t$it\n}"
+                }
+        return "$pt1\n$pt2\n$pt3$pt4"
     }
 
     private fun decodeResponseBodyParam(
         bodyJson: String
     ): String {
-        val json = Json.parseToJsonElement(bodyJson).jsonObject
-        val params = json.keys.map {
-            "\t@SerialName(\"${it}\")" +
-                    "\n\tval $it: ${resolveType(json[it]!!).value}?"
+        val json = runCatching {
+            Json.parseToJsonElement(bodyJson).jsonObject
+        }.getOrElse {
+            throw Error("not a JsonObject : $bodyJson")
+        }
+
+        val params = json.keys.map { key ->
+            val type = resolveType(json[key]!!)
+                .fold(
+                    ifString = { it.value },
+                    ifNumber = { it.value },
+                    ifBoolean = { it.value },
+                    ifList = {
+                        // fixme
+                        it.value
+                    },
+                    ifObject = {
+                        key.removeNonAlphaNumeric().replaceFirstChar { it.uppercase() } + "Response"
+                    }
+                )
+
+            "\t@SerialName(\"${key}\")" +
+                    "\n\tval $key: ${type}?"
         }.joinToString(",\n\n")
 
         return params
+    }
+
+    private fun decodeSubClasses(
+        jsonBody: String
+    ): List<String> {
+        val json = Json.parseToJsonElement(jsonBody).jsonObject
+        val subClassesMap = json.keys
+            .filter { key ->
+                resolveType(json[key]!!) == ObjectType
+            }
+            .map { key ->
+                key to json[key]!!
+            }
+
+        val subClasses = subClassesMap
+            .map { (key, value) ->
+                toDataClass(
+                    key.removeNonAlphaNumeric().replaceFirstChar { it.uppercase() } + "Response",
+                    value.toString()
+                )
+            }
+
+        val subClassesSubClasses = subClassesMap
+            .map {
+                decodeSubClasses(it.second.toString())
+            }
+
+        return subClasses.plus(subClassesSubClasses.flatten())
     }
 }
 

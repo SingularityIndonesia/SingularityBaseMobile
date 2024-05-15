@@ -14,6 +14,21 @@ import kotlinx.serialization.json.longOrNull
 
 sealed interface TypeToken {
     val value: String
+    fun <R> fold(
+        ifString: (StringType) -> R,
+        ifBoolean: (BooleanType) -> R,
+        ifNumber: (NumberType) -> R,
+        ifList: (ListType) -> R,
+        ifObject: (ObjectType) -> R,
+    ): R {
+        return when (this) {
+            is StringType -> ifString(this)
+            is BooleanType -> ifBoolean(this)
+            is NumberType -> ifNumber(this)
+            is ListType -> ifList(this)
+            is ObjectType -> ifObject(this)
+        }
+    }
 }
 
 object StringType : TypeToken {
@@ -39,7 +54,6 @@ object ObjectType : TypeToken {
 fun resolveType(
     typeClue: String
 ): TypeToken {
-    // fixme: for now everything is string
     when {
         isBoolean(typeClue) -> BooleanType
         isNumber(typeClue) -> NumberType
@@ -65,11 +79,11 @@ fun resolveType(
             }
         }
 
-        is JsonObject -> {
-            ObjectType
+        is JsonArray -> {
+            ListType
         }
 
-        is JsonArray -> {
+        is JsonObject -> {
             ObjectType
         }
     }
