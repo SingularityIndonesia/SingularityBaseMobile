@@ -348,7 +348,7 @@ object HEADClientGenerator : ClientGeneratorStrategy {
         // fixme
         return PostmanClient(
             name = "Dummy$name",
-            content = ""
+            content = "// Head is not yet supported"
         )
     }
 }
@@ -363,7 +363,7 @@ object OPTIONSClientGenerator : ClientGeneratorStrategy {
         // fixme
         return PostmanClient(
             name = "Dummy$name",
-            content = ""
+            content = "// Options is not yet supported"
         )
     }
 }
