@@ -148,7 +148,7 @@ class PostmanClientGenerator : Plugin<Project> {
 
         val strategy = when (method) {
             "GET", "POST", "PUT", "PATCH", "DELETE" ->
-                CommonClientGeneratorV2
+                CommonClientGenerator
 
             "HEAD" -> HEADClientGenerator
             "OPTIONS" -> OPTIONSClientGenerator
