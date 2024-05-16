@@ -171,6 +171,7 @@ data class Postman(
         @SerialName("body")
         val body: String? = null,
 
+        // todo: not yet supported.
         /*@SerialName("cookie")
         val cookie: List<Any?>? = null,*/
 
