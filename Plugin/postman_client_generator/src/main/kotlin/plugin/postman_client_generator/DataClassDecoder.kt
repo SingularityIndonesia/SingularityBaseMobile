@@ -31,24 +31,26 @@ class DataClassDecoderImpl : DataClassDecoder {
                 .jsonObject
         }.getOrElse { throw Error("parsing error $name $jsonString") }
 
-        val params = json
-            .map {
-                val valueType = resolveType(it.value)
-                val listItemType = if (valueType == ListType) {
-                    resolveType(it.value.jsonArray.first())
-                } else
-                    null
-                it.key to valueType to listItemType
-            }
-            // todo: support for multi dimensional list
-            //  ex: List<List<*>>
-            .onEach {
-                if (it.second == ListType) {
-                    val message =
-                        "Multi dimensional list is not yet supported.\n Object is multi dimensional list: ${json[it.first.first]}"
-                    throw IllegalArgumentException(message)
+        val params = run{
+            json
+                .map {
+                    val valueType = resolveType(it.value)
+                    val listItemType = if (valueType == ListType) {
+                        resolveType(it.value.jsonArray.first())
+                    } else
+                        null
+                    it.key to valueType to listItemType
                 }
-            }
+                // todo: support for multi dimensional list
+                //  ex: List<List<*>>
+                .onEach {
+                    if (it.second == ListType) {
+                        val message =
+                            "Multi dimensional list is not yet supported.\n Object is multi dimensional list: ${json[it.first.first]}"
+                        throw IllegalArgumentException(message)
+                    }
+                }
+        }
 
         val subClasses = run {
             val classTypeDecoded = run {
