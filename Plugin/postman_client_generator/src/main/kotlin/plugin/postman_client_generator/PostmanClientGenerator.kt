@@ -18,6 +18,7 @@ class PostmanClientGenerator : Plugin<Project> {
 
     private val targetDir =
         "build/generated/kotlin/postman_client/"
+    private val fileNameIdentifier = ".postman_collection.json"
     private val Project.namespace
         get() = group.toString().lowercase()
     private val json =
@@ -31,7 +32,7 @@ class PostmanClientGenerator : Plugin<Project> {
 
         // dump postman files
         val postmanFiles =
-            target.projectDir.find(".postman_collection.json")
+            target.projectDir.find(fileNameIdentifier)
 
         // create clients
         val postmanClients = run {
@@ -39,7 +40,7 @@ class PostmanClientGenerator : Plugin<Project> {
                 .map {
                     val groupName = run {
                         it.name
-                            .replace(".postman_collection.json", "")
+                            .replace(fileNameIdentifier, "")
                             .split(".")
                             .joinToString("") { s ->
                                 s.replaceFirstChar { c -> c.uppercase() }
@@ -59,8 +60,7 @@ class PostmanClientGenerator : Plugin<Project> {
         // generate files
         postmanClients
             .onEach { client ->
-                println("Generating Postmant Client: ${client.nameSpace}${client.name}")
-
+                println("Generating Postman Client: ${client.nameSpace}${client.name}")
                 val outputDir = File(target.projectDir, "$targetDir${client.groupName}/")
                 client.generateFile(
                     outputDir = outputDir
