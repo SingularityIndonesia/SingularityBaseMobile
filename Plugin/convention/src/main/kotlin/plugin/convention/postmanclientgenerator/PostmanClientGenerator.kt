@@ -94,6 +94,7 @@ class PostmanClientGenerator : Plugin<Project> {
                 val newContexts =
                     contexts.plus(Context(it.name.toString()))
 
+                // check if request available
                 if (it.request != null)
                     sequenceOf(
                         createClient(
@@ -105,6 +106,7 @@ class PostmanClientGenerator : Plugin<Project> {
                         )
                     )
                 else
+                    // if request not available then item is probably available
                     dumpRequest(
                         contexts = newContexts,
                         namespace = namespace,
