@@ -1,11 +1,19 @@
 package plugin.postman_client_generator
 
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonNull
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.jsonObject
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import plugin.postman_client_generator.companion.ObjectType
 import plugin.postman_client_generator.companion.addToSourceSet
+import plugin.postman_client_generator.companion.compareMerge
 import plugin.postman_client_generator.companion.find
 import plugin.postman_client_generator.companion.removeNonAlphaNumeric
+import plugin.postman_client_generator.companion.resolveType
 import java.io.File
 
 
@@ -107,11 +115,12 @@ class PostmanClientGenerator : Plugin<Project> {
                     val newContexts =
                         contexts.plus(Context(item.name.toString()))
 
-                    val responseItem = item.response?.compareMerge()
-                        ?: throw IllegalArgumentException("Please provide at least one response for:\n$item")
-
                     // check if request available
-                    if (item.request != null)
+                    if (item.request != null) {
+
+                        val responseItem = item.response?.compareMerge()
+                            ?: throw IllegalArgumentException("Please provide at least one response for:\n$item")
+
                         sequenceOf(
                             createClient(
                                 context = newContexts,
@@ -121,8 +130,8 @@ class PostmanClientGenerator : Plugin<Project> {
                                 response = responseItem
                             )
                         )
-                    // if request not available then item is probably available
-                    else
+                        // if request not available then item is probably available
+                    } else {
                         item.item?.asSequence()?.filterNotNull()
                             ?.let {
                                 dumpRequest(
@@ -133,15 +142,57 @@ class PostmanClientGenerator : Plugin<Project> {
                                 )
                             }
                             ?: sequenceOf()
+                    }
                 }
                 .flatten()
         }
     }
 
-    // comparing response models to resolve null types
-    private fun List<Postman.ResponseItem?>.compareMerge() : Postman.ResponseItem {
-        // fixme: compare response parameter to resolve null type in value
-        return first() ?: throw IllegalArgumentException("Please provide at least one response.")
+    // comparing response models to resolve null types in body response
+    private fun List<Postman.ResponseItem?>.compareMerge(): Postman.ResponseItem {
+
+        val newBody = run {
+            val bodies = this
+                .mapNotNull {
+                    it?.body
+                }
+                .map {
+                    Json.parseToJsonElement(it)
+                }
+                .also {
+                    if (it.isEmpty())
+                        throw IllegalArgumentException("Please provide at least one response body.")
+
+                    // fixme: support for type list
+                    if (it.first() !is JsonObject)
+                        throw IllegalArgumentException("Body is noe a JSON object")
+
+                }
+                .map {
+                    it.jsonObject
+                }
+
+            val type = resolveType(bodies.first())
+                .let {
+                    // fixme: support for type list
+                    if (it != ObjectType)
+                        throw IllegalArgumentException("Body is noe a JSON object")
+
+                    it as ObjectType
+                }
+
+            bodies
+                .compareMerge()
+                .also {
+                    println("New body:\n$it")
+                }
+                .toString()
+        }
+
+        return filterNotNull()
+            .firstOrNull()
+            ?.copy(body = newBody)
+            ?: throw IllegalArgumentException("Please provide at least one response.")
     }
 
     private fun createClient(
