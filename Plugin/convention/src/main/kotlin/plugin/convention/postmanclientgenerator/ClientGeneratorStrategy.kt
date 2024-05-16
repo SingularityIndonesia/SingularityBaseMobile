@@ -96,6 +96,8 @@ sealed interface ClientGeneratorStrategy {
     fun generateClient(
         contexts: List<Context>,
         name: String,
+        nameSpace: String,
+        groupName: String,
         request: Postman.Request,
         response: Postman.ResponseItem
     ): PostmanClient
@@ -105,6 +107,8 @@ object CommonClientGenerator : ClientGeneratorStrategy {
     override fun generateClient(
         contexts: List<Context>,
         name: String,
+        nameSpace: String,
+        groupName: String,
         request: Postman.Request,
         response: Postman.ResponseItem
     ): PostmanClient {
@@ -184,6 +188,8 @@ object CommonClientGenerator : ClientGeneratorStrategy {
 
         return PostmanClient(
             name = name,
+            nameSpace = nameSpace,
+            groupName = groupName,
             content = content
         )
     }
@@ -193,12 +199,16 @@ object HEADClientGenerator : ClientGeneratorStrategy {
     override fun generateClient(
         contexts: List<Context>,
         name: String,
+        nameSpace: String,
+        groupName: String,
         request: Postman.Request,
         response: Postman.ResponseItem
     ): PostmanClient {
         // fixme
         return PostmanClient(
             name = "Dummy$name",
+            nameSpace = nameSpace,
+            groupName = groupName,
             content = "// Head is not yet supported"
         )
     }
@@ -208,12 +218,16 @@ object OPTIONSClientGenerator : ClientGeneratorStrategy {
     override fun generateClient(
         contexts: List<Context>,
         name: String,
+        nameSpace: String,
+        groupName: String,
         request: Postman.Request,
         response: Postman.ResponseItem
     ): PostmanClient {
         // fixme
         return PostmanClient(
             name = "Dummy$name",
+            nameSpace = nameSpace,
+            groupName = groupName,
             content = "// Options is not yet supported"
         )
     }

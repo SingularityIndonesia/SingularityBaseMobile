@@ -8,8 +8,10 @@ import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import plugin.convention.companion.ListType
 import plugin.convention.companion.ObjectType
+import plugin.convention.companion.printToFile
 import plugin.convention.companion.removeNonAlphaNumeric
 import plugin.convention.companion.resolveType
+import java.io.File
 
 sealed interface PayloadType
 object TypeQuery : PayloadType
@@ -23,8 +25,21 @@ value class Context(
 @Serializable
 data class PostmanClient(
     val name: String,
+    val nameSpace: String,
+    val groupName: String,
     val content: String
-)
+) {
+    fun generateFile(
+        outputDir: File
+    ): File {
+        val content = "package $nameSpace\n\n${content}"
+        return printToFile(
+            outputDir = outputDir,
+            fileName = "${name}.kt",
+            content = content
+        )
+    }
+}
 
 data class ResponseModel(
     val name: String,

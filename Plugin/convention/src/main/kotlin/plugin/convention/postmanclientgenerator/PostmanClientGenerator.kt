@@ -22,61 +22,50 @@ class PostmanClientGenerator : Plugin<Project> {
     override fun apply(
         target: Project
     ) {
-        setup(target)
+        // adding targetDir to source set
+        target.addToSourceSet(targetDir)
 
+        // dump postman files
         val postmanFiles =
             target.projectDir.find(".postman_collection.json")
 
-        val result = postmanFiles
-            .map {
-                val clients = generateClients(it)
-                val groupName = it.name
-                    .replace(".postman_collection.json", "")
-                    .split(".")
-                    .joinToString("") { s ->
-                        s.replaceFirstChar { c -> c.uppercase() }
+        // create clients
+        val postmanClients =
+            postmanFiles
+                .map {
+                    val groupName = run {
+                        it.name
+                            .replace(".postman_collection.json", "")
+                            .split(".")
+                            .joinToString("") { s ->
+                                s.replaceFirstChar { c -> c.uppercase() }
+                            }
+                            .removeNonAlphaNumeric()
                     }
-                    .removeNonAlphaNumeric()
+                    val namespace = "${target.namespace}.$groupName"
+                    generateClients(
+                        namespace,
+                        groupName,
+                        it
+                    )
+                }
+                .flatten()
 
-                val groupDir = File(target.projectDir, "$targetDir$groupName/")
+        // generate files
+        postmanClients
+            .onEach { client ->
+                println("Generating Postmant Client: ${client.nameSpace}${client.name}")
 
-                val namespace = "${target.namespace}.$groupName"
-
-                clients
-                    .map { client ->
-                        println("Generating Postmant Client: ${namespace}${client.name}")
-                        generateFile(
-                            outputDir = groupDir,
-                            namespace = namespace,
-                            postmanClient = client
-                        )
-                    }
+                val outputDir = File(target.projectDir, "$targetDir$client.groupName/")
+                client.generateFile(
+                    outputDir = outputDir
+                )
             }
-            .flatten()
-            .toList()
-
-    }
-
-    private fun generateFile(
-        outputDir: File,
-        namespace: String,
-        postmanClient: PostmanClient
-    ): File {
-        val content = "package $namespace\n\n${postmanClient.content}"
-        return printToFile(
-            outputDir = outputDir,
-            fileName = "${postmanClient.name}.kt",
-            content = content
-        )
-    }
-
-    private fun setup(
-        project: Project
-    ) {
-        project.addToSourceSet(targetDir)
     }
 
     private fun generateClients(
+        namespace: String,
+        groupName: String,
         file: File
     ): Sequence<PostmanClient> {
         val postman = json.decodeFromString<Postman>(file.readText())
@@ -85,6 +74,8 @@ class PostmanClientGenerator : Plugin<Project> {
 
         val clients = dumpRequest(
             contexts = listOf(),
+            namespace = namespace,
+            groupName = groupName,
             items = items
         )
 
@@ -93,6 +84,8 @@ class PostmanClientGenerator : Plugin<Project> {
 
     private fun dumpRequest(
         contexts: List<Context>,
+        namespace: String,
+        groupName: String,
         items: Sequence<Postman.ItemItem>
     ): Sequence<PostmanClient> {
 
@@ -106,12 +99,16 @@ class PostmanClientGenerator : Plugin<Project> {
                         createClient(
                             context = newContexts,
                             request = it.request,
+                            namespace = namespace,
+                            groupName = groupName,
                             response = it.response?.first()!!
                         )
                     )
                 else
                     dumpRequest(
                         contexts = newContexts,
+                        namespace = namespace,
+                        groupName = groupName,
                         items = it.item?.asSequence()?.filterNotNull() ?: sequenceOf()
                     )
             }
@@ -120,6 +117,8 @@ class PostmanClientGenerator : Plugin<Project> {
 
     private fun createClient(
         context: List<Context>,
+        namespace: String,
+        groupName: String,
         request: Postman.Request,
         response: Postman.ResponseItem
     ): PostmanClient {
@@ -157,6 +156,8 @@ class PostmanClientGenerator : Plugin<Project> {
         return strategy.generateClient(
             contexts = context,
             name = name,
+            nameSpace = namespace,
+            groupName = groupName,
             request = request,
             response = response
         )
