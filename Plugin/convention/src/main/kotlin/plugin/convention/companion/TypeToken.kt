@@ -20,6 +20,7 @@ sealed interface TypeToken {
         ifNumber: (NumberType) -> R,
         ifList: (ListType) -> R,
         ifObject: (ObjectType) -> R,
+        /*ifUnknown: () -> R*/
     ): R {
         return when (this) {
             is StringType -> ifString(this)
@@ -27,9 +28,14 @@ sealed interface TypeToken {
             is NumberType -> ifNumber(this)
             is ListType -> ifList(this)
             is ObjectType -> ifObject(this)
+            /*is UnknownType -> ifUnknown()*/
         }
     }
 }
+
+/*object UnknownType: TypeToken {
+    override val value: String = "Unknown"
+}*/
 
 object StringType : TypeToken {
     override val value: String = "String"
@@ -76,6 +82,7 @@ fun resolveType(
                 clue.intOrNull != null -> NumberType
                 clue.contentOrNull != null -> StringType
                 else -> StringType
+                /*else -> UnknownType*/
             }
         }
 

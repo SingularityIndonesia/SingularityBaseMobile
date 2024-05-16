@@ -56,11 +56,12 @@ class PostmanClientGenerator : Plugin<Project> {
             .onEach { client ->
                 println("Generating Postmant Client: ${client.nameSpace}${client.name}")
 
-                val outputDir = File(target.projectDir, "$targetDir$client.groupName/")
+                val outputDir = File(target.projectDir, "$targetDir${client.groupName}/")
                 client.generateFile(
                     outputDir = outputDir
                 )
             }
+            .toList()
     }
 
     private fun generateClients(

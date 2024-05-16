@@ -25,13 +25,15 @@ fun printToFile(
     outputDir: File,
     fileName: String,
     content: String,
-) = File(
-    outputDir,
-    fileName
-)
-    .apply {
-        mkdirs()
-        writeText(
-            content
-        )
-    }
+) : File {
+    return File(
+        outputDir,
+        fileName
+    )
+        .apply {
+            parentFile.mkdirs()
+            writeText(
+                content
+            )
+        }
+}
