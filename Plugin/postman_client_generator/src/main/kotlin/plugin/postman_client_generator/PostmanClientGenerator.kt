@@ -148,7 +148,9 @@ class PostmanClientGenerator : Plugin<Project> {
         }
     }
 
-    // comparing response models to resolve null types in body response
+    /**
+     *  Comparing response bodies to resolve null types in body response
+     */
     private fun List<Postman.ResponseItem?>.compareMerge(): Postman.ResponseItem {
 
         val newBody = run {
