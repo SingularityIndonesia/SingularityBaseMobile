@@ -184,7 +184,7 @@ data class RequestModel(
                                         entry.value.jsonArray.toString()
                                     },
                                     ifObject = {
-                                        // FIXME: multi dimensional object not yet supported
+                                        // FIXME: multi dimensional object for request body not yet supported
                                         println("Warning: Multi dimensional object is not supported")
                                         entry.value.jsonObject.toString()
                                     }
