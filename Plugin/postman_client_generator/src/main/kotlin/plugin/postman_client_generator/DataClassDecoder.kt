@@ -31,7 +31,7 @@ class DataClassDecoderImpl : DataClassDecoder {
                 .jsonObject
         }.getOrElse { throw Error("parsing error $name $jsonString") }
 
-        val params = run{
+        val params = run {
             json
                 .map {
                     val valueType = resolveType(it.value)
@@ -97,45 +97,47 @@ class DataClassDecoderImpl : DataClassDecoder {
             classTypeDecoded.plus(listTypesSubClasses)
         }
 
-        val paramsList = params
-            .map {
-                val stringToken = when {
-                    it.first.second == ObjectType -> {
-                        val mName = it.first.first
-                            .removeNonAlphaNumeric()
-                            .replaceFirstChar { c -> c.uppercase() }
-                            .let {
-                                "$it${subClassSuffix ?: ""}"
-                            }
-                        mName
-                    }
-                    // list object
-                    it.second == ObjectType -> {
-                        // fixme boiler plate
-                        val objName = it.first.first
-                            .removeNonAlphaNumeric()
-                            .replaceFirstChar { c -> c.uppercase() }
-                            .let {
-                                "${it}Item${subClassSuffix ?: ""}"
-                            }
-                        objName
-                    }
-                    // multi dimensional list type
-                    it.second == ListType -> {
-                        val message =
-                            "Multi dimensional list is not yet supported.\n Object is multi dimensional list: ${json[it.first.first]}"
-                        throw IllegalArgumentException(message)
-                    }
-                    // list primitives
-                    it.second != null && it.second != ObjectType && it.second != ListType -> {
-                        "List<${it.second?.value}?>"
+        val paramsList = run {
+            params
+                .map {
+                    val stringToken = when {
+                        it.first.second == ObjectType -> {
+                            val mName = it.first.first
+                                .removeNonAlphaNumeric()
+                                .replaceFirstChar { c -> c.uppercase() }
+                                .let {
+                                    "$it${subClassSuffix ?: ""}"
+                                }
+                            mName
+                        }
+                        // list object
+                        it.second == ObjectType -> {
+                            // fixme boiler plate
+                            val objName = it.first.first
+                                .removeNonAlphaNumeric()
+                                .replaceFirstChar { c -> c.uppercase() }
+                                .let {
+                                    "${it}Item${subClassSuffix ?: ""}"
+                                }
+                            objName
+                        }
+                        // multi dimensional list type
+                        it.second == ListType -> {
+                            val message =
+                                "Multi dimensional list is not yet supported.\n Object is multi dimensional list: ${json[it.first.first]}"
+                            throw IllegalArgumentException(message)
+                        }
+                        // list primitives
+                        it.second != null && it.second != ObjectType && it.second != ListType -> {
+                            "List<${it.second?.value}?>"
+                        }
+
+                        else -> it.first.second.value
                     }
 
-                    else -> it.first.second.value
+                    it.first.first to stringToken
                 }
-
-                it.first.first to stringToken
-            }
+        }
 
         return DataClass(
             name = name,
