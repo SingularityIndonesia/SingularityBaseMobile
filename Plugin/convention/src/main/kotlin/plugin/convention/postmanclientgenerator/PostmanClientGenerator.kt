@@ -5,6 +5,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import plugin.convention.companion.addToSourceSet
 import plugin.convention.companion.find
+import plugin.convention.companion.printToFile
 import plugin.convention.companion.removeNonAlphaNumeric
 import java.io.File
 
@@ -43,8 +44,7 @@ class PostmanClientGenerator : Plugin<Project> {
 
                 clients
                     .map { client ->
-                        // println("Generating Client -----------------------------------------------------------")
-                        // println(json.encodeToString(client))
+                        println("Generating Postmant Client for ${namespace}${client.name}-----------------------------")
                         generateFile(
                             outputDir = groupDir,
                             namespace = namespace,
@@ -62,13 +62,12 @@ class PostmanClientGenerator : Plugin<Project> {
         namespace: String,
         postmanClient: PostmanClient
     ): File {
-        val file = File(outputDir, "${postmanClient.name}.kt")
-        file.parentFile.mkdirs()
-
         val content = "package $namespace\n\n${postmanClient.content}"
-        file.writeText(content)
-
-        return file
+        return printToFile(
+            outputDir = outputDir,
+            fileName = "${postmanClient.name}.kt",
+            content = content
+        )
     }
 
     private fun setup(

@@ -20,3 +20,18 @@ fun File.find(
         ?.flatten()
         ?: sequenceOf()
 }
+
+fun printToFile(
+    outputDir: File,
+    fileName: String,
+    content: String,
+) = File(
+    outputDir,
+    fileName
+)
+    .apply {
+        mkdirs()
+        writeText(
+            content
+        )
+    }
