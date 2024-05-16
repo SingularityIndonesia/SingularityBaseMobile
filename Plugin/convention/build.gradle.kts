@@ -77,9 +77,5 @@ gradlePlugin {
             id = "FeatureContextReceiver"
             implementationClass = "plugin.convention.features.FeatureContextReceiver"
         }
-        register("ApiGenerator") {
-            id = "ApiGenerator"
-            implementationClass = "plugin.convention.ApiGenerator"
-        }
     }
 }

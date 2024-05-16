@@ -20,3 +20,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Plugin"
 include(":convention")
+include(":postman_client_generator")

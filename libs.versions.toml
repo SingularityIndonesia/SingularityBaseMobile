@@ -18,6 +18,7 @@ kotlin = "1.9.23"
 ktor = "2.3.8"
 kotlinx-serialization-json = "1.6.3"
 compose-navigation = "2.7.0-alpha03"
+gson = "2.10.1"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
