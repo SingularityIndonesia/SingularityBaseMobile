@@ -107,6 +107,9 @@ class PostmanClientGenerator : Plugin<Project> {
                     val newContexts =
                         contexts.plus(Context(item.name.toString()))
 
+                    val responseItem = item.response?.compareMerge()
+                        ?: throw IllegalArgumentException("Please provide at least one response for:\n$item")
+
                     // check if request available
                     if (item.request != null)
                         sequenceOf(
@@ -115,7 +118,7 @@ class PostmanClientGenerator : Plugin<Project> {
                                 request = item.request,
                                 namespace = namespace,
                                 groupName = groupName,
-                                response = item.response?.first()!!
+                                response = responseItem
                             )
                         )
                     // if request not available then item is probably available
@@ -133,6 +136,12 @@ class PostmanClientGenerator : Plugin<Project> {
                 }
                 .flatten()
         }
+    }
+
+    // comparing response models to resolve null types
+    private fun List<Postman.ResponseItem?>.compareMerge() : Postman.ResponseItem {
+        // fixme: compare response parameter to resolve null type in value
+        return first() ?: throw IllegalArgumentException("Please provide at least one response.")
     }
 
     private fun createClient(
