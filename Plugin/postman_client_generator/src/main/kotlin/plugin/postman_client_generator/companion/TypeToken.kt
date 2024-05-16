@@ -6,9 +6,13 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.booleanOrNull
 import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.double
 import kotlinx.serialization.json.doubleOrNull
+import kotlinx.serialization.json.float
 import kotlinx.serialization.json.floatOrNull
+import kotlinx.serialization.json.int
 import kotlinx.serialization.json.intOrNull
+import kotlinx.serialization.json.long
 import kotlinx.serialization.json.longOrNull
 
 
@@ -45,7 +49,9 @@ object BooleanType : TypeToken {
     override val value: String = "Boolean"
 }
 
-object NumberType : TypeToken {
+data class NumberType(
+    val clue: String?
+) : TypeToken {
     override val value: String = "Number"
 }
 
@@ -62,7 +68,7 @@ fun resolveType(
 ): TypeToken {
     when {
         isBoolean(typeClue) -> BooleanType
-        isNumber(typeClue) -> NumberType
+        isNumber(typeClue) -> NumberType(clue = typeClue)
         isObject(typeClue) -> ObjectType
         isList(typeClue) -> ListType
         else -> throw IllegalArgumentException("Unknown type $typeClue")
@@ -76,11 +82,11 @@ fun resolveType(
     val type = when (clue) {
         is JsonPrimitive -> {
             when {
-                clue.doubleOrNull != null -> NumberType
-                clue.floatOrNull != null -> NumberType
+                clue.doubleOrNull != null -> NumberType(clue = clue.double.toString())
+                clue.floatOrNull != null -> NumberType(clue = clue.float.toString())
                 clue.booleanOrNull != null -> BooleanType
-                clue.longOrNull != null -> NumberType
-                clue.intOrNull != null -> NumberType
+                clue.longOrNull != null -> NumberType(clue = clue.long.toString())
+                clue.intOrNull != null -> NumberType(clue = clue.int.toString())
                 clue.contentOrNull != null -> StringType
                 else -> StringType
                 /*else -> UnknownType*/

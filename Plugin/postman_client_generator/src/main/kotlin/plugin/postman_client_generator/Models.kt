@@ -1,6 +1,7 @@
 package plugin.postman_client_generator
 
 import kotlinx.serialization.Serializable
+import plugin.postman_client_generator.companion.NumberTypeResolverStrategy
 import plugin.postman_client_generator.companion.printToFile
 import plugin.postman_client_generator.companion.removeNonAlphaNumeric
 import java.io.File
@@ -61,11 +62,14 @@ data class ResponseModel(
     val name: String,
     val response: Postman.ResponseItem
 ) : DataClassDecoder by DataClassDecoderImpl() {
-    fun print(): String {
+    fun print(
+        numberTypeResolverStrategy: NumberTypeResolverStrategy
+    ): String {
         return decodeDataClass(
-            name,
-            response.body ?: "{}",
-            "Response"
+            name = name,
+            jsonString = response.body ?: "{}",
+            numberTypeResolverStrategy = numberTypeResolverStrategy,
+            subClassSuffix = "Response"
         ).print()
     }
 }
@@ -78,16 +82,19 @@ data class RequestModel(
 ) : DataClassDecoder by DataClassDecoderImpl() {
 
     // todo: query is currently not yet supported
-    fun print(): String? {
+    fun print(
+        numberTypeResolverStrategy: NumberTypeResolverStrategy
+    ): String? {
         val responseBody = run {
             if (request.body?.raw.isNullOrBlank() || request.body?.options?.raw?.language != "json")
                 return@run null
             else
                 request.body.raw?.let {
                     decodeDataClass(
-                        name,
-                        it,
-                        "Request"
+                        name = name,
+                        jsonString = it,
+                        numberTypeResolverStrategy = numberTypeResolverStrategy,
+                        subClassSuffix = "Request"
                     )
                 }
         }

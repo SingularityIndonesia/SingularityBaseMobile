@@ -1,5 +1,7 @@
 package plugin.postman_client_generator
 
+import plugin.postman_client_generator.companion.NumberTypeResolverStrategy
+
 fun dataClassTemplate(
     name: String,
     params: List<Pair<String, String>>
@@ -28,15 +30,17 @@ fun clientTemplate(
     headerModel: Header?,
     requestModelName: String?,
     requestModel: RequestModel?,
+    requestModelNumberTypeResolverStrategy: NumberTypeResolverStrategy,
     responseModelName: String,
     responseModel: ResponseModel,
+    responseModelNumberTypeResolverStrategy: NumberTypeResolverStrategy,
     pathArguments: List<String>,
     endpoint: String,
 ): String {
 
     val headerContent = headerModel?.print()
-    val requestContent = requestModel?.print()
-    val responseContent = responseModel.print()
+    val requestContent = requestModel?.print(requestModelNumberTypeResolverStrategy)
+    val responseContent = responseModel.print(responseModelNumberTypeResolverStrategy)
 
     return listOfNotNull(
         """

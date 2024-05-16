@@ -1,5 +1,7 @@
 package plugin.postman_client_generator
 
+import plugin.postman_client_generator.companion.SmartResolverStrategy
+import plugin.postman_client_generator.companion.ToStringStrategy
 import java.util.regex.Pattern
 
 sealed interface ClientGeneratorStrategy {
@@ -89,8 +91,12 @@ object CommonClientGenerator : ClientGeneratorStrategy {
             headerModelName = headerModelName,
             headerModel = headerModel,
             requestModelName = requestModelName,
+            //fixme: use smart resolver strategy
+            /*requestModelNumberTypeResolverStrategy = SmartResolverStrategy,*/
+            requestModelNumberTypeResolverStrategy = ToStringStrategy,
             requestModel = requestModel,
             responseModelName = responseModelName,
+            responseModelNumberTypeResolverStrategy = ToStringStrategy,
             responseModel = responseModel,
             pathArguments = pathArguments,
             endpoint = endpoint

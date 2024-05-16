@@ -4,6 +4,8 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import plugin.postman_client_generator.companion.ListType
+import plugin.postman_client_generator.companion.NumberTypeResolverStrategy
+import plugin.postman_client_generator.companion.NumberType
 import plugin.postman_client_generator.companion.ObjectType
 import plugin.postman_client_generator.companion.removeNonAlphaNumeric
 import plugin.postman_client_generator.companion.resolveType
@@ -16,6 +18,7 @@ interface DataClassDecoder {
     fun decodeDataClass(
         name: String,
         jsonString: String,
+        numberTypeResolverStrategy: NumberTypeResolverStrategy,
         subClassSuffix: String?
     ): DataClass
 }
@@ -24,6 +27,7 @@ class DataClassDecoderImpl : DataClassDecoder {
     override fun decodeDataClass(
         name: String,
         jsonString: String,
+        numberTypeResolverStrategy: NumberTypeResolverStrategy,
         subClassSuffix: String?
     ): DataClass {
         val json = kotlin.runCatching {
@@ -66,7 +70,8 @@ class DataClassDecoderImpl : DataClassDecoder {
                         decodeDataClass(
                             mName,
                             mJson,
-                            subClassSuffix
+                            numberTypeResolverStrategy,
+                            subClassSuffix,
                         )
                     }
             }
@@ -89,6 +94,7 @@ class DataClassDecoderImpl : DataClassDecoder {
                         decodeDataClass(
                             objName,
                             mJson,
+                            numberTypeResolverStrategy,
                             subClassSuffix
                         )
                     }
@@ -101,6 +107,13 @@ class DataClassDecoderImpl : DataClassDecoder {
             params
                 .map {
                     val stringToken = when {
+                        // number type
+                        it.first.second is NumberType -> {
+                            numberTypeResolverStrategy.predictedType(
+                                (it.first.second as NumberType).clue
+                            )
+                        }
+                        // object type
                         it.first.second == ObjectType -> {
                             val mName = it.first.first
                                 .removeNonAlphaNumeric()
@@ -129,7 +142,15 @@ class DataClassDecoderImpl : DataClassDecoder {
                         }
                         // list primitives
                         it.second != null && it.second != ObjectType && it.second != ListType -> {
-                            "List<${it.second?.value}?>"
+                            val itemType =
+                                if (it.second is NumberType) {
+                                    numberTypeResolverStrategy.predictedType(
+                                        (it.second as NumberType).clue
+                                    )
+                                } else {
+                                    it.second?.value
+                                }
+                            "List<$itemType?>"
                         }
 
                         else -> it.first.second.value
