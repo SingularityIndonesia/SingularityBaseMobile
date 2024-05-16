@@ -1,12 +1,12 @@
-package plugin.convention.postmanclientgenerator
+package plugin.postman_client_generator
 
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
-import plugin.convention.companion.ListType
-import plugin.convention.companion.ObjectType
-import plugin.convention.companion.removeNonAlphaNumeric
-import plugin.convention.companion.resolveType
+import plugin.postman_client_generator.companion.ListType
+import plugin.postman_client_generator.companion.ObjectType
+import plugin.postman_client_generator.companion.removeNonAlphaNumeric
+import plugin.postman_client_generator.companion.resolveType
 
 interface DataClassDecoder {
 

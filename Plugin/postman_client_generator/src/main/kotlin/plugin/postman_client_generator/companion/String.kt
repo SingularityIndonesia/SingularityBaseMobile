@@ -1,6 +1,4 @@
-package plugin.convention.companion
-
-import org.gradle.internal.impldep.org.junit.Test
+package plugin.postman_client_generator.companion
 
 fun String.removeNonAlphaNumeric(): String {
     val regex = Regex("""[^A-Za-z0-9]""")

@@ -1,12 +1,11 @@
-package plugin.convention.postmanclientgenerator
+package plugin.postman_client_generator
 
 import kotlinx.serialization.json.Json
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import plugin.convention.companion.addToSourceSet
-import plugin.convention.companion.find
-import plugin.convention.companion.printToFile
-import plugin.convention.companion.removeNonAlphaNumeric
+import plugin.postman_client_generator.companion.addToSourceSet
+import plugin.postman_client_generator.companion.find
+import plugin.postman_client_generator.companion.removeNonAlphaNumeric
 import java.io.File
 
 

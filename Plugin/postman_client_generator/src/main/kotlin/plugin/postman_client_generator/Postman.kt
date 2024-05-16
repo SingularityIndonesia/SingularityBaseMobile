@@ -1,8 +1,7 @@
-package plugin.convention.postmanclientgenerator
+package plugin.postman_client_generator
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 
 @Serializable

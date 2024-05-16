@@ -1,4 +1,4 @@
-package plugin.convention.companion
+package plugin.postman_client_generator.companion
 
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement

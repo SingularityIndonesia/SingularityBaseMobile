@@ -1,4 +1,4 @@
-package plugin.convention.companion
+package plugin.postman_client_generator.companion
 
 import java.io.File
 

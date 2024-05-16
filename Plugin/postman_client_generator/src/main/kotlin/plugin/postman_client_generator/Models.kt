@@ -1,13 +1,8 @@
-package plugin.convention.postmanclientgenerator
+package plugin.postman_client_generator
 
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.jsonArray
-import kotlinx.serialization.json.jsonObject
-import kotlinx.serialization.json.jsonPrimitive
-import plugin.convention.companion.printToFile
-import plugin.convention.companion.removeNonAlphaNumeric
-import plugin.convention.companion.resolveType
+import plugin.postman_client_generator.companion.printToFile
+import plugin.postman_client_generator.companion.removeNonAlphaNumeric
 import java.io.File
 
 @JvmInline

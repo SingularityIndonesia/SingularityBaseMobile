@@ -1,4 +1,4 @@
-package plugin.convention.postmanclientgenerator
+package plugin.postman_client_generator
 
 fun dataClassTemplate(
     name: String,
