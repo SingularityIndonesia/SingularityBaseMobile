@@ -29,7 +29,7 @@ class PostmanClientGenerator : Plugin<Project> {
             target.projectDir.find(".postman_collection.json")
 
         // create clients
-        val postmanClients =
+        val postmanClients = run {
             postmanFiles
                 .map {
                     val groupName = run {
@@ -49,6 +49,7 @@ class PostmanClientGenerator : Plugin<Project> {
                     )
                 }
                 .flatten()
+        }
 
         // generate files
         postmanClients
@@ -100,36 +101,38 @@ class PostmanClientGenerator : Plugin<Project> {
          *
          *  we are not flattening the request directly to keep the indentation.
          */
-        return items
-            .map { item ->
-                val newContexts =
-                    contexts.plus(Context(item.name.toString()))
+        return run {
+            items
+                .map { item ->
+                    val newContexts =
+                        contexts.plus(Context(item.name.toString()))
 
-                // check if request available
-                if (item.request != null)
-                    sequenceOf(
-                        createClient(
-                            context = newContexts,
-                            request = item.request,
-                            namespace = namespace,
-                            groupName = groupName,
-                            response = item.response?.first()!!
-                        )
-                    )
-                // if request not available then item is probably available
-                else
-                    item.item?.asSequence()?.filterNotNull()
-                        ?.let {
-                            dumpRequest(
-                                contexts = newContexts,
+                    // check if request available
+                    if (item.request != null)
+                        sequenceOf(
+                            createClient(
+                                context = newContexts,
+                                request = item.request,
                                 namespace = namespace,
                                 groupName = groupName,
-                                items = it
+                                response = item.response?.first()!!
                             )
-                        }
-                        ?: sequenceOf()
-            }
-            .flatten()
+                        )
+                    // if request not available then item is probably available
+                    else
+                        item.item?.asSequence()?.filterNotNull()
+                            ?.let {
+                                dumpRequest(
+                                    contexts = newContexts,
+                                    namespace = namespace,
+                                    groupName = groupName,
+                                    items = it
+                                )
+                            }
+                            ?: sequenceOf()
+                }
+                .flatten()
+        }
     }
 
     private fun createClient(
