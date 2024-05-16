@@ -77,13 +77,5 @@ gradlePlugin {
             id = "FeatureContextReceiver"
             implementationClass = "plugin.convention.features.FeatureContextReceiver"
         }
-        register("ApiGenerator") {
-            id = "ApiGenerator"
-            implementationClass = "plugin.convention.ApiGenerator"
-        }
-        register("PostmanClientGenerator") {
-            id = "PostmanClientGenerator"
-            implementationClass = "plugin.convention.postmanclientgenerator.PostmanClientGenerator"
-        }
     }
 }

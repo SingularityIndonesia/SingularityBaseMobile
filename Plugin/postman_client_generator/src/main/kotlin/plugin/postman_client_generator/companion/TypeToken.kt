@@ -58,13 +58,14 @@ object ObjectType : TypeToken {
 }
 
 fun resolveType(
-    typeClue: String
+    typeClue: String?
 ): TypeToken {
     when {
         isBoolean(typeClue) -> BooleanType
         isNumber(typeClue) -> NumberType
         isObject(typeClue) -> ObjectType
         isList(typeClue) -> ListType
+        else -> throw IllegalArgumentException("Unknown type $typeClue")
     }
     return StringType
 }
