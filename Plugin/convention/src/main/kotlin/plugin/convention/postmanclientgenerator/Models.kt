@@ -5,8 +5,6 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
-import plugin.convention.companion.ListType
-import plugin.convention.companion.ObjectType
 import plugin.convention.companion.printToFile
 import plugin.convention.companion.removeNonAlphaNumeric
 import plugin.convention.companion.resolveType
@@ -82,76 +80,25 @@ data class RequestModel(
     val name: String,
     val request: Postman.Request,
     /*val queries: List<Postman.QueryItem>*/
-) {
-    companion object {
+) : DataClassDecoder by DataClassDecoderImpl() {
 
-    }
-
+    // todo: query is currently not yet supported
     fun print(): String? {
-
-        // validate
-        val queryIsValid = !request.url?.query.isNullOrEmpty()
-        val bodyIsValid = run {
-            !request.body?.raw.isNullOrBlank() && request.body?.options?.raw?.language == "json"
+        val responseBody = run {
+            if (request.body?.raw.isNullOrBlank() || request.body?.options?.raw?.language != "json")
+                return@run null
+            else
+                request.body.raw?.let {
+                    decodeDataClass(
+                        name,
+                        it,
+                        "Request"
+                    )
+                }
         }
 
-        // for now request only support query or body json
-        val queries = request.let {
-            if (queryIsValid)
-                return@let request.url?.query?.filterNotNull()
-
-            if (bodyIsValid)
-                return@let request.body?.raw?.let { body ->
-                    runCatching { Json.parseToJsonElement(body) }
-                        .getOrElse { throw Error("error parsing $body") }
-                        .jsonObject.map { entry ->
-                            val value = resolveType(entry.value)
-                                .fold(
-                                    ifString = { entry.value.jsonPrimitive.content },
-                                    ifNumber = { entry.value.jsonPrimitive.content },
-                                    ifBoolean = { entry.value.jsonPrimitive.content },
-                                    ifList = {
-                                        // FIXME: support for this
-                                        println("Warning: List argument is not yet supported.")
-                                        entry.value.jsonArray.toString()
-                                    },
-                                    ifObject = {
-                                        // FIXME: multi dimensional object for request body not yet supported
-                                        println("Warning: Multi dimensional object is not supported")
-                                        entry.value.jsonObject.toString()
-                                    }
-                                )
-
-                            Postman.QueryItem(
-                                key = entry.key,
-                                value = value
-                            )
-                        }
-                }
-
-            // none is valid
-            null
-        } ?: return null
-
-        val pt1 = """
-            @Serializable
-            data class $name(
-            
-        """.trimIndent()
-
-        val pt2 =
-            queries
-                .map {
-                    "\t@SerialName(\"${it.key}\")" +
-                            "\n\tval ${it.key}: ${resolveType(it.value!!).value}?"
-                }
-                .joinToString(",\n\n")
-
-        val pt3 = "\n)"
-
-        return "$pt1$pt2$pt3"
+        return responseBody?.print()
     }
-
 }
 
 data class Header(
