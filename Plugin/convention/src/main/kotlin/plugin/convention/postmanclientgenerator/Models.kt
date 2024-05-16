@@ -2,21 +2,15 @@ package plugin.convention.postmanclientgenerator
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import plugin.convention.companion.ListType
 import plugin.convention.companion.ObjectType
-import plugin.convention.companion.TypeToken
 import plugin.convention.companion.printToFile
 import plugin.convention.companion.removeNonAlphaNumeric
 import plugin.convention.companion.resolveType
 import java.io.File
-
-sealed interface PayloadType
-object TypeQuery : PayloadType
-object TypeBodyJson : PayloadType
 
 @JvmInline
 value class Context(
@@ -47,259 +41,39 @@ data class PostmanClient(
  * @param params list of key variable and type.
  *  ex: "name" to "String", "books" to "List<BookItems>", "author" to "Author".
  */
+
 data class DataClass(
     val name: String,
     val params: List<Pair<String, String>>,
     val subClasses: List<DataClass>
-)
+) {
+    fun print(): String {
+        val firstLevelClass = dataClassTemplate(
+            name = name,
+            params = params,
+        )
+        val subClasses = subClasses
+            .map { it.print() }
+            .fold("") { acc, v -> "$acc\n\n$v" }
+            // add indent
+            .replace("\n", "\n\t")
+        return if (subClasses.isEmpty())
+            firstLevelClass
+        else
+            "$firstLevelClass {$subClasses\n}"
+    }
+}
 
 data class ResponseModel(
     val name: String,
     val response: Postman.ResponseItem
-) {
+) : DataClassDecoder by DataClassDecoderImpl() {
     fun print(): String {
-        val dataClass = decodeDataClass2(
+        return decodeDataClass(
             name,
             response.body ?: "{}",
             "Response"
-        )
-
-        println("aksdnal \n$dataClass")
-        return decodeDataClass(
-            name,
-            response.body ?: "{}"
-        )
-    }
-
-    /**
-     * @param subClassSuffix in case you want to add suffix to the class name,
-     */
-    private fun decodeDataClass2(
-        name: String,
-        jsonString: String,
-        subClassSuffix: String?
-    ): DataClass {
-        val json = kotlin.runCatching {
-            Json.parseToJsonElement(jsonString)
-                .jsonObject
-        }.getOrElse { throw Error("parsing error $name $jsonString") }
-
-        val params = json
-            .map {
-                val valueType = resolveType(it.value)
-                val listItemType = if (valueType == ListType) {
-                    resolveType(it.value.jsonArray.first())
-                } else
-                    null
-                it.key to valueType to listItemType
-            }
-            // todo: support for multi dimensional list
-            //  ex: List<List<*>>
-            .onEach {
-                if (it.second == ListType) {
-                    val message =
-                        "Multi dimensional list is not yet supported.\n Object is multi dimensional list: ${json[it.first.first]}"
-                    throw IllegalArgumentException(message)
-                }
-            }
-
-        val subClasses = run {
-            val classTypeDecoded = run {
-                params
-                    .filter {
-                        it.first.second is ObjectType
-                    }
-                    .map {
-                        val mName =
-                            it.first.first.removeNonAlphaNumeric()
-                                .replaceFirstChar { c -> c.uppercase() } + (subClassSuffix ?: "")
-                        val mJson = json[it.first.first]!!.toString()
-                        decodeDataClass2(
-                            mName,
-                            mJson,
-                            subClassSuffix
-                        )
-                    }
-            }
-
-            val listTypesSubClasses = run {
-                params
-                    .filter {
-                        it.second == ObjectType
-                    }
-                    .map {
-                        // fixme boiler plate
-                        val objName = it.first.first
-                            .removeNonAlphaNumeric()
-                            .replaceFirstChar { c -> c.uppercase() }
-                            .let {
-                                "${it}Item${subClassSuffix ?: ""}?"
-                            }
-
-                        val mJson = json[it.first.first]!!.jsonArray.first().jsonObject.toString()
-                        decodeDataClass2(
-                            objName,
-                            mJson,
-                            subClassSuffix
-                        )
-                    }
-            }
-
-            classTypeDecoded.plus(listTypesSubClasses)
-        }
-
-        val paramsList = params
-            .map {
-                val stringToken = when {
-                    it.first.second == ObjectType -> {
-                        val mName = it.first.first
-                            .removeNonAlphaNumeric()
-                            .replaceFirstChar { c -> c.uppercase() }
-                            .let {
-                                "$it${subClassSuffix ?: ""}?"
-                            }
-                        mName
-                    }
-                    // list object
-                    it.second == ObjectType -> {
-                        // fixme boiler plate
-                        val objName = it.first.first
-                            .removeNonAlphaNumeric()
-                            .replaceFirstChar { c -> c.uppercase() }
-                            .let {
-                                "${it}Item${subClassSuffix ?: ""}?"
-                            }
-                        objName
-                    }
-                    // multi dimensional list type
-                    it.second == ListType -> {
-                        val message =
-                            "Multi dimensional list is not yet supported.\n Object is multi dimensional list: ${json[it.first.first]}"
-                        throw IllegalArgumentException(message)
-                    }
-                    // list primitives
-                    it.second != null && it.second != ObjectType && it.second != ListType -> {
-                        "List<${it.second?.value}?>?"
-                    }
-
-                    else -> it.first.second.value
-                }
-
-                it.first.first to stringToken
-            }
-
-        return DataClass(
-            name = name,
-            params = paramsList,
-            subClasses = subClasses
-        )
-    }
-
-    private fun decodeDataClass(
-        name: String,
-        body: String
-    ): String {
-        val pt1 = "@Serializable\ndata class $name("
-        val pt2 = decodeResponseBodyParam(body)
-        val pt3 = ")"
-
-        val subclasses = decodeSubClasses(body)
-
-        val pt4 = if (subclasses.isEmpty())
-            ""
-        else
-            subclasses.joinToString("\n\n")
-                // add extra indent
-                .replace("\n", "\n\t")
-                .let {
-                    "{\n\n\t$it\n}"
-                }
-        return "$pt1\n$pt2\n$pt3$pt4"
-    }
-
-    private fun decodeResponseBodyParam(
-        bodyJson: String
-    ): String {
-        val json = Json.parseToJsonElement(bodyJson)
-            .let {
-                if (it is JsonArray)
-                    it.first().jsonObject
-                else
-                    it.jsonObject
-            }
-
-        val params = json.keys.map { key ->
-            val type = resolveType(json[key]!!)
-                .fold(
-                    ifString = { it.value },
-                    ifNumber = { it.value },
-                    ifBoolean = { it.value },
-                    ifList = {
-                        val arr = json[key]!!.jsonArray
-                        if (arr.isEmpty())
-                            return@fold "List<Any?>"
-
-                        val listItemType = resolveType(arr.first())
-                            .fold(
-                                ifString = { "String" },
-                                ifNumber = { "Number" },
-                                ifBoolean = { "Boolean" },
-                                ifList = {
-                                    throw IllegalArgumentException("Multi dimensional list is not supported. Error at: $arr")
-                                },
-                                ifObject = {
-                                    key.removeNonAlphaNumeric()
-                                        .replaceFirstChar { it.uppercase() } + "Response"
-                                }
-                            )
-                        "List<${listItemType}?>"
-                    },
-                    ifObject = {
-                        key.removeNonAlphaNumeric().replaceFirstChar { it.uppercase() } + "Response"
-                    }
-                )
-
-            "\t@SerialName(\"${key}\")" +
-                    "\n\tval $key: ${type}?"
-        }.joinToString(",\n\n")
-
-        return params
-    }
-
-    private fun decodeSubClasses(
-        jsonBody: String
-    ): List<String> {
-        val json = Json.parseToJsonElement(jsonBody)
-            .let {
-                if (it is JsonArray) {
-                    it.first().jsonObject
-                } else {
-                    it.jsonObject
-                }
-            }
-        val subClassesMap = json.keys
-            .filter { key ->
-                val type = resolveType(json[key]!!)
-                type == ObjectType || type == ListType
-            }
-            .map { key ->
-                key to json[key]!!
-            }
-
-        val subClasses = subClassesMap
-            .map { (key, value) ->
-                decodeDataClass(
-                    key.removeNonAlphaNumeric().replaceFirstChar { it.uppercase() } + "Response",
-                    value.toString()
-                )
-            }
-
-        val subClassesSubClasses = subClassesMap
-            .map {
-                decodeSubClasses(it.second.toString())
-            }
-
-        return subClasses.plus(subClassesSubClasses.flatten())
+        ).print()
     }
 }
 
