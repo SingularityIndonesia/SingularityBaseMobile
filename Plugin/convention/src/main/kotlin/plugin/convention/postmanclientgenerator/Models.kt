@@ -105,6 +105,7 @@ data class Header(
     val name: String,
     val headers: List<Postman.HeaderItem>
 ) {
+    // todo: disgusting
     fun print(): String? {
 
         if (headers.isEmpty())
