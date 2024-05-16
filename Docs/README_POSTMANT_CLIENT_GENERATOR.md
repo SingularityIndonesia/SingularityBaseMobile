@@ -32,4 +32,4 @@ Next, put your postman api collection anywhere within the module, and this plugi
 # Important
 The collection files must be named with the suffix `.postman_collection.json`. ex: `Cart New.postman_collection.json`. You can have spaces noproblem.
 
-Your code will be generated in `build/generated/kotlin/postman_client` directory.
+Your code will be generated in `build/generated/kotlin/postman_client` directory. The directory is automatically added to the sourceSet, you can consume the functions right away.
