@@ -89,30 +89,45 @@ class PostmanClientGenerator : Plugin<Project> {
         items: Sequence<Postman.ItemItem>
     ): Sequence<PostmanClient> {
 
+        /**
+         * structures
+         * item:
+         *  -> request?
+         *  -> item?
+         *      -> request?
+         *      -> item?
+         *          ...
+         *
+         *  we are not flattening the request directly to keep the indentation.
+         */
         return items
-            .map {
+            .map { item ->
                 val newContexts =
-                    contexts.plus(Context(it.name.toString()))
+                    contexts.plus(Context(item.name.toString()))
 
                 // check if request available
-                if (it.request != null)
+                if (item.request != null)
                     sequenceOf(
                         createClient(
                             context = newContexts,
-                            request = it.request,
+                            request = item.request,
                             namespace = namespace,
                             groupName = groupName,
-                            response = it.response?.first()!!
+                            response = item.response?.first()!!
                         )
                     )
+                // if request not available then item is probably available
                 else
-                    // if request not available then item is probably available
-                    dumpRequest(
-                        contexts = newContexts,
-                        namespace = namespace,
-                        groupName = groupName,
-                        items = it.item?.asSequence()?.filterNotNull() ?: sequenceOf()
-                    )
+                    item.item?.asSequence()?.filterNotNull()
+                        ?.let {
+                            dumpRequest(
+                                contexts = newContexts,
+                                namespace = namespace,
+                                groupName = groupName,
+                                items = it
+                            )
+                        }
+                        ?: sequenceOf()
             }
             .flatten()
     }
