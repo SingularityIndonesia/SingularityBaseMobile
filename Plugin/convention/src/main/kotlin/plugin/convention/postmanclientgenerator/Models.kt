@@ -201,8 +201,6 @@ data class RequestModel(
             null
         } ?: return null
 
-        println("checking3 $queries")
-
         val pt1 = """
             @Serializable
             data class $name(

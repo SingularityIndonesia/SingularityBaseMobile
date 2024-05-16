@@ -44,7 +44,7 @@ class PostmanClientGenerator : Plugin<Project> {
 
                 clients
                     .map { client ->
-                        println("Generating Postmant Client for ${namespace}${client.name}-----------------------------")
+                        println("Generating Postmant Client: ${namespace}${client.name}")
                         generateFile(
                             outputDir = groupDir,
                             namespace = namespace,
