@@ -164,7 +164,7 @@ class PostmanClientGenerator : Plugin<Project> {
 
                     // fixme: support for type list
                     if (it.first() !is JsonObject)
-                        throw IllegalArgumentException("Body is noe a JSON object")
+                        throw IllegalArgumentException("Body is not a JSON object")
 
                 }
                 .map {
