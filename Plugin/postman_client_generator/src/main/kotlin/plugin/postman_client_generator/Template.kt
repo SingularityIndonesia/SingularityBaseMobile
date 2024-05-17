@@ -54,6 +54,8 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.bodyAsText
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
 import kotlinx.coroutines.withContext
@@ -96,16 +98,24 @@ suspend fun $functionName(
                     }
         """
         },
+        // should be queries
+//        requestContent?.let {
+//            """
+//                    Json.encodeToJsonElement(request).jsonObject
+//					    .forEach {
+//					        parameters.append(it.key, it.value.jsonPrimitive.content)
+//					    }
+//        """
+//        },
+        """
+                }""",
         requestContent?.let {
             """
-                    Json.encodeToJsonElement(request).jsonObject
-					    .forEach {
-					        parameters.append(it.key, it.value.jsonPrimitive.content)
-					    }
-        """
+                contentType(ContentType.Application.Json)
+                setBody(request)
+            """
         },
         """
-                }
             }
             .bodyAsText()
             .let {
