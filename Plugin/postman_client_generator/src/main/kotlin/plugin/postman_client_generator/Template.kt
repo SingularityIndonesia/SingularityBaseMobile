@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2024 Stefanus Ayudha (stefanus.ayudha@gmail.com)
+ * Created on 17/05/2024 14:05
+ * You are not allowed to remove the copyright.
+ */
 package plugin.postman_client_generator
 
 import plugin.postman_client_generator.companion.NumberTypeResolverStrategy
@@ -56,6 +61,8 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.encodeToJsonElement
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
+import java.math.BigDecimal
+import java.math.BigInteger
 
 suspend fun $functionName(
     httpClient: HttpClient""",

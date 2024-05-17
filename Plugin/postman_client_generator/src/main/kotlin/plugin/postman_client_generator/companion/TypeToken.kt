@@ -1,18 +1,16 @@
+/*
+ * Copyright (c) 2024 Stefanus Ayudha (stefanus.ayudha@gmail.com)
+ * Created on 17/05/2024 14:05
+ * You are not allowed to remove the copyright.
+ */
 package plugin.postman_client_generator.companion
 
-import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonPrimitive
-import kotlinx.serialization.json.booleanOrNull
 import kotlinx.serialization.json.contentOrNull
-import kotlinx.serialization.json.double
 import kotlinx.serialization.json.doubleOrNull
-import kotlinx.serialization.json.float
 import kotlinx.serialization.json.floatOrNull
-import kotlinx.serialization.json.int
 import kotlinx.serialization.json.intOrNull
-import kotlinx.serialization.json.long
+import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.longOrNull
 
 
@@ -50,7 +48,7 @@ object BooleanType : TypeToken {
 }
 
 data class NumberType(
-    val clue: String?
+    val clues: List<String?>,
 ) : TypeToken {
     override val value: String = "Number"
 }
@@ -63,43 +61,42 @@ object ObjectType : TypeToken {
     override val value: String = "Object"
 }
 
-fun resolveType(
-    typeClue: String?
+fun resolveStringType(
+    typeClues: List<String?>
 ): TypeToken {
-    when {
-        isBoolean(typeClue) -> BooleanType
-        isNumber(typeClue) -> NumberType(clue = typeClue)
-        isObject(typeClue) -> ObjectType
-        isList(typeClue) -> ListType
-        else -> throw IllegalArgumentException("Unknown type $typeClue")
+    return when {
+        isBoolean(typeClues) -> BooleanType
+        isNumber(typeClues) -> NumberType(
+            clues = typeClues
+        )
+
+        isObject(typeClues) -> ObjectType
+        isList(typeClues) -> ListType
+        else -> StringType
     }
-    return StringType
 }
 
-fun resolveType(
-    clue: JsonElement
+fun resolveJsonType(
+    clues: List<JsonElement?>
 ): TypeToken {
-    val type = when (clue) {
-        is JsonPrimitive -> {
-            when {
-                clue.doubleOrNull != null -> NumberType(clue = clue.double.toString())
-                clue.floatOrNull != null -> NumberType(clue = clue.float.toString())
-                clue.booleanOrNull != null -> BooleanType
-                clue.longOrNull != null -> NumberType(clue = clue.long.toString())
-                clue.intOrNull != null -> NumberType(clue = clue.int.toString())
-                clue.contentOrNull != null -> StringType
-                else -> StringType
-                /*else -> UnknownType*/
-            }
-        }
+    if (clues.isEmpty())
+        throw IllegalArgumentException("Please provide at least one item for clues.\nClues: $clues")
 
-        is JsonArray -> {
-            ListType
-        }
+    val type = when {
+        isObject(clues) -> ObjectType
+        isList(clues) -> ListType
+        isBoolean(clues) -> BooleanType
+        isNumber(clues) -> NumberType(
+            clues = clues.map {
+                it?.jsonPrimitive?.let {
+                    it.intOrNull ?: it.longOrNull ?: it.floatOrNull ?: it.doubleOrNull
+                    ?: it.contentOrNull
+                }?.toString()
+            },
+        )
 
-        is JsonObject -> {
-            ObjectType
-        }
+        isStringType(clues) -> StringType
+        else -> throw UnknownError("Fail to resolve types of $clues")
     }
     return type
 }

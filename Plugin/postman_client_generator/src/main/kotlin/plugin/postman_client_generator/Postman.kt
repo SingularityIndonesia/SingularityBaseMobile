@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2024 Stefanus Ayudha (stefanus.ayudha@gmail.com)
+ * Created on 17/05/2024 14:05
+ * You are not allowed to remove the copyright.
+ */
 package plugin.postman_client_generator
 
 import kotlinx.serialization.SerialName

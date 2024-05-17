@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2024 Stefanus Ayudha (stefanus.ayudha@gmail.com)
+ * Created on 17/05/2024 14:05
+ * You are not allowed to remove the copyright.
+ */
 package plugin.postman_client_generator
 
 import kotlinx.serialization.json.Json
@@ -10,7 +15,7 @@ import plugin.postman_client_generator.companion.addToSourceSet
 import plugin.postman_client_generator.companion.compareMerge
 import plugin.postman_client_generator.companion.find
 import plugin.postman_client_generator.companion.removeNonAlphaNumeric
-import plugin.postman_client_generator.companion.resolveType
+import plugin.postman_client_generator.companion.resolveJsonType
 import java.io.File
 
 
@@ -115,7 +120,9 @@ class PostmanClientGenerator : Plugin<Project> {
                     // check if request available
                     if (item.request != null) {
 
-                        val responseItem = item.response?.compareMerge()
+                        val responseItem = item.response
+                            ?.filterNotNull()
+                            ?.ifEmpty { throw IllegalArgumentException("Please provide at least one response for:\n$item") }
                             ?: throw IllegalArgumentException("Please provide at least one response for:\n$item")
 
                         sequenceOf(
@@ -171,7 +178,8 @@ class PostmanClientGenerator : Plugin<Project> {
                     it.jsonObject
                 }
 
-            val type = resolveType(bodies.first())
+            // fixme: support for type list
+            val type = resolveJsonType(bodies)
                 .let {
                     // fixme: support for type list
                     if (it != ObjectType)
@@ -180,6 +188,7 @@ class PostmanClientGenerator : Plugin<Project> {
                     it as ObjectType
                 }
 
+            // fixme: support for type list
             bodies
                 .compareMerge()
                 .also {
@@ -199,7 +208,7 @@ class PostmanClientGenerator : Plugin<Project> {
         namespace: String,
         groupName: String,
         request: Postman.Request,
-        response: Postman.ResponseItem
+        response: List<Postman.ResponseItem>
     ): PostmanClient {
         val method = request.method ?: ""
         val name = method.plus(

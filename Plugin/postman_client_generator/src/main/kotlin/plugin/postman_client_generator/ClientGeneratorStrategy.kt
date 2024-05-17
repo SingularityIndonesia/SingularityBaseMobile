@@ -1,7 +1,11 @@
+/*
+ * Copyright (c) 2024 Stefanus Ayudha (stefanus.ayudha@gmail.com)
+ * Created on 17/05/2024 14:05
+ * You are not allowed to remove the copyright.
+ */
 package plugin.postman_client_generator
 
 import plugin.postman_client_generator.companion.SmartResolverStrategy
-import plugin.postman_client_generator.companion.ToStringStrategy
 import java.util.regex.Pattern
 
 sealed interface ClientGeneratorStrategy {
@@ -11,7 +15,7 @@ sealed interface ClientGeneratorStrategy {
         nameSpace: String,
         groupName: String,
         request: Postman.Request,
-        response: Postman.ResponseItem
+        response: List<Postman.ResponseItem>
     ): PostmanClient
 }
 
@@ -22,7 +26,7 @@ object CommonClientGenerator : ClientGeneratorStrategy {
         nameSpace: String,
         groupName: String,
         request: Postman.Request,
-        response: Postman.ResponseItem
+        response: List<Postman.ResponseItem>
     ): PostmanClient {
 
         /**
@@ -93,10 +97,10 @@ object CommonClientGenerator : ClientGeneratorStrategy {
             requestModelName = requestModelName,
             //fixme: use smart resolver strategy
             /*requestModelNumberTypeResolverStrategy = SmartResolverStrategy,*/
-            requestModelNumberTypeResolverStrategy = ToStringStrategy,
+            requestModelNumberTypeResolverStrategy = SmartResolverStrategy,
             requestModel = requestModel,
             responseModelName = responseModelName,
-            responseModelNumberTypeResolverStrategy = ToStringStrategy,
+            responseModelNumberTypeResolverStrategy = SmartResolverStrategy,
             responseModel = responseModel,
             pathArguments = pathArguments,
             endpoint = endpoint
@@ -118,7 +122,7 @@ object HEADClientGenerator : ClientGeneratorStrategy {
         nameSpace: String,
         groupName: String,
         request: Postman.Request,
-        response: Postman.ResponseItem
+        response: List<Postman.ResponseItem>
     ): PostmanClient {
         // fixme
         return PostmanClient(
@@ -137,7 +141,7 @@ object OPTIONSClientGenerator : ClientGeneratorStrategy {
         nameSpace: String,
         groupName: String,
         request: Postman.Request,
-        response: Postman.ResponseItem
+        response: List<Postman.ResponseItem>
     ): PostmanClient {
         // fixme
         return PostmanClient(

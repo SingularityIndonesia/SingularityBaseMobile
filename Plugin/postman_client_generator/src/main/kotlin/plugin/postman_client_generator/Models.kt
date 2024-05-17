@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2024 Stefanus Ayudha (stefanus.ayudha@gmail.com)
+ * Created on 17/05/2024 14:05
+ * You are not allowed to remove the copyright.
+ */
 package plugin.postman_client_generator
 
 import kotlinx.serialization.Serializable
@@ -60,14 +65,14 @@ data class DataClass(
 
 data class ResponseModel(
     val name: String,
-    val response: Postman.ResponseItem
+    val response: List<Postman.ResponseItem>
 ) : DataClassDecoder by DataClassDecoderImpl() {
     fun print(
         numberTypeResolverStrategy: NumberTypeResolverStrategy
     ): String {
         return decodeDataClass(
             name = name,
-            jsonString = response.body ?: "{}",
+            jsonString = response.map { it.body ?: "{}" },
             numberTypeResolverStrategy = numberTypeResolverStrategy,
             subClassSuffix = "Response"
         ).print()
@@ -92,7 +97,7 @@ data class RequestModel(
                 request.body.raw?.let {
                     decodeDataClass(
                         name = name,
-                        jsonString = it,
+                        jsonString = listOf(it),
                         numberTypeResolverStrategy = numberTypeResolverStrategy,
                         subClassSuffix = "Request"
                     )

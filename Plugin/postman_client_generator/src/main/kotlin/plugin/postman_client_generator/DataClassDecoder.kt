@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2024 Stefanus Ayudha (stefanus.ayudha@gmail.com)
+ * Created on 17/05/2024 14:05
+ * You are not allowed to remove the copyright.
+ */
 package plugin.postman_client_generator
 
 import kotlinx.serialization.json.Json
@@ -7,17 +12,20 @@ import plugin.postman_client_generator.companion.ListType
 import plugin.postman_client_generator.companion.NumberTypeResolverStrategy
 import plugin.postman_client_generator.companion.NumberType
 import plugin.postman_client_generator.companion.ObjectType
+import plugin.postman_client_generator.companion.compareMerge
 import plugin.postman_client_generator.companion.removeNonAlphaNumeric
-import plugin.postman_client_generator.companion.resolveType
+import plugin.postman_client_generator.companion.resolveJsonType
 
 interface DataClassDecoder {
 
     /**
      * @param subClassSuffix in case you want to add suffix to the class name,
+     * @param jsonString Is json string to parse. Class decoder only support list of json object.
+     *   ex: [ {"name":"dahyun", "is_cute":true} {"age":20}]; Those classes will be compared into one json object {"name": "dahyun", "is_cute":true, "age": 20}
      */
     fun decodeDataClass(
         name: String,
-        jsonString: String,
+        jsonString: List<String>,
         numberTypeResolverStrategy: NumberTypeResolverStrategy,
         subClassSuffix: String?
     ): DataClass
@@ -26,21 +34,24 @@ interface DataClassDecoder {
 class DataClassDecoderImpl : DataClassDecoder {
     override fun decodeDataClass(
         name: String,
-        jsonString: String,
+        jsonString: List<String>,
         numberTypeResolverStrategy: NumberTypeResolverStrategy,
         subClassSuffix: String?
     ): DataClass {
-        val json = kotlin.runCatching {
-            Json.parseToJsonElement(jsonString)
+
+        val comparedJson = runCatching {
+            jsonString.map(Json::parseToJsonElement)
+                .map { it.jsonObject }
+                .compareMerge()
                 .jsonObject
         }.getOrElse { throw Error("parsing error $name $jsonString") }
 
         val params = run {
-            json
+            comparedJson
                 .map {
-                    val valueType = resolveType(it.value)
+                    val valueType = resolveJsonType(listOf(it.value))
                     val listItemType = if (valueType == ListType) {
-                        resolveType(it.value.jsonArray.first())
+                        resolveJsonType(it.value.jsonArray)
                     } else
                         null
                     it.key to valueType to listItemType
@@ -50,7 +61,7 @@ class DataClassDecoderImpl : DataClassDecoder {
                 .onEach {
                     if (it.second == ListType) {
                         val message =
-                            "Multi dimensional list is not yet supported.\n Object is multi dimensional list: ${json[it.first.first]}"
+                            "Multi dimensional list is not yet supported.\n Object is multi dimensional list: ${comparedJson[it.first.first]}"
                         throw IllegalArgumentException(message)
                     }
                 }
@@ -66,7 +77,9 @@ class DataClassDecoderImpl : DataClassDecoder {
                         val mName =
                             it.first.first.removeNonAlphaNumeric()
                                 .replaceFirstChar { c -> c.uppercase() } + (subClassSuffix ?: "")
-                        val mJson = json[it.first.first]!!.toString()
+
+                        // json already compared so we can list it up a single item.
+                        val mJson = listOf(comparedJson[it.first.first]!!.toString())
                         decodeDataClass(
                             mName,
                             mJson,
@@ -90,7 +103,10 @@ class DataClassDecoderImpl : DataClassDecoder {
                                 "${it}Item${subClassSuffix ?: ""}"
                             }
 
-                        val mJson = json[it.first.first]!!.jsonArray.first().jsonObject.toString()
+                        val mJson =
+                            comparedJson[it.first.first]!!.jsonArray
+                                .map { it.jsonObject.toString() }
+
                         decodeDataClass(
                             objName,
                             mJson,
@@ -108,9 +124,11 @@ class DataClassDecoderImpl : DataClassDecoder {
                 .map {
                     val stringToken = when {
                         // number type
+                        // fixme:
                         it.first.second is NumberType -> {
+                            val clues = (it.first.second as NumberType).clues
                             numberTypeResolverStrategy.predictedType(
-                                (it.first.second as NumberType).clue
+                                clues
                             )
                         }
                         // object type
@@ -137,15 +155,17 @@ class DataClassDecoderImpl : DataClassDecoder {
                         // multi dimensional list type
                         it.second == ListType -> {
                             val message =
-                                "Multi dimensional list is not yet supported.\n Object is multi dimensional list: ${json[it.first.first]}"
+                                "Multi dimensional list is not yet supported.\n Object is multi dimensional list: ${comparedJson[it.first.first]}"
                             throw IllegalArgumentException(message)
                         }
                         // list primitives
                         it.second != null && it.second != ObjectType && it.second != ListType -> {
                             val itemType =
+                                // fixme:
                                 if (it.second is NumberType) {
+                                    val clues = (it.first.second as NumberType).clues
                                     numberTypeResolverStrategy.predictedType(
-                                        (it.second as NumberType).clue
+                                        clues
                                     )
                                 } else {
                                     it.second?.value
