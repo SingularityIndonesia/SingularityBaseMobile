@@ -1,0 +1,620 @@
+{
+	"info": {
+		"_postman_id": "051756b2-f99f-44e7-90ad-f206332df2e0",
+		"name": "Example",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4864749"
+	},
+	"item": [
+		{
+			"name": "Example",
+			"item": [
+				{
+					"name": "Active",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer dasdasdsadsadsa",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \r\n    \"account_id\":\"28f7aba0f9d0c06e45c8a4c9b2c4da60f69adb2657dd6bd97346db19df819152\",\r\n    \"date_filter\":{ \r\n        \"start_date\":\"2020-06-17\",\r\n        \"end_date\":\"2024-06-17\"\r\n    }, \r\n    \"sort_by\":{   \r\n        \"value\":\"02\",\r\n        \"locale_id\":\"Tanggal penarikan terakhir\",\r\n        \"locale_en\":\"Last example date\"\r\n    },\r\n    \"tenor\":[\r\n        {\r\n            \"tenor\":\"3\",\r\n            \"locale_id\":\"3 Bulan\",\r\n            \"locale_en\":\"3 Months\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/example/active.json",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"example",
+								"active.json"
+							],
+							"query": [
+								{
+									"key": "message",
+									"value": "I love it"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer dasdasdsadsadsa",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{   \r\n    \"account_id\":\"28f7aba0f9d0c06e45c8a4c9b2c4da60f69adb2657dd6bd97346db19df819152\",\r\n    \"date_filter\":{ \r\n        \"start_date\":\"2020-06-17\",\r\n        \"end_date\":\"2024-06-17\"\r\n    }, \r\n    \"sort_by\":{   \r\n        \"value\":\"02\",\r\n        \"locale_id\":\"Tanggal penarikan terakhir\",\r\n        \"locale_en\":\"Last example date\"\r\n    },\r\n    \"tenor\":[\r\n        {\r\n            \"tenor\":\"3\",\r\n            \"locale_id\":\"3 Bulan\",\r\n            \"locale_en\":\"3 Months\"\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/example/active.json",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"example",
+										"active.json"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Connection",
+									"value": "Keep-Alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5, max=100"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "last-modified",
+									"value": "Thu, 25 Apr 2024 09:23:30 GMT"
+								},
+								{
+									"key": "accept-ranges",
+									"value": "bytes"
+								},
+								{
+									"key": "content-encoding",
+									"value": "br"
+								},
+								{
+									"key": "vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "content-length",
+									"value": "709"
+								},
+								{
+									"key": "date",
+									"value": "Wed, 15 May 2024 04:57:18 GMT"
+								},
+								{
+									"key": "server",
+									"value": "LiteSpeed"
+								},
+								{
+									"key": "alt-svc",
+									"value": "h3=\":443\"; ma=2592000, h3-29=\":443\"; ma=2592000, h3-Q050=\":443\"; ma=2592000, h3-Q046=\":443\"; ma=2592000, h3-Q043=\":443\"; ma=2592000, quic=\":443\"; ma=2592000; v=\"43,46\""
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"timestamp\": \"2024-03-05 10:07:41\",\n    \"trace_id\": \"58d26a712ca10107\",\n    \"source_system\": \"OCTOMOBILE_ID\",\n    \"response_key\": \"SUCCESS\",\n    \"message\": {\n        \"title_idn\": \"SUKSES\",\n        \"title_eng\": \"SUCCESS\",\n        \"desc_idn\": \"SUKSES\",\n        \"desc_eng\": \"SUCCESS\"\n    },\n    \"data\": {\n        \"list_example_active\": [\n            {\n                \"example_detail\": {\n                    \"sequence\": \"1\",\n                    \"loan_number\": \"5281234568975793\",\n                    \"loan_number_masked\": \"52••••••••5793\",\n                    \"reference_no\": \"1234567891\",\n                    \"transaction_id\": \"12345678\",\n                    \"example_amount\": \"1120000000000.00\",\n                    \"example_date\": \"2021-03-17 10:48:00\",\n                    \"payment_method\": \"Installment\",\n                    \"tenor\": \"2\",\n                    \"installment_amount\": \"400000.00\",\n                    \"currency\": \"IDR\",\n                    \"first_installment_date\": \"2021-06-07 00:00:00\",\n                    \"last_installment_date\": \"2021-06-07 00:00:00\",\n                    \"annual_effective_rate_percentage\": \"30.00\",\n                    \"example_fee\": \"20000.00\",\n                    \"remaining_outstanding\": \"100000.00\",\n                    \"installment_date\": \"2021-06-07 00:00:00\",\n                    \"due_date\": \"2021-06-17 00:00:00\",\n                    \"payment_status\": \"on-time\",\n                    \"late_charge\": \"20000\",\n                    \"installment_tenor\": \"1\"\n                },\n                \"payments\": [\n                    {\n                        \"due_date\": \"2024-03-28 00:00:00\",\n                        \"transaction_id\": \"123456\",\n                        \"reference_no\": \"12577327372838\",\n                        \"tenor\": \"1\",\n                        \"payment_installment\": \"1\",\n                        \"billing_status\": \"paid\",\n                        \"billing_amount\": \"1000000.00\",\n                        \"currency\": \"IDR\",\n                        \"billing_date\": \"2023-12-29 00:00:00\",\n                        \"payment_type\": {\n                            \"value\": \"01\",\n                            \"locale_en\": \"Current month's payment\",\n                            \"locale_id\": \"Pembayaran bulan berjalan\"\n                        },\n                        \"payment_fee\": \"5000.00\",\n                        \"total\": \"1005000.00\"\n                    },\n                    {\n                        \"transaction_id\": \"123456\",\n                        \"reference_no\": \"12577327372838\",\n                        \"tenor\": \"1\",\n                        \"payment_installment\": \"1\",\n                        \"billing_status\": \"paid\",\n                        \"billing_amount\": \"1000000.00\",\n                        \"currency\": \"IDR\",\n                        \"billing_date\": \"2023-12-29 00:00:00\",\n                        \"payment_type\": {\n                            \"value\": \"01\",\n                            \"locale_en\": \"Current month's payment\",\n                            \"locale_id\": \"Pembayaran bulan berjalan\"\n                        },\n                        \"payment_fee\": \"5000.00\",\n                        \"total\": \"1005000.00\"\n                    }\n                ]\n            },\n            {\n                \"example_detail\": {\n                    \"sequence\": \"1\",\n                    \"loan_number\": \"5281234568975793\",\n                    \"reference_no\": \"1234567891\",\n                    \"transaction_id\": \"12345678\",\n                    \"example_amount\": \"1120000000000.00\",\n                    \"example_date\": \"2021-03-17 10:48:00\",\n                    \"payment_method\": \"Installment\",\n                    \"tenor\": \"2\",\n                    \"installment_amount\": \"400000.00\",\n                    \"currency\": \"IDR\",\n                    \"first_installment_date\": \"2021-06-07 00:00:00\",\n                    \"last_installment_date\": \"2021-06-07 00:00:00\",\n                    \"annual_effective_rate_percentage\": \"30.00\",\n                    \"example_fee\": \"20000.00\",\n                    \"remaining_outstanding\": \"100000.00\",\n                    \"installment_date\": \"2021-06-07 00:00:00\",\n                    \"due_date\": \"2021-06-17 00:00:00\",\n                    \"payment_status\": \"on-time\",\n                    \"late_charge\": \"20000\",\n                    \"installment_tenor\": \"1\"\n                },\n                \"payments\": [\n                    {\n                        \"transaction_id\": \"123212121\",\n                        \"reference_no\": \"12577327372121\",\n                        \"tenor\": \"1\",\n                        \"payment_installment\": \"1\",\n                        \"billing_status\": \"paid\",\n                        \"billing_amount\": \"1000000.00\",\n                        \"currency\": \"IDR\",\n                        \"billing_date\": \"2023-12-29 00:00:00\",\n                        \"payment_type\": {\n                            \"value\": \"01\",\n                            \"locale_en\": \"Current month's payment\",\n                            \"locale_id\": \"Pembayaran bulan berjalan\"\n                        },\n                        \"payment_fee\": \"5000.00\",\n                        \"total\": \"1005000.00\"\n                    },\n                    {\n                        \"transaction_id\": \"123456\",\n                        \"reference_no\": \"12577327372838\",\n                        \"tenor\": \"1\",\n                        \"payment_installment\": \"1\",\n                        \"billing_status\": \"paid\",\n                        \"billing_amount\": \"1000000.00\",\n                        \"currency\": \"IDR\",\n                        \"billing_date\": \"2023-12-29 00:00:00\",\n                        \"payment_type\": {\n                            \"value\": \"01\",\n                            \"locale_en\": \"Current month's payment\",\n                            \"locale_id\": \"Pembayaran bulan berjalan\"\n                        },\n                        \"payment_fee\": \"5000.00\",\n                        \"total\": \"1005000.00\"\n                    }\n                ]\n            }\n        ]\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Inquiry Example (Ringkasan)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \r\n    \"account_id\":\"28f7aba0f9d0c06e45c8a4c9b2c4da60f69adb2657dd6bd97346db19df819152\", \r\n    \"example_amount\":\"1500000.00\",\r\n    \"sof_account\":{\r\n        \"account_name\": \"Tab X-Tra\",\r\n        \"account_number_masked\": \"••••5000\",\r\n        \"account_id\": \"5e2ea6efa31cfc4b4be82a76c2b412446a5e6b852767195c07a655efef201389\",\r\n        \"account_balance\": \"6399223442615.14\",\r\n        \"account_type\": \"SDA\",\r\n        \"currency\": \"IDR\",\r\n        \"esb_sof_flag\": \"N\",\r\n        \"syariah_flag\": false,\r\n        \"default_account\": true,\r\n        \"staff_flag\":\"staff\"\r\n    },\r\n    \"tenor\":{\r\n        \"id\":\"2\",\r\n        \"tenor\":\"1\",\r\n        \"locale_id\":\"1 Bulan\",\r\n        \"locale_en\":\"1 Months\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/example/inquiry.json",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"example",
+								"inquiry.json"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Inquiry Example (Ringkasan)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{   \r\n    \"account_id\":\"28f7aba0f9d0c06e45c8a4c9b2c4da60f69adb2657dd6bd97346db19df819152\", \r\n    \"example_amount\":\"1500000.00\",\r\n    \"sof_account\":{\r\n        \"account_name\": \"Tab X-Tra\",\r\n        \"account_number_masked\": \"••••5000\",\r\n        \"account_id\": \"5e2ea6efa31cfc4b4be82a76c2b412446a5e6b852767195c07a655efef201389\",\r\n        \"account_balance\": \"6399223442615.14\",\r\n        \"account_type\": \"SDA\",\r\n        \"currency\": \"IDR\",\r\n        \"esb_sof_flag\": \"N\",\r\n        \"syariah_flag\": false,\r\n        \"default_account\": true,\r\n        \"staff_flag\":\"staff\"\r\n    },\r\n    \"tenor\":{\r\n        \"id\":\"2\",\r\n        \"tenor\":\"1\",\r\n        \"locale_id\":\"1 Bulan\",\r\n        \"locale_en\":\"1 Months\"\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/example/inquiry.json",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"example",
+										"inquiry.json"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Connection",
+									"value": "Keep-Alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5, max=100"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "last-modified",
+									"value": "Fri, 26 Apr 2024 08:53:47 GMT"
+								},
+								{
+									"key": "accept-ranges",
+									"value": "bytes"
+								},
+								{
+									"key": "content-encoding",
+									"value": "br"
+								},
+								{
+									"key": "vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "content-length",
+									"value": "351"
+								},
+								{
+									"key": "date",
+									"value": "Wed, 15 May 2024 04:46:41 GMT"
+								},
+								{
+									"key": "server",
+									"value": "LiteSpeed"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"timestamp\": \"2024-03-05 10:07:41\",\n    \"trace_id\": \"58d26a712ca10107\",\n    \"source_system\": \"OCTOMOBILE_ID\",\n    \"response_key\": \"SUCCESS\",\n    \"message\": {\n        \"title_idn\": \"SUKSES\",\n        \"title_eng\": \"SUCCESS\",\n        \"desc_idn\": \"SUKSES\",\n        \"desc_eng\": \"SUCCESS\"\n    },\n    \"data\": {\n        \"inquiry_number\": \"829182918921\",\n        \"example_amount\": \"1120000000000.00\",\n        \"example_date\": \"2021-03-17 10:48:00\",\n        \"payment_method\": \"Installment\",\n        \"tenor\": \"1\",\n        \"installment_amount\": \"400000.00\",\n        \"currency\": \"IDR\",\n        \"first_installment_date\": \"2021-06-07 00:00:00\",\n        \"last_installment_date\": \"2021-06-07 00:00:00\",\n        \"annual_effective_rate_percentage\": \"30.00\",\n        \"example_fee\": \"20000.00\",\n        \"installment_date\": \"2021-06-07 00:00:00\",\n        \"due_date\": \"2021-06-17 00:00:00\",\n        \"customer_name\": \"jeniffer santoso budiman\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Submit",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/example/submit.json",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"example",
+								"submit.json"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Submit",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/example/submit.json",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"example",
+										"submit.json"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Connection",
+									"value": "Keep-Alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5, max=100"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "last-modified",
+									"value": "Fri, 26 Apr 2024 08:53:47 GMT"
+								},
+								{
+									"key": "accept-ranges",
+									"value": "bytes"
+								},
+								{
+									"key": "content-encoding",
+									"value": "br"
+								},
+								{
+									"key": "vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "content-length",
+									"value": "609"
+								},
+								{
+									"key": "date",
+									"value": "Wed, 15 May 2024 04:46:49 GMT"
+								},
+								{
+									"key": "server",
+									"value": "LiteSpeed"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"timestamp\": \"2024-03-05 10:07:41\",\n    \"trace_id\": \"58d26a712ca10107\",\n    \"source_system\": \"OCTOMOBILE_ID\",\n    \"response_key\": \"SUCCESS\",\n    \"message\": {\n        \"title_idn\": \"SUKSES\",\n        \"title_eng\": \"SUCCESS\",\n        \"desc_idn\": \"SUKSES\",\n        \"desc_eng\": \"SUCCESS\"\n    },\n    \"data\": {\n        \"sequence\": \"1\",\n        \"loan_number\": \"5281234568975793\",\n        \"reference_no\": \"1234567891\",\n        \"transaction_id\": \"12345678\",\n        \"example_amount\": \"1120000000000.00\",\n        \"example_date\": \"2021-03-17 10:48:00\",\n        \"payment_method\": \"Installment\",\n        \"tenor\": \"1\",\n        \"installment_amount\": \"400000.00\",\n        \"currency\": \"IDR\",\n        \"first_installment_date\": \"2021-06-07 00:00:00\",\n        \"last_installment_date\": \"2021-06-07 00:00:00\",\n        \"annual_effective_rate_percentage\": \"30.00\",\n        \"example_fee\": \"20000.00\",\n        \"remaining_outstanding\": \"100000.00\",\n        \"installment_date\": \"2021-06-07 00:00:00\",\n        \"due_date\": \"2021-06-17 00:00:00\",\n        \"payment_status\": \"on-time\",\n        \"late_charge\": \"20000\",\n        \"installment_tenor\": \"1\",\n        \"sof_account\": {\n            \"account_name\": \"Tab X-Tra\",\n            \"account_number_masked\": \"••••5000\",\n            \"account_id\": \"5e2ea6efa31cfc4b4be82a76c2b412446a5e6b852767195c07a655efef201389\",\n            \"account_balance\": \"6399223442615.14\",\n            \"account_type\": \"SDA\",\n            \"currency\": \"IDR\",\n            \"esb_sof_flag\": \"N\",\n            \"syariah_flag\": false,\n            \"default_account\": true,\n            \"staff_flag\": \"staff\"\n        },\n        \"customer_name\": \"jeniffer santoso budiman\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "History",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \r\n    \"account_id\":\"28f7aba0f9d0c06e45c8a4c9b2c4da60f69adb2657dd6bd97346db19df819152\",\r\n    \"date_filter\":{ \r\n        \"start_date\":\"2020-06-17\",\r\n        \"end_date\":\"2024-06-17\"\r\n    }, \r\n    \"sort_by\":{   \r\n        \"value\":\"02\",\r\n        \"locale_id\":\"Tanggal penarikan terakhir\",\r\n        \"locale_en\":\"Last example date\"\r\n    },\r\n    \"tenor\":[\r\n        {\r\n            \"tenor\":\"3\",\r\n            \"locale_id\":\"3 Bulan\",\r\n            \"locale_en\":\"3 Months\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/example/histories.json",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"example",
+								"histories.json"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "History",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{   \r\n    \"account_id\":\"28f7aba0f9d0c06e45c8a4c9b2c4da60f69adb2657dd6bd97346db19df819152\",\r\n    \"date_filter\":{ \r\n        \"start_date\":\"2020-06-17\",\r\n        \"end_date\":\"2024-06-17\"\r\n    }, \r\n    \"sort_by\":{   \r\n        \"value\":\"02\",\r\n        \"locale_id\":\"Tanggal penarikan terakhir\",\r\n        \"locale_en\":\"Last example date\"\r\n    },\r\n    \"tenor\":[\r\n        {\r\n            \"tenor\":\"3\",\r\n            \"locale_id\":\"3 Bulan\",\r\n            \"locale_en\":\"3 Months\"\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/example/histories.json",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"example",
+										"histories.json"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Connection",
+									"value": "Keep-Alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5, max=100"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "last-modified",
+									"value": "Thu, 25 Apr 2024 09:37:03 GMT"
+								},
+								{
+									"key": "accept-ranges",
+									"value": "bytes"
+								},
+								{
+									"key": "content-encoding",
+									"value": "br"
+								},
+								{
+									"key": "vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "content-length",
+									"value": "429"
+								},
+								{
+									"key": "date",
+									"value": "Wed, 15 May 2024 04:47:11 GMT"
+								},
+								{
+									"key": "server",
+									"value": "LiteSpeed"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"timestamp\": \"2024-03-05 10:07:41\",\n    \"trace_id\": \"58d26a712ca10107\",\n    \"source_system\": \"OCTOMOBILE_ID\",\n    \"response_key\": \"SUCCESS\",\n    \"message\": {\n        \"title_idn\": \"SUKSES\",\n        \"title_eng\": \"SUCCESS\",\n        \"desc_idn\": \"SUKSES\",\n        \"desc_eng\": \"SUCCESS\"\n    },\n    \"data\": {\n        \"history_list\": [\n            {\n                \"sequence\": \"1\",\n                \"loan_number\": \"5281234568975793\",\n                \"reference_no\": \"1234567891\",\n                \"transaction_id\": \"12345678\",\n                \"example_amount\": \"1120000000000.00\",\n                \"example_date\": \"2021-03-17 10:48:00\",\n                \"payment_method\": \"Installment\",\n                \"tenor\": \"2\",\n                \"installment_amount\": \"400000.00\",\n                \"currency\": \"IDR\",\n                \"first_installment_date\": \"2021-06-07 00:00:00\",\n                \"last_installment_date\": \"2021-06-07 00:00:00\",\n                \"annual_effective_rate_percentage\": \"30.00\",\n                \"example_fee\": \"20000.00\",\n                \"remaining_outstanding\": \"100000.00\",\n                \"installment_date\": \"2021-06-07 00:00:00\",\n                \"due_date\": \"2021-06-17 00:00:00\",\n                \"payment_status\": \"on-time\",\n                \"late_charge\": \"20000\",\n                \"installment_tenor\": \"1\"\n            }\n        ]\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Sort Product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/example/sort-product.json",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"example",
+								"sort-product.json"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Sort Product",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/example/sort-product.json",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"example",
+										"sort-product.json"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Connection",
+									"value": "Keep-Alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5, max=100"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "last-modified",
+									"value": "Mon, 01 Apr 2024 02:58:07 GMT"
+								},
+								{
+									"key": "accept-ranges",
+									"value": "bytes"
+								},
+								{
+									"key": "content-encoding",
+									"value": "br"
+								},
+								{
+									"key": "vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "content-length",
+									"value": "352"
+								},
+								{
+									"key": "date",
+									"value": "Wed, 15 May 2024 04:47:26 GMT"
+								},
+								{
+									"key": "server",
+									"value": "LiteSpeed"
+								},
+								{
+									"key": "alt-svc",
+									"value": "h3=\":443\"; ma=2592000, h3-29=\":443\"; ma=2592000, h3-Q050=\":443\"; ma=2592000, h3-Q046=\":443\"; ma=2592000, h3-Q043=\":443\"; ma=2592000, quic=\":443\"; ma=2592000; v=\"43,46\""
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"timestamp\": \"2024-03-05 10:07:41\",\n    \"trace_id\": \"58d26a712ca10107\",\n    \"source_system\": \"OCTOMOBILE_ID\",\n    \"response_key\": \"SUCCESS\",\n    \"message\": {\n        \"title_idn\": \"SUKSES\",\n        \"title_eng\": \"SUCCESS\",\n        \"desc_idn\": \"SUKSES\",\n        \"desc_eng\": \"SUCCESS\"\n    },\n    \"data\": {\n        \"sort_product_list\": [\n            {\n                \"value\": \"01\",\n                \"locale_id\": \"Tanggal penarikan pertama\",\n                \"locale_en\": \"Earliest example date\"\n            },\n            {\n                \"value\": \"02\",\n                \"locale_id\": \"Tanggal penarikan terakhir\",\n                \"locale_en\": \"Last example date\"\n            },\n            {\n                \"value\": \"03\",\n                \"locale_id\": \"Tenor terpendek\",\n                \"locale_en\": \"Shortest term\"\n            },\n            {\n                \"value\": \"04\",\n                \"locale_id\": \"Tenor terpanjang\",\n                \"locale_en\": \"Longest term\"\n            },\n            {\n                \"value\": \"05\",\n                \"locale_id\": \"Nominal penarikan tertinggi\",\n                \"locale_en\": \"Highest example amount\"\n            },\n            {\n                \"value\": \"06\",\n                \"locale_id\": \"Nominal penarikan terendah\",\n                \"locale_en\": \"Lowest example amount\"\n            }\n        ]\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Loan Parameter",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/example/loan.json",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"example",
+								"loan.json"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Loan Parameter",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/example/loan.json",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"example",
+										"loan.json"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Connection",
+									"value": "Keep-Alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5, max=100"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "last-modified",
+									"value": "Thu, 25 Apr 2024 04:25:33 GMT"
+								},
+								{
+									"key": "accept-ranges",
+									"value": "bytes"
+								},
+								{
+									"key": "content-encoding",
+									"value": "br"
+								},
+								{
+									"key": "vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "content-length",
+									"value": "250"
+								},
+								{
+									"key": "date",
+									"value": "Wed, 15 May 2024 04:47:33 GMT"
+								},
+								{
+									"key": "server",
+									"value": "LiteSpeed"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"timestamp\": \"2024-03-05 10:07:41\",\n    \"trace_id\": \"58d26a712ca10107\",\n    \"source_system\": \"OCTOMOBILE_ID\",\n    \"response_key\": \"SUCCESS\",\n    \"message\": {\n        \"title_idn\": \"SUKSES\",\n        \"title_eng\": \"SUCCESS\",\n        \"desc_idn\": \"SUKSES\",\n        \"desc_eng\": \"SUCCESS\"\n    },\n    \"data\": {\n        \"minimum_example_singularity_employee\": \"500000.00\",\n        \"minimum_example\": \"400000.00\",\n        \"maximum_example_singularity_employee\": \"1000000.00\",\n        \"maximum_example\": \"5000000.00\",\n        \"example_amount_multiples\": \"100000\"\n    }\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080/api",
+			"type": "string"
+		}
+	]
+}
