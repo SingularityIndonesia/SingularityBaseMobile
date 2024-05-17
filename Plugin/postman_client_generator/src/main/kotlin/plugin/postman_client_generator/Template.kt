@@ -33,6 +33,9 @@ fun clientTemplate(
     method: String,
     headerModelName: String?,
     headerModel: Header?,
+    queryModelName: String?,
+    queryModel: QueryModel?,
+    queryModelNumberTypeResolverStrategy: NumberTypeResolverStrategy,
     requestModelName: String?,
     requestModel: RequestModel?,
     requestModelNumberTypeResolverStrategy: NumberTypeResolverStrategy,
@@ -46,6 +49,7 @@ fun clientTemplate(
     val headerContent = headerModel?.print()
     val requestContent = requestModel?.print(requestModelNumberTypeResolverStrategy)
     val responseContent = responseModel.print(responseModelNumberTypeResolverStrategy)
+    val queryContent = queryModel?.print(queryModelNumberTypeResolverStrategy)
 
     return listOfNotNull(
         """
@@ -76,6 +80,11 @@ suspend fun $functionName(
                 """,
     request: $requestModelName"""
             },
+        queryContent
+            ?.let {
+                """,
+    query: $queryModelName"""
+            },
         pathArguments
             .ifEmpty { null }
             ?.map {
@@ -99,14 +108,14 @@ suspend fun $functionName(
         """
         },
         // should be queries
-//        requestContent?.let {
-//            """
-//                    Json.encodeToJsonElement(request).jsonObject
-//					    .forEach {
-//					        parameters.append(it.key, it.value.jsonPrimitive.content)
-//					    }
-//        """
-//        },
+        queryContent?.let {
+            """
+                    Json.encodeToJsonElement(query).jsonObject
+					    .forEach {
+					        parameters.append(it.key, it.value.jsonPrimitive.content)
+					    }
+        """
+        },
         """
                 }""",
         requestContent?.let {
@@ -124,6 +133,7 @@ suspend fun $functionName(
     }
 }""",
         headerContent?.let { "\n\n$it" },
+        queryContent?.let { "\n\n$it" },
         requestContent?.let { "\n\n$it" },
         responseContent.let { "\n\n$it" }
     )
