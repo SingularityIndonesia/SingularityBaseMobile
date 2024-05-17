@@ -16,6 +16,7 @@ import plugin.postman_client_generator.companion.compareMerge
 import plugin.postman_client_generator.companion.removeNonAlphaNumeric
 import plugin.postman_client_generator.companion.resolveJsonType
 
+val commentRemoverPattern = Regex("//.*$", RegexOption.MULTILINE)
 interface DataClassDecoder {
 
     /**
@@ -40,7 +41,12 @@ class DataClassDecoderImpl : DataClassDecoder {
     ): DataClass {
 
         val comparedJson = runCatching {
-            jsonString.map(Json::parseToJsonElement)
+            jsonString
+                // remove comment
+                .map {
+                    it.replace(commentRemoverPattern, "")
+                }
+                .map(Json::parseToJsonElement)
                 .map { it.jsonObject }
                 .compareMerge()
                 .jsonObject
