@@ -42,15 +42,13 @@ object SmartResolverStrategy : NumberTypeResolverStrategy {
                 if (it.contains(".")) {
                     if (it.length < 5)
                         return@let "Float"
-                    if (it.length < 10)
+                    else
                         return@let "Double"
-                    else return@let "BigDecimal"
                 } else {
                     if (it.length < 10)
                         return@let "Int"
-                    if (it.length < 19)
+                    else
                         return@let "Long"
-                    else return@let "BigInteger"
                 }
             }
     }
