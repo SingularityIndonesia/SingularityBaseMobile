@@ -7,7 +7,8 @@ This code is free to use and distribute under the Creative Commons License.
 This guide will help you to shape the thinking framework and understanding the codebase: [README_GUIDE.md](README_GUIDE.md)
 
 ## What is so cool
-- **WebClient Generator Gradle Plugin**. The codebase is equipped with the web ApiGenerator gradle plugin. Once you enable this plugin in module gradle, all you need to do is define the api contract and this plugin will automatically convert the API contracts into web clients and generate all the response models automatically. See [ApiGenerator plugin](Docs/README_API_GENERATOR.md).
+- **Postman WebClient Generator Plugin**. This codebase is equipped with the web Postman WebClient Generator gradle plugin. Once you enable this plugin in module gradle, all you need to do is put postman collection to the module. This plugin will automatically convert the postmant collection into web clients and generate all the response, request, header - models automatically. See [Postman WebClient Generator Plugin plugin](Docs/README_POSTMANT_CLIENT_GENERATOR.md).
+- Module Generator Script. This codebase is equiped with `create.sh` to generate module easily. See [Tips](#create-a-module).
 - Using **Gradle Composite Build**. This project is a Gradle **multi-project**. We separate the layers into several projects to allow for further development scaling. You can open whole project or each project individually.
 - Is **multi-module**. This will make build process faster.
 - Bussiness Context is **designed to be scaled horizontally**. No matter how many modules you add, the build performance will be fine during the development process. This is possible because the architecture of this codebase is designed to scale horizontally to optimize the **Gradle Caching**.
@@ -29,11 +30,13 @@ It's unfortunate that the Kotlin context receiver feature is currently only avai
 However, the Kotlin team is actively working on it. Once the context receiver is ready, the design of this codebase will be finalized.
 
 ## Tips
+### Make directory look better
 Create new workspace scope to make it look better in Intelij/Android studio, you can use this pattern:
 ```
 !file[*]:gradle//*&&!file[*]:iosApp//*&&!file[*]:.fleet//*&&!file[*]:gradle.properties&&!file[*]:gradlew&&!file[*]:.gitignore&&!file[*]:gradlew.bat&&!file[*]:.idea//*&&!file[*]:settings.gradle.kts
 ```
 
+### Create a Module
 You can use create.sh to create a module easily.
 ```bash
 # create example module in Main project.
