@@ -89,11 +89,21 @@ object CommonClientGenerator : ClientGeneratorStrategy {
                 headers = headers
             )
 
+        val queryModelName = "${name}Query"
+        val queryModel =
+            QueryModel(
+                name = queryModelName,
+                queries = request.url.query?.filterNotNull() ?: listOf()
+            )
+
         val content = clientTemplate(
             functionName = name,
             method = method,
             headerModelName = headerModelName,
             headerModel = headerModel,
+            queryModelName = queryModelName,
+            queryModel = queryModel,
+            queryModelNumberTypeResolverStrategy = SmartResolverStrategy,
             requestModelName = requestModelName,
             requestModelNumberTypeResolverStrategy = SmartResolverStrategy,
             requestModel = requestModel,

@@ -6,6 +6,8 @@
 package plugin.postman_client_generator
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import plugin.postman_client_generator.companion.NumberTypeResolverStrategy
 import plugin.postman_client_generator.companion.printToFile
 import plugin.postman_client_generator.companion.removeNonAlphaNumeric
@@ -132,5 +134,40 @@ data class Header(
         val pt3 = ")"
 
         return "$pt1\n$pt2\n$pt3"
+    }
+}
+
+data class QueryModel(
+    val name: String,
+    val queries: List<Postman.QueryItem>
+) : DataClassDecoder by DataClassDecoderImpl() {
+
+    fun print(
+        numberTypeResolverStrategy: NumberTypeResolverStrategy
+    ): String? {
+        val cleaned = queries
+            .filter {
+                it.key != null && it.value != null
+            }
+            .map {
+                it.key!! to it.value!!
+            }
+
+        if (cleaned.isEmpty())
+            return null
+
+        val json = cleaned.let {
+            val map = mapOf(*cleaned.toTypedArray())
+            Json.encodeToString(map)
+        }
+
+        val dataClass = decodeDataClass(
+            name = name,
+            jsonString = listOf(json),
+            numberTypeResolverStrategy = numberTypeResolverStrategy,
+            subClassSuffix = "Query"
+        )
+
+        return dataClass.print()
     }
 }
