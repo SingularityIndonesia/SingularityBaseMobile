@@ -43,6 +43,6 @@ Your code will be generated in `build/generated/kotlin/postman_client` directory
 # Notes
 - Number prediction are limited to Int, Long, Float, and Double. BigDecimal and BigInteger are currently not yet supported.
 - Avoid using scientifict notation for more accurate number prediction. If you use scientifict notation, type willbe resolved as string.
-- Query params is still in progress. We suggest you to use body json instead.
+- Query params is now working!
 - Multi dimensional array model is not yet supported.
-- List response body is not yet supported. Please use json instead for response body.
+- List response body is not yet supported. Please use json object instead for response body.
