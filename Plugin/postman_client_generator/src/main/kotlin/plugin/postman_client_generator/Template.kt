@@ -82,7 +82,7 @@ suspend fun $functionName(
             },
         queryContent
             ?.let {
-                """
+                """,
     query: $queryModelName"""
             },
         pathArguments
