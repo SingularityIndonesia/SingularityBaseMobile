@@ -5,6 +5,7 @@
  */
 plugins {
     `kotlin-dsl`
+    kotlin("plugin.serialization")
 }
 
 group = "plugin.convention"
@@ -55,6 +56,7 @@ tasks.named("compileKotlin") {
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:${libs.versions.kotlin.get()}")
     implementation("com.android.tools.build:gradle:${libs.versions.agp.get()}")
+    implementation(libs.kotlinx.serialization.json)
 }
 
 gradlePlugin {
