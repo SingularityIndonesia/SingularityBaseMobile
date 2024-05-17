@@ -95,8 +95,6 @@ object CommonClientGenerator : ClientGeneratorStrategy {
             headerModelName = headerModelName,
             headerModel = headerModel,
             requestModelName = requestModelName,
-            //fixme: use smart resolver strategy
-            /*requestModelNumberTypeResolverStrategy = SmartResolverStrategy,*/
             requestModelNumberTypeResolverStrategy = SmartResolverStrategy,
             requestModel = requestModel,
             responseModelName = responseModelName,
