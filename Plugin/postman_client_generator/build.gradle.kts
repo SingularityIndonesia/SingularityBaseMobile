@@ -9,7 +9,7 @@ plugins {
     id("com.gradle.plugin-publish") version "1.2.1"
 }
 
-version = "1.0.0"
+version = "1.0.1"
 group = "io.github.stefanusayudha"
 
 java {
