@@ -5,18 +5,19 @@
  */
 package plugin.postman_client_generator
 
-import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import plugin.postman_client_generator.companion.ListType
-import plugin.postman_client_generator.companion.NumberTypeResolverStrategy
 import plugin.postman_client_generator.companion.NumberType
+import plugin.postman_client_generator.companion.NumberTypeResolverStrategy
 import plugin.postman_client_generator.companion.ObjectType
 import plugin.postman_client_generator.companion.compareMerge
+import plugin.postman_client_generator.companion.jsonFormatter
 import plugin.postman_client_generator.companion.removeNonAlphaNumeric
 import plugin.postman_client_generator.companion.resolveJsonType
 
 val commentRemoverPattern = Regex("//.*$", RegexOption.MULTILINE)
+
 interface DataClassDecoder {
 
     /**
@@ -40,17 +41,21 @@ class DataClassDecoderImpl : DataClassDecoder {
         subClassSuffix: String?
     ): DataClass {
 
-        val comparedJson = runCatching {
-            jsonString
-                // remove comment
-                .map {
-                    it.replace(commentRemoverPattern, "")
+        println("To compare:\n$jsonString")
+        val comparedJson = jsonString
+            // remove comment
+            .map {
+                it.replace(commentRemoverPattern, "")
+            }
+            .map {
+                runCatching {
+                    jsonFormatter.parseToJsonElement(it).jsonObject
+                }.getOrElse {e ->
+                    throw Error("$it $e")
                 }
-                .map(Json::parseToJsonElement)
-                .map { it.jsonObject }
-                .compareMerge()
-                .jsonObject
-        }.getOrElse { throw Error("parsing error $name $jsonString") }
+            }
+            .compareMerge()
+            .jsonObject
 
         val params = run {
             comparedJson
@@ -156,7 +161,7 @@ class DataClassDecoderImpl : DataClassDecoder {
                                 .let {
                                     "${it}Item${subClassSuffix ?: ""}"
                                 }
-                            objName
+                            "List<$objName?>"
                         }
                         // multi dimensional list type
                         it.second == ListType -> {

@@ -7,8 +7,8 @@ package plugin.postman_client_generator
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import plugin.postman_client_generator.companion.NumberTypeResolverStrategy
+import plugin.postman_client_generator.companion.jsonFormatter
 import plugin.postman_client_generator.companion.printToFile
 import plugin.postman_client_generator.companion.removeNonAlphaNumeric
 import java.io.File
@@ -158,7 +158,7 @@ data class QueryModel(
 
         val json = cleaned.let {
             val map = mapOf(*cleaned.toTypedArray())
-            Json.encodeToString(map)
+            jsonFormatter.encodeToString(map)
         }
 
         val dataClass = decodeDataClass(

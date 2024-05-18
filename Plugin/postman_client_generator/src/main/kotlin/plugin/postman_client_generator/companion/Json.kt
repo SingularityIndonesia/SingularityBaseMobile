@@ -5,40 +5,93 @@
  */
 package plugin.postman_client_generator.companion
 
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.booleanOrNull
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.encodeToJsonElement
 import kotlinx.serialization.json.jsonPrimitive
 
+@OptIn(ExperimentalSerializationApi::class)
+val jsonFormatter = Json {
+    prettyPrint = true
+    explicitNulls = false
+}
+
 fun List<JsonObject>.compareMerge(): JsonElement {
-    return fold(
-        mapOf<String, JsonElement?>()
-    ) { acc, v ->
-        val keys = acc.keys + v.keys
-        val values = keys.map {
-            listOfNotNull(v[it], acc[it])
-                .firstOrNull {
-                    it !is JsonNull
-                }
+
+    if (isEmpty())
+        throw IllegalArgumentException("List is empty. Nothing to compare.")
+
+    if (size == 1)
+        return first()
+
+    val keys = this
+        .map {
+            it.keys
         }
-        keys.zip(values)
-            .toMap()
+        .flatten()
+        .removeDuplicates()
+
+    val newValue = keys.map { key ->
+        val values = this
+            .map {
+                // fixme: testing
+                it.getOrDefault(key, null)
+            }
+
+        when (values.first()) {
+            // compare child
+            is JsonObject -> {
+                (values as List<JsonObject>).compareMerge()
+            }
+            // combine list
+            is JsonArray -> {
+                (values as List<JsonArray>)
+                    .fold(listOf<JsonElement>()) { acc, v ->
+                        acc.plus(v)
+                    }
+                    .let {
+                        jsonFormatter.encodeToJsonElement(it)
+                    }
+            }
+            // primitive take longer content
+            else -> {
+                values
+                    .fold(null as String?) { acc, v ->
+                        val content = v?.jsonPrimitive?.contentOrNull
+
+                        if ((content?.length ?: 0) > (acc?.length ?: 0))
+                            content
+                        else
+                            acc
+                    }
+                    .let {
+                        jsonFormatter.encodeToJsonElement(it)
+                    }
+            }
+        }
     }
-        // ignore all keys with null values
-        .filter {
-            if (it.value == null)
-                println("Warning: Cannot resolve parameter type for ${it.key} in ${this@compareMerge}.")
-            it.value != null
-        }
-        // to json
-        .let {
-            Json.encodeToJsonElement(it)
-        }
+
+    println("alndland ${keys.size} ${newValue.size}")
+    val result = keys.zip(newValue)
+        .toMap()
+
+    return jsonFormatter.encodeToJsonElement(result)
+}
+
+
+fun List<String>.removeDuplicates(): List<String> {
+    val new = mutableListOf<String>()
+    forEach {
+        if (!new.contains(it))
+            new.add(it)
+    }
+
+    return new
 }
 
 fun isBoolean(

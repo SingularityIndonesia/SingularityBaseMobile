@@ -63,6 +63,7 @@ import io.ktor.http.contentType
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.encodeToJsonElement
 import kotlinx.serialization.json.jsonObject
@@ -92,7 +93,8 @@ suspend fun $functionName(
     $it: String"""
             }
             ?.fold("") { acc, v -> "$acc$v" },
-        """
+        """,
+    jsonEncoder: Json = Json{ explicitNulls = false }
 ): Result<$responseModelName> = withContext(Dispatchers.IO) {
     kotlin.runCatching {
         httpClient
@@ -101,7 +103,7 @@ suspend fun $functionName(
         headerContent?.let {
             """
                     headers {
-                        Json.encodeToJsonElement(header).jsonObject.forEach { (key, value) ->
+                        jsonEncoder.encodeToJsonElement(header).jsonObject.forEach { (key, value) ->
                             append(key, value.jsonPrimitive.content)
                         }
                     }
@@ -110,7 +112,7 @@ suspend fun $functionName(
         // should be queries
         queryContent?.let {
             """
-                    Json.encodeToJsonElement(query).jsonObject
+                    jsonEncoder.encodeToJsonElement(query).jsonObject
 					    .forEach {
 					        parameters.append(it.key, it.value.jsonPrimitive.content)
 					    }
@@ -121,14 +123,14 @@ suspend fun $functionName(
         requestContent?.let {
             """
                 contentType(ContentType.Application.Json)
-                setBody(request)
+                setBody(jsonEncoder.encodeToString(request))
             """
         },
         """
             }
             .bodyAsText()
             .let {
-                Json.decodeFromString<$responseModelName>(it)
+                jsonEncoder.decodeFromString<$responseModelName>(it)
             }
     }
 }""",

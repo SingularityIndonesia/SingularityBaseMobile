@@ -14,6 +14,7 @@ import plugin.postman_client_generator.companion.ObjectType
 import plugin.postman_client_generator.companion.addToSourceSet
 import plugin.postman_client_generator.companion.compareMerge
 import plugin.postman_client_generator.companion.find
+import plugin.postman_client_generator.companion.jsonFormatter
 import plugin.postman_client_generator.companion.removeNonAlphaNumeric
 import plugin.postman_client_generator.companion.resolveJsonType
 import java.io.File
@@ -65,7 +66,7 @@ class PostmanClientGenerator : Plugin<Project> {
         // generate files
         postmanClients
             .onEach { client ->
-                println("Generating Postman Client: ${client.nameSpace}${client.name}")
+                /*println("Generating Postman Client: ${client.nameSpace}${client.name}")*/
                 val outputDir = File(target.projectDir, "$targetDir${client.groupName}/")
                 client.generateFile(
                     outputDir = outputDir
@@ -79,7 +80,7 @@ class PostmanClientGenerator : Plugin<Project> {
         groupName: String,
         file: File
     ): Sequence<PostmanClient> {
-        val postman = json.decodeFromString<Postman>(file.readText())
+        val postman = jsonFormatter.decodeFromString<Postman>(file.readText())
 
         val items = postman.item?.asSequence()?.filterNotNull() ?: return sequenceOf()
 
@@ -163,7 +164,7 @@ class PostmanClientGenerator : Plugin<Project> {
                     it?.body
                 }
                 .map {
-                    Json.parseToJsonElement(it)
+                    jsonFormatter.parseToJsonElement(it)
                 }
                 .also {
                     if (it.isEmpty())
