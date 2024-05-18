@@ -46,6 +46,10 @@ fun clientTemplate(
     endpoint: String,
 ): String {
 
+    val finalEndpoint =
+        if (endpoint.startsWith("/"))
+            endpoint.replaceFirstChar { "" }
+        else endpoint
     val headerContent = headerModel?.print()
     val requestContent = requestModel?.print(requestModelNumberTypeResolverStrategy)
     val responseContent = responseModel.print(responseModelNumberTypeResolverStrategy)
@@ -98,7 +102,7 @@ suspend fun $functionName(
 ): Result<$responseModelName> = withContext(Dispatchers.IO) {
     kotlin.runCatching {
         httpClient
-            .${method.lowercase()}("$endpoint") {
+            .${method.lowercase()}("$finalEndpoint") {
                 url {""",
         headerContent?.let {
             """
