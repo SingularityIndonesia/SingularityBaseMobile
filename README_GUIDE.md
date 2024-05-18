@@ -56,7 +56,7 @@ Library Modules should not have instances within them but can have abstract cont
 Any instances such as Services should only exist within the `composeApp` module.
 
 ## Contextual programming.
-A library can requires an interface but never a context. Library should not have business context.
+A function can requires an interface but never a context. Library should not have business context.
 You can use the context wrapping method to pass the interface from an instance with context to the function.
 
 Example:
