@@ -76,7 +76,6 @@ fun List<JsonObject>.compareMerge(): JsonElement {
         }
     }
 
-    println("alndland ${keys.size} ${newValue.size}")
     val result = keys.zip(newValue)
         .toMap()
 

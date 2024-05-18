@@ -6,9 +6,11 @@
 plugins {
     `kotlin-dsl`
     kotlin("plugin.serialization")
+    id("com.gradle.plugin-publish") version "1.2.1"
 }
 
-group = "plugin.postman_client_generator"
+version = "1.0.0"
+group = "io.github.stefanusayudha"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
@@ -26,10 +28,15 @@ dependencies {
 }
 
 gradlePlugin {
+    website.set("https://github.com/SingularityIndonesia/SingularityBaseMobile/")
+    vcsUrl.set("https://github.com/SingularityIndonesia/SingularityBaseMobile/")
     plugins {
         register("PostmanClientGenerator") {
             id = "PostmanClientGenerator"
             implementationClass = "plugin.postman_client_generator.PostmanClientGenerator"
+            displayName = "Postman Client Generator"
+            description = "Plugin to generate postmant client automatically from postman collection."
+            tags.set(listOf("kmm", "postman", "generator", "ktor", "webclient"))
         }
     }
 }
