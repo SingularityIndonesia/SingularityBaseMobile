@@ -1,6 +1,6 @@
 plugins {
     id("LibraryConventionV1")
-    id("PostmanClientGenerator")
+    id("io.github.stefanusayudha.PostmanClientGenerator")
     kotlin("plugin.serialization")
 }
 

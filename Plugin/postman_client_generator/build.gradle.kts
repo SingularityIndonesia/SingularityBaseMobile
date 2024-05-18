@@ -32,7 +32,7 @@ gradlePlugin {
     vcsUrl.set("https://github.com/SingularityIndonesia/SingularityBaseMobile/")
     plugins {
         register("PostmanClientGenerator") {
-            id = "PostmanClientGenerator"
+            id = "io.github.stefanusayudha.PostmanClientGenerator"
             implementationClass = "plugin.postman_client_generator.PostmanClientGenerator"
             displayName = "Postman Client Generator"
             description = "Plugin to generate postmant client automatically from postman collection."
