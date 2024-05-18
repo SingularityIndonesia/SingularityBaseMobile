@@ -65,7 +65,7 @@ with(storageInterface) {
   val file = getFileFromStorage(fileUri)
 }
 ```
-The `saveToLocalStorage(arg)` function is context-less; its intention is only to save a file. The function should not concern itself with context or have any context within it.
+The `getFileFromStorage(arg)` function is context-less; its intention is only to get a file. The function should not concern itself with context or have any context within it.
 
 # Don't
 ## Local Properties & Build Variables
