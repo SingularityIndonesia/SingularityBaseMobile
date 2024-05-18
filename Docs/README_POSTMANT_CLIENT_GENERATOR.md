@@ -6,7 +6,7 @@ plugins {
     // you will need kotlin serialization as well
     kotlin("plugin.serialization")
     // api generator
-    id("PostmanClientGenerator")
+    id("io.github.stefanusayudha.PostmanClientGenerator")
 }
 
 kotlin {
@@ -43,6 +43,5 @@ Your code will be generated in `build/generated/kotlin/postman_client` directory
 # Notes
 - Number prediction are limited to Int, Long, Float, and Double. BigDecimal and BigInteger are currently not yet supported.
 - Avoid using scientifict notation for more accurate number prediction. If you use scientifict notation, type willbe resolved as string.
-- Query params is now working!
 - Multi dimensional array model is not yet supported.
 - List response body is not yet supported. Please use json object instead for response body.
