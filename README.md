@@ -9,8 +9,8 @@ This guide will help you to shape the thinking framework and understanding the c
 ## What is so cool
 ### Plugins
 - **Postman WebClient Generator Plugin**. This codebase is equipped with the web Postman WebClient Generator gradle plugin. Once you enable this plugin in module gradle, all you need to do is put postman collection to the module. This plugin will automatically convert the postmant collection into web clients and generate all the response, request, header - models automatically. See [Postman WebClient Generator Plugin plugin](Docs/README_POSTMANT_CLIENT_GENERATOR.md).
-- Module Generator Script. This codebase is equiped with `create.sh` to generate module easily. See [Tips](#create-a-module).
 ### Features
+- Module Generator Script. This codebase is equiped with `create.sh` to generate module easily. See [Tips](#create-a-module).
 - Using **Gradle Composite Build**. This project is a Gradle **multi-project**. We separate the layers into several projects to allow for further development scaling. You can open whole project or each project individually.
 - Is **multi-module**. This will make build process faster.
 ## Design
