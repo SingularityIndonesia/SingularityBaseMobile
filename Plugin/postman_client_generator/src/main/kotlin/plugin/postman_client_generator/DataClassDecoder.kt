@@ -41,7 +41,6 @@ class DataClassDecoderImpl : DataClassDecoder {
         subClassSuffix: String?
     ): DataClass {
 
-        println("To compare:\n$jsonString")
         val comparedJson = jsonString
             // remove comment
             .map {

@@ -192,9 +192,6 @@ class PostmanClientGenerator : Plugin<Project> {
             // fixme: support for type list
             bodies
                 .compareMerge()
-                .also {
-                    println("New body:\n$it")
-                }
                 .toString()
         }
 
