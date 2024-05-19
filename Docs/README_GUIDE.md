@@ -1,5 +1,5 @@
 # Base Principle
-## Composition Theory.
+## Composition Over Inheritance.
 Everything is based on composition theory. If you are not sure what todo, just obey the composition theory and  you will be alright.
 
 For example, navigation is a Monad - a collection of screens that can be represented in notation as follows: `type Navigation = Collection<Screens>`.
