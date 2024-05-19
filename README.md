@@ -4,7 +4,7 @@
 I created this codebase to help startup companies kickstart their projects with Kotlin Multiplatform.
 This code is free to use and distribute under the Creative Commons License.
 
-This guide will help you to shape the thinking framework and understanding the codebase: [README_GUIDE.md](README_GUIDE.md)
+This guide will help you to shape the thinking framework and understanding the codebase: [README_GUIDE.md](Docs/README_GUIDE.md)
 
 ## What is so cool
 ### Plugins
@@ -26,7 +26,7 @@ More module will be added in the future such camera, biometic, etc.
 I would love to know what you need. If you need a module, feel free to request for it.
 
 ## Contributing
-Read [README_CONTRIBUTING.md](README_CONTRIBUTING.md)
+Read [README_CONTRIBUTING.md](Docs/README_CONTRIBUTING.md)
 
 ## Temporary
 It's unfortunate that the Kotlin context receiver feature is currently only available on the JVM.
