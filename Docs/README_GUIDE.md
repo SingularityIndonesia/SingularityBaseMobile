@@ -2,7 +2,7 @@
 ## Composition Over Inheritance.
 Everything is based on composition theory. If you are not sure what todo, just obey the composition theory and  you will be alright.
 
-For example, navigation is a Monad - a collection of screens that can be represented in notation as follows: `Navigation = Collection<Screens>`.
+For example, navigation is a Monad - a collection of screens that can be represented in notation as follows: `Navigation = Collection<Screen>`.
 ```kotlin
 @Composable
 fun Navigation(
