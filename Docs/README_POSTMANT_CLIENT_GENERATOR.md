@@ -1,5 +1,8 @@
 # Postman Web Client Generator Plugin
-Postman Web Client Generator is a Gradle plugin that I created to automatically generate web API clients. You simply need to apply the plugin to your Gradle build as follows:
+Postman Web Client Generator is a Gradle plugin that I created to automatically generate web API clients. 
+See: https://plugins.gradle.org/plugin/io.github.stefanusayudha.PostmanClientGenerator .
+
+You simply need to apply the plugin to your Gradle build as follows:
 ``` kotlin
 plugins {
     ...
@@ -26,6 +29,7 @@ kotlin {
 }
 
 ```
+
 
 Next, put your postman api collection anywhere within the module.
 ![Img1](https://github.com/SingularityIndonesia/SingularityBaseMobile/blob/base/Docs/Screenshot%202024-05-17%20at%2014.37.54.png)
