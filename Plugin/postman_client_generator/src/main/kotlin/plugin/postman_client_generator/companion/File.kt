@@ -10,15 +10,20 @@ import java.io.File
 /**
  * scan for all file in directory including sub directory
  */
-fun File.find(
+fun find(
+    targetDir: File,
     clue: String
 ): Sequence<File> {
-    return listFiles()
+    return targetDir.listFiles()
         ?.asSequence()
         ?.mapNotNull { file ->
             when {
                 !file.isDirectory && file.name.contains(clue) -> sequenceOf(file)
-                file.isDirectory -> file.find(clue)
+                file.isDirectory -> find(
+                    file,
+                    clue
+                )
+
                 else -> null
             }
         }
@@ -30,7 +35,7 @@ fun printToFile(
     outputDir: File,
     fileName: String,
     content: String,
-) : File {
+): File {
     return File(
         outputDir,
         fileName

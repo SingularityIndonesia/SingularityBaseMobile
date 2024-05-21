@@ -34,15 +34,26 @@ class PostmanClientGenerator : Plugin<Project> {
         target: Project
     ) {
         // adding targetDir to source set
-        target.addToSourceSet(targetDir)
+        addToSourceSet(
+            target,
+            targetDir
+        )
 
         // dump postman files
-        val postmanFiles =
-            target.projectDir.find(fileNameIdentifier)
+        val postmanFiles = find(
+            target.projectDir,
+            fileNameIdentifier
+        )
 
         // create clients
         val postmanClients = run {
             postmanFiles
+                .filter {
+                    fileIsUpdated(
+                        target.projectDir,
+                        it
+                    )
+                }
                 .map {
                     val groupName = run {
                         it.name
@@ -73,6 +84,35 @@ class PostmanClientGenerator : Plugin<Project> {
                 )
             }
             .toList()
+
+        // copy postman file to build dir
+        // the copy file will be used later to check if the clients is uptodate or not.
+        postmanFiles.forEach { file ->
+            val fileName = file.name
+            val mirroredFiled = File(target.projectDir.path, targetDir + fileName)
+
+            mirroredFiled.parentFile.mkdirs()
+            file.copyTo(mirroredFiled, mirroredFiled.exists())
+        }
+    }
+
+    private fun fileIsUpdated(
+        projectDir: File,
+        file: File
+    ): Boolean {
+        val fileName = file.name
+        val mirroredFiled = File(projectDir.path, targetDir + fileName)
+
+        // never generated before
+        if (!mirroredFiled.exists()) {
+            return true
+        }
+
+        // check updated date
+        val originalFileUpdatedMillis = file.lastModified()
+        val mirroredFileUpdatedMillis = mirroredFiled.lastModified()
+
+        return originalFileUpdatedMillis > mirroredFileUpdatedMillis
     }
 
     private fun generateClients(

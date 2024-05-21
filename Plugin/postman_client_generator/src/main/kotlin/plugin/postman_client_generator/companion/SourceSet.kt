@@ -9,10 +9,11 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
-fun Project.addToSourceSet(
+fun addToSourceSet(
+    project: Project,
     path: String
 ) {
-    extensions.configure<KotlinMultiplatformExtension> {
+    project.extensions.configure<KotlinMultiplatformExtension> {
         sourceSets.commonMain {
             kotlin.srcDir(path)
         }
