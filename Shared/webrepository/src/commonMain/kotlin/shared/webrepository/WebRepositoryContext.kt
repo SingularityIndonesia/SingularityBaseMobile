@@ -10,7 +10,8 @@ import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
 
 fun webRepositoryContext(
-    baseUrl: String
+    host: String,
+    basePath: String,
 ): Lazy<WebRepositoryContext> =
     lazy {
         object : WebRepositoryContext {
@@ -18,7 +19,8 @@ fun webRepositoryContext(
 
             override val httpClient: HttpClient by lazy {
                 createHttpClient(
-                    baseUrl = baseUrl,
+                    host = host,
+                    basePath = basePath,
                     builders = builders
                 )
             }

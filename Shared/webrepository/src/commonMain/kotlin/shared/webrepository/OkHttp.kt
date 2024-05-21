@@ -8,13 +8,20 @@ package shared.webrepository
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.plugins.defaultRequest
+import io.ktor.http.URLProtocol
+import io.ktor.http.path
 
 fun createHttpClient(
-    baseUrl: String,
+    host: String,
+    basePath: String,
     builders: List<HttpClientConfig<*>.() -> Unit> = listOf()
 ) = HttpClient {
     defaultRequest {
-        url(baseUrl)
+        url {
+            protocol = URLProtocol.HTTPS
+            this.host = host
+            path(basePath)
+        }
     }
     builders.forEach {
         it.invoke(this)

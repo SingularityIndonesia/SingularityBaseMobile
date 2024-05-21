@@ -22,7 +22,8 @@ class MainActivity : ComponentActivity() {
         MainContext.init(
             object : MainContext {
                 override val webRepositoryContext: WebRepositoryContext by webRepositoryContext(
-                    baseUrl = "https://jsonplaceholder.typicode.com/"
+                    host = BuildConfig.HOST,
+                    basePath = BuildConfig.API_BASE_PATH
                 )
                 /*override val storageContext: StorageContext by storageContext(base)*/
             }
