@@ -14,11 +14,15 @@ import VersionCatalog.JVM_TARGET
 import VersionCatalog.KOTLIN_VERSION
 import VersionCatalog.MIN_SDK
 import VersionCatalog.TARGET_SDK
+import com.android.build.api.dsl.ApkSigningConfig
+import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.get
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import java.io.FileInputStream
+import java.util.Properties
 
 class AppConventionV1 : Plugin<Project> {
 
@@ -60,7 +64,7 @@ class AppConventionV1 : Plugin<Project> {
                 }
 
             }
-            extensions.configure<ApplicationExtension> {
+            extensions.configure<BaseAppModuleExtension> {
                 compileSdk = COMPILE_SDK
 
                 sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
@@ -71,6 +75,20 @@ class AppConventionV1 : Plugin<Project> {
                     minSdk = MIN_SDK
                     targetSdk = TARGET_SDK
                 }
+
+                // signing config
+                val signingConfig = generateSigningConfig(target, this)
+
+                // You only need to define build variant once here.
+                // No need to define it in every module, because only composeApp module can have contexts,
+                // and only composeApp module can access the environment variables.
+                // Other modules are prohibited.
+                defineBuildVariants(
+                    project = target,
+                    mod = this,
+                    signingConfig = signingConfig
+                )
+
                 packaging {
                     resources {
                         excludes += EXCLUDED_RESOURCES
@@ -87,5 +105,153 @@ class AppConventionV1 : Plugin<Project> {
                 }
             }
         }
-    
+
+    fun generateSigningConfig(
+        project: Project,
+        mod: BaseAppModuleExtension
+    ) = with(mod) {
+        val keystore = run {
+            Properties()
+                .apply {
+                    load(
+                        FileInputStream(
+                            project.file("${project.projectDir}/keystore.properties")
+                        )
+                    )
+                }
+        }
+
+        signingConfigs.create("all") {
+            storeFile(project.file(keystore.getProperty("store.file")))
+            storePassword = keystore.getProperty("store.password")
+            keyAlias = keystore.getProperty("store.key.alias")
+            keyPassword = keystore.getProperty("store.key.password")
+        }
+    }
+
+    fun defineBuildVariants(
+        project: Project,
+        mod: BaseAppModuleExtension,
+        signingConfig: ApkSigningConfig?
+    ) = with(mod) {
+        // put your environment variable in environment.properties file within this composeApp project dir
+        val env = run {
+            Properties()
+                .apply {
+                    load(
+                        FileInputStream(
+                            project.file("${project.projectDir}/environment.properties")
+                        )
+                    )
+                }
+        }
+
+        buildFeatures {
+            buildConfig = true
+        }
+
+        buildTypes {
+            release {
+                proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+                isMinifyEnabled = true
+                this.signingConfig = signingConfig
+            }
+
+            debug {
+                proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+                isMinifyEnabled = false
+                this.signingConfig = signingConfig
+            }
+
+            create("devDebug") {
+                initWith(getByName("debug"))
+                matchingFallbacks.add("debug")
+                buildConfigField(
+                    "String",
+                    "HOST",
+                    env.getProperty("DEV_HOST")
+                )
+                buildConfigField(
+                    "String",
+                    "API_BASE_PATH",
+                    env.getProperty("DEV_API_BASE_PATH")
+                )
+            }
+
+            create("devRelease") {
+                initWith(getByName("release"))
+                matchingFallbacks.add("release")
+                buildConfigField(
+                    "String",
+                    "HOST",
+                    env.getProperty("DEV_HOST")
+                )
+                buildConfigField(
+                    "String",
+                    "API_BASE_PATH",
+                    env.getProperty("DEV_API_BASE_PATH")
+                )
+            }
+
+            create("stagingDebug") {
+                initWith(getByName("debug"))
+                matchingFallbacks.add("debug")
+                buildConfigField(
+                    "String",
+                    "HOST",
+                    env.getProperty("STAGE_HOST")
+                )
+                buildConfigField(
+                    "String",
+                    "API_BASE_PATH",
+                    env.getProperty("STAGE_API_BASE_PATH")
+                )
+            }
+
+            create("stagingRelease") {
+                initWith(getByName("release"))
+                matchingFallbacks.add("release")
+                buildConfigField(
+                    "String",
+                    "HOST",
+                    env.getProperty("STAGE_HOST")
+                )
+                buildConfigField(
+                    "String",
+                    "API_BASE_PATH",
+                    env.getProperty("STAGE_API_BASE_PATH")
+                )
+            }
+
+            create("prodDebug") {
+                initWith(getByName("debug"))
+                matchingFallbacks.add("debug")
+                buildConfigField(
+                    "String",
+                    "HOST",
+                    env.getProperty("PROD_HOST")
+                )
+                buildConfigField(
+                    "String",
+                    "API_BASE_PATH",
+                    env.getProperty("PROD_API_BASE_PATH")
+                )
+            }
+
+            create("prodRelease") {
+                initWith(getByName("release"))
+                matchingFallbacks.add("release")
+                buildConfigField(
+                    "String",
+                    "HOST",
+                    env.getProperty("PROD_HOST")
+                )
+                buildConfigField(
+                    "String",
+                    "API_BASE_PATH",
+                    env.getProperty("PROD_API_BASE_PATH")
+                )
+            }
+        }
+    }
 }
