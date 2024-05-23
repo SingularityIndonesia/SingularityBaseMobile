@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2024 Singularity Indonesia (stefanus.ayudha@gmail.com)
+ * You are not allowed to remove the copyright. Unless you have a "free software" licence.
+ */
 import com.android.build.api.dsl.ApkSigningConfig
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import java.io.FileInputStream

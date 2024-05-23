@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2024 Singularity Indonesia (stefanus.ayudha@gmail.com)
+ * You are not allowed to remove the copyright. Unless you have a "free software" licence.
+ */
 plugins {
     // this is necessary to avoid the plugins to be loaded multiple times
     // in each subproject's classloader

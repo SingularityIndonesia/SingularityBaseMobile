@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2024 Singularity Indonesia (stefanus.ayudha@gmail.com)
+ * You are not allowed to remove the copyright. Unless you have a "free software" licence.
+ */
 import androidx.compose.runtime.remember
 import androidx.compose.ui.window.ComposeUIViewController
 import platform.Foundation.NSProcessInfo

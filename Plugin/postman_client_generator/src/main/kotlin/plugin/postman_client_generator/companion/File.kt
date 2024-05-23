@@ -1,7 +1,6 @@
 /*
- * Copyright (c) 2024 Stefanus Ayudha (stefanus.ayudha@gmail.com)
- * Created on 17/05/2024 14:05
- * You are not allowed to remove the copyright.
+ * Copyright (c) 2024 Singularity Indonesia (stefanus.ayudha@gmail.com)
+ * You are not allowed to remove the copyright. Unless you have a "free software" licence.
  */
 package plugin.postman_client_generator.companion
 
