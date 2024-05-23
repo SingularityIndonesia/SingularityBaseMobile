@@ -79,6 +79,39 @@ fun SecondaryButton(
     }
 }
 
+@Composable
+fun TertiaryButton(
+    modifier: Modifier = Modifier,
+    label: String,
+    isLoading: Boolean = false,
+    enabled: Boolean = true,
+    onClick: () -> Unit
+) {
+    Button(
+        modifier = modifier,
+        onClick = {
+            if (!isLoading)
+                onClick.invoke()
+        },
+        colors = ButtonDefaults.buttonColors(
+            containerColor = MaterialTheme.colorScheme.tertiary,
+            contentColor = MaterialTheme.colorScheme.onTertiary
+        ),
+        enabled = enabled,
+    ) {
+        if (isLoading)
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .size(24.dp),
+                color = MaterialTheme.colorScheme.onTertiary,
+            )
+        else
+            Text(
+                text = label,
+            )
+    }
+}
+
 @Preview
 @Composable
 private fun Preview() {
