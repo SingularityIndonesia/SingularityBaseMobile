@@ -8,8 +8,10 @@ import App
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.WindowCompat
@@ -38,15 +40,27 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        with(window) {
-            statusBarColor = Color.TRANSPARENT
-            WindowCompat.setDecorFitsSystemWindows(
-                window,
-                false
-            )
-        }
+        val darkDecorView = window.decorView.systemUiVisibility
+        val lightDecorView = window.decorView.systemUiVisibility or
+                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
 
         setContent {
+            val isDarkTheme = isSystemInDarkTheme()
+
+            with(window) {
+                statusBarColor = Color.TRANSPARENT
+
+                decorView.systemUiVisibility = if (isDarkTheme)
+                    darkDecorView
+                else
+                    lightDecorView
+
+                WindowCompat.setDecorFitsSystemWindows(
+                    window,
+                    false
+                )
+            }
+
             App()
         }
     }
