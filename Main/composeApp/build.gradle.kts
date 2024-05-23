@@ -4,6 +4,7 @@
  */
 import com.android.build.api.dsl.ApkSigningConfig
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
+import plugin.convention.companion.env
 import java.io.FileInputStream
 import java.util.Properties
 
@@ -61,5 +62,85 @@ android {
     }
 }
 
+
+android.buildTypes {
+    getByName("devDebug") {
+        buildConfigField(
+            "String",
+            "HOST",
+            env.getProperty("DEV_HOST")
+        )
+        buildConfigField(
+            "String",
+            "API_BASE_PATH",
+            env.getProperty("DEV_API_BASE_PATH")
+        )
+    }
+
+    getByName("devRelease") {
+        buildConfigField(
+            "String",
+            "HOST",
+            env.getProperty("DEV_HOST")
+        )
+        buildConfigField(
+            "String",
+            "API_BASE_PATH",
+            env.getProperty("DEV_API_BASE_PATH")
+        )
+    }
+
+    getByName("stagingDebug") {
+        buildConfigField(
+            "String",
+            "HOST",
+            env.getProperty("STAGE_HOST")
+        )
+        buildConfigField(
+            "String",
+            "API_BASE_PATH",
+            env.getProperty("STAGE_API_BASE_PATH")
+        )
+    }
+
+    getByName("stagingRelease") {
+        buildConfigField(
+            "String",
+            "HOST",
+            env.getProperty("STAGE_HOST")
+        )
+        buildConfigField(
+            "String",
+            "API_BASE_PATH",
+            env.getProperty("STAGE_API_BASE_PATH")
+        )
+    }
+
+    getByName("prodDebug") {
+        buildConfigField(
+            "String",
+            "HOST",
+            env.getProperty("PROD_HOST")
+        )
+        buildConfigField(
+            "String",
+            "API_BASE_PATH",
+            env.getProperty("PROD_API_BASE_PATH")
+        )
+    }
+
+    getByName("prodRelease") {
+        buildConfigField(
+            "String",
+            "HOST",
+            env.getProperty("PROD_HOST")
+        )
+        buildConfigField(
+            "String",
+            "API_BASE_PATH",
+            env.getProperty("PROD_API_BASE_PATH")
+        )
+    }
+}
 
 task("testClasses")

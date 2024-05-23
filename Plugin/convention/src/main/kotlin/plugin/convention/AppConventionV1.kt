@@ -135,16 +135,6 @@ class AppConventionV1 : Plugin<Project> {
         signingConfig: ApkSigningConfig?
     ) = with(mod) {
         // put your environment variable in environment.properties file within this composeApp project dir
-        val env = run {
-            Properties()
-                .apply {
-                    load(
-                        FileInputStream(
-                            project.file("${project.projectDir}/environment.properties")
-                        )
-                    )
-                }
-        }
 
         buildFeatures {
             buildConfig = true
@@ -166,91 +156,31 @@ class AppConventionV1 : Plugin<Project> {
             create("devDebug") {
                 initWith(getByName("debug"))
                 matchingFallbacks.add("debug")
-                buildConfigField(
-                    "String",
-                    "HOST",
-                    env.getProperty("DEV_HOST")
-                )
-                buildConfigField(
-                    "String",
-                    "API_BASE_PATH",
-                    env.getProperty("DEV_API_BASE_PATH")
-                )
             }
 
             create("devRelease") {
                 initWith(getByName("release"))
                 matchingFallbacks.add("release")
-                buildConfigField(
-                    "String",
-                    "HOST",
-                    env.getProperty("DEV_HOST")
-                )
-                buildConfigField(
-                    "String",
-                    "API_BASE_PATH",
-                    env.getProperty("DEV_API_BASE_PATH")
-                )
             }
 
             create("stagingDebug") {
                 initWith(getByName("debug"))
                 matchingFallbacks.add("debug")
-                buildConfigField(
-                    "String",
-                    "HOST",
-                    env.getProperty("STAGE_HOST")
-                )
-                buildConfigField(
-                    "String",
-                    "API_BASE_PATH",
-                    env.getProperty("STAGE_API_BASE_PATH")
-                )
             }
 
             create("stagingRelease") {
                 initWith(getByName("release"))
                 matchingFallbacks.add("release")
-                buildConfigField(
-                    "String",
-                    "HOST",
-                    env.getProperty("STAGE_HOST")
-                )
-                buildConfigField(
-                    "String",
-                    "API_BASE_PATH",
-                    env.getProperty("STAGE_API_BASE_PATH")
-                )
             }
 
             create("prodDebug") {
                 initWith(getByName("debug"))
                 matchingFallbacks.add("debug")
-                buildConfigField(
-                    "String",
-                    "HOST",
-                    env.getProperty("PROD_HOST")
-                )
-                buildConfigField(
-                    "String",
-                    "API_BASE_PATH",
-                    env.getProperty("PROD_API_BASE_PATH")
-                )
             }
 
             create("prodRelease") {
                 initWith(getByName("release"))
                 matchingFallbacks.add("release")
-                buildConfigField(
-                    "String",
-                    "HOST",
-                    env.getProperty("PROD_HOST")
-                )
-                buildConfigField(
-                    "String",
-                    "API_BASE_PATH",
-                    env.getProperty("PROD_API_BASE_PATH")
-                )
             }
         }
     }
