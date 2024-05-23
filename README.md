@@ -6,6 +6,11 @@ This code is free to use and distribute under the Creative Commons License.
 
 This guide will help you to shape the thinking framework and understanding the codebase: [README_GUIDE.md](Docs/README_GUIDE.md)
 
+# Previously
+## Set me free? Sure why not.
+This license is created to protect the creator and the team, under the name of singularity indonesia.
+You are not allowed to remove the copyright notice wherever it is. However, you can do so with a "free software" license. You can get the license by sending a request via email to: stefanus.ayudha@gmail. com.  The free software license is free of charge. We do this to keep track of who is using our software to help further in the future, as well as to help us to improve our software. After you have a "free software" license, you can do whatever you want and are no longer bound to us.
+
 ## What is so cool
 ### Plugins
 - **Postman WebClient Generator Plugin**. This codebase is equipped with the web Postman WebClient Generator gradle plugin. Once you enable this plugin in module gradle, all you need to do is put postman collection to the module. This plugin will automatically convert the postmant collection into web clients and generate all the response, request, header - models automatically. See [Postman WebClient Generator Plugin plugin](Docs/README_POSTMANT_CLIENT_GENERATOR.md).
