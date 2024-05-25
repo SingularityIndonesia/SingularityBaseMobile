@@ -4,7 +4,7 @@
  */
 plugins {
     id("LibraryConventionV1")
-    alias(libs.plugins.jetbrainsCompose)
+    id("FeatureJetpackCompose")
 }
 
 kotlin {

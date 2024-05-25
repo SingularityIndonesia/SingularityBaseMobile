@@ -46,6 +46,8 @@ class AppConventionV1 : Plugin<Project> {
                     }
                 }
 
+                jvm()
+
                 listOf(
                     iosX64(),
                     iosArm64(),
@@ -58,9 +60,11 @@ class AppConventionV1 : Plugin<Project> {
                 }
 
                 sourceSets.commonTest.dependencies {
+                    implementation("junit:junit:$JUNIT_VERSION")
+                }
+                sourceSets.jvmTest.dependencies {
                     implementation("org.jetbrains.kotlin:kotlin-test:$KOTLIN_VERSION")
                     implementation("org.jetbrains.kotlin:kotlin-test-junit:$KOTLIN_VERSION")
-                    implementation("junit:junit:$JUNIT_VERSION")
                 }
 
             }
