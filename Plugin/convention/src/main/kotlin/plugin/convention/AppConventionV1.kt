@@ -15,8 +15,10 @@ import com.android.build.api.dsl.ApkSigningConfig
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.get
+import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import plugin.convention.companion.DefaultConfigs.EXCLUDED_RESOURCES
 import java.io.FileInputStream
@@ -38,6 +40,8 @@ class AppConventionV1 : Plugin<Project> {
                 PLUGINS.forEach(::apply)
             }
 
+            val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
+
             extensions.configure<KotlinMultiplatformExtension> {
                 androidTarget {
                     compilations.all {
@@ -48,7 +52,7 @@ class AppConventionV1 : Plugin<Project> {
                 }
 
                 sourceSets.commonTest.dependencies {
-                    implementation("junit:junit:$JUNIT_VERSION")
+                    implementation(libs.findLibrary("junit").get())
                 }
             }
             extensions.configure<BaseAppModuleExtension> {

@@ -6,9 +6,9 @@ package plugin.convention.features
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.apply
+import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.configure
-import org.jetbrains.compose.ComposePlugin
+import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 class FeatureSerialization : Plugin<Project> {
@@ -23,9 +23,11 @@ class FeatureSerialization : Plugin<Project> {
                 apply("org.jetbrains.kotlin.plugin.serialization")
             }
 
+            val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
+
             extensions.configure<KotlinMultiplatformExtension> {
                 sourceSets.commonMain.dependencies {
-                    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+                    implementation(libs.findLibrary("kotlinx-serialization-json").get())
                 }
             }
         }

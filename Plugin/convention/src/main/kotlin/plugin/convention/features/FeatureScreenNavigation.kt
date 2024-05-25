@@ -4,23 +4,26 @@
  */
 package plugin.convention.features
 
-import VersionCatalog.JVM_TARGET
 import org.gradle.api.Project
+import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.compose.ComposePlugin
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 class FeatureScreenNavigation : ComposePlugin() {
     companion object {
-        public val ID: String = "FeatureJetpackCompose"
+        public val ID: String = "FeatureScreen"
     }
 
     override fun apply(target: Project) {
         with(target) {
-            extensions.configure<KotlinMultiplatformExtension> {
 
-                sourceSets.androidMain.dependencies {
-                    implementation("org.jetbrains.androidx.navigation:navigation-compose:2.7.0-alpha03")
+            val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
+
+            extensions.configure<KotlinMultiplatformExtension> {
+                sourceSets.commonMain.dependencies {
+                    implementation(libs.findLibrary("compose-navigation").get())
                 }
             }
         }

@@ -5,7 +5,7 @@
 plugins {
     id("LibraryConventionV1")
     id("CompileIOS")
-    id("FeatureJetpackCompose")
+    id("FeatureScreen")
     id("FeatureSerialization")
     id("FeatureHttpClient")
 }

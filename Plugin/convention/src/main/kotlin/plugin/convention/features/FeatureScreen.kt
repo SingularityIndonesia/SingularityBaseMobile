@@ -4,15 +4,19 @@
  */
 package plugin.convention.features
 
+import VersionCatalog
 import VersionCatalog.JVM_TARGET
 import org.gradle.api.Project
+import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.compose.ComposePlugin
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import kotlin.jvm.optionals.getOrElse
 
-class FeatureJetpackCompose : ComposePlugin() {
+class FeatureScreen : ComposePlugin() {
     companion object {
-        public val ID: String = "FeatureJetpackCompose"
+        public val ID: String = "FeatureScreen"
     }
 
     override fun apply(target: Project) {
@@ -21,6 +25,8 @@ class FeatureJetpackCompose : ComposePlugin() {
                 apply("org.jetbrains.compose")
                 apply("org.jetbrains.kotlin.plugin.compose")
             }
+
+            val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
 
             extensions.configure<KotlinMultiplatformExtension> {
                 androidTarget {
@@ -33,7 +39,9 @@ class FeatureJetpackCompose : ComposePlugin() {
 
                 sourceSets.androidMain.dependencies {
                     implementation(Dependencies(target).preview)
-                    implementation("androidx.activity:activity-compose:1.9.0")
+                    implementation(
+                        libs.findLibrary("androidx-activity-compose").get()
+                    )
                 }
 
                 sourceSets.commonMain.dependencies {

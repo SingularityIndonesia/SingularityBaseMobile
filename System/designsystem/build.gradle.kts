@@ -5,13 +5,7 @@
 plugins {
     id("LibraryConventionV1")
     id("CompileIOS")
-    id("FeatureJetpackCompose")
-}
-
-kotlin {
-    sourceSets {
-
-    }
+    id("FeatureScreen")
 }
 
 android {

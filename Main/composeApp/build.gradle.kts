@@ -7,7 +7,7 @@ import plugin.convention.companion.env
 plugins {
     id("AppConventionV1")
     id("CompileIOS")
-    id("FeatureJetpackCompose")
+    id("FeatureScreen")
     id("FeatureScreenNavigation")
     id("FeatureSerialization")
     id("FeatureHttpClient")

@@ -53,10 +53,10 @@ tasks.named("compileKotlin") {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:${libs.versions.kotlin.get()}")
-    implementation("com.android.tools.build:gradle:${libs.versions.agp.get()}")
+    implementation(libs.kotlin.gradle.plugin)
+    implementation(libs.gradle)
     implementation(libs.kotlinx.serialization.json)
-    implementation("org.jetbrains.compose:compose-gradle-plugin:1.6.10")
+    implementation(libs.compose.gradle.plugin)
 }
 
 gradlePlugin {
@@ -77,9 +77,9 @@ gradlePlugin {
             id = "CompileWasm"
             implementationClass = "plugin.convention.CompileWasm"
         }
-        register("FeatureJetpackCompose") {
-            id = "FeatureJetpackCompose"
-            implementationClass = "plugin.convention.features.FeatureJetpackCompose"
+        register("FeatureScreen") {
+            id = "FeatureScreen"
+            implementationClass = "plugin.convention.features.FeatureScreen"
         }
         register("FeatureContextReceiver") {
             id = "FeatureContextReceiver"
