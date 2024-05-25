@@ -26,9 +26,6 @@ kotlin {
 
 android {
     namespace = "main.ex_apigenerator.presentation"
-    dependencies {
-      debugImplementation(libs.compose.ui.tooling)
-    }
 }
 
 task("testClasses")
