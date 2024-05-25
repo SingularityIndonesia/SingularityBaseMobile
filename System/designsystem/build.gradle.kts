@@ -11,8 +11,8 @@ kotlin {
     sourceSets {
         
         androidMain.dependencies {
-            implementation(libs2.compose.ui.tooling.preview)
-            implementation(libs2.androidx.activity.compose)
+            implementation(libs.compose.ui.tooling.preview)
+            implementation(libs.androidx.activity.compose)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
