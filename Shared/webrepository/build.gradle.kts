@@ -13,9 +13,7 @@ kotlin {
             implementation(libs.ktor.client.okhttp)
         }
         commonMain.dependencies {
-            // ktor
             implementation(libs.ktor.client.core)
-            implementation(libs.ktor.client.cio)
 
             implementation("system:core")
         }

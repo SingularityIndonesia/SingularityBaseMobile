@@ -12,12 +12,9 @@ plugins {
 kotlin {
     sourceSets {
         androidMain.dependencies {
-
+            implementation(libs.ktor.client.okhttp)
         }
         commonMain.dependencies {
-
-            implementation(libs.ktor.client.core)
-            implementation(libs.ktor.client.cio)
 
             implementation(libs.kotlinx.serialization.json)
 
@@ -28,7 +25,7 @@ kotlin {
             implementation(project(":ex_apigenerator:model"))
         }
         iosMain.dependencies {
-          implementation(libs.ktor.client.ios)
+            implementation(libs.ktor.client.ios)
         }
     }
 }

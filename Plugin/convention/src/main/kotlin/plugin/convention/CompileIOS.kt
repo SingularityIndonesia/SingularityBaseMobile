@@ -17,7 +17,13 @@ class CompileIOS : Plugin<Project> {
                     iosX64(),
                     iosArm64(),
                     iosSimulatorArm64()
-                )
+                ).forEach { iosTarget ->
+                    if (name.contains("composeApp", true))
+                        iosTarget.binaries.framework {
+                            baseName = "ComposeApp"
+                            isStatic = true
+                        }
+                }
             }
         }
     }
