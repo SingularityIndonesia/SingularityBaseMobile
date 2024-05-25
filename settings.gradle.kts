@@ -3,11 +3,7 @@
  * You are not allowed to remove the copyright. Unless you have a "free software" licence.
  */
 dependencyResolutionManagement {
-    versionCatalogs {
-        create("libs2") {
-            from(files("gradle/libs.versions.toml"))
-        }
-    }
+
 }
 
 includeBuild("Main")
