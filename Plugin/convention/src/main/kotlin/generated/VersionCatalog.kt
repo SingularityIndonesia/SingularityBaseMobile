@@ -10,7 +10,7 @@ object VersionCatalog {
     val JVM_TARGET = "11"
 
     // KOTLIN
-    val KOTLIN_VERSION = "1.9.23"
+    val KOTLIN_VERSION = "2.0.0"
     /*val KOTLIN_COMPILER_EXTENSION_VERSION = "1.5.10"*/
 
     // JUNIT
