@@ -89,6 +89,10 @@ gradlePlugin {
             id = "FeatureHttpClient"
             implementationClass = "plugin.convention.features.FeatureHttpClient"
         }
+        register("FeatureScreenNavigation") {
+            id = "FeatureScreenNavigation"
+            implementationClass = "plugin.convention.features.FeatureScreenNavigation"
+        }
         register("FeatureSerialization") {
             id = "FeatureSerialization"
             implementationClass = "plugin.convention.features.FeatureSerialization"

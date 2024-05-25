@@ -8,6 +8,7 @@ plugins {
     id("AppConventionV1")
     id("CompileIOS")
     id("FeatureJetpackCompose")
+    id("FeatureScreenNavigation")
     id("FeatureSerialization")
     id("FeatureHttpClient")
 }
@@ -15,8 +16,6 @@ plugins {
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation(libs.compose.navigation)
-
             implementation("system:core")
             implementation("system:designsystem")
             implementation("shared:common")
