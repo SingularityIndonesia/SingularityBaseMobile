@@ -8,7 +8,7 @@ import com.android.build.api.dsl.ApkSigningConfig
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.Project
 import java.io.FileInputStream
-import java.util.*
+import java.util.Properties
 
 
 /**

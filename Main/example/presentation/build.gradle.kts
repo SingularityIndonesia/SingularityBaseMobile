@@ -4,28 +4,15 @@
  */
 plugins {
     id("LibraryConventionV1")
-    id("FeatureJetpackCompose")
-    kotlin("plugin.serialization")
+    id("CompileIOS")
+    id("FeatureScreen")
+    id("FeatureSerialization")
+    id("FeatureHttpClient")
 }
 
 kotlin {
     sourceSets {
-        androidMain.dependencies {
-            implementation(libs.compose.ui.tooling.preview)
-            implementation(libs.androidx.activity.compose)
-        }
         commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(compose.ui)
-            implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
-
-            implementation(libs.ktor.client.core)
-            implementation(libs.ktor.client.cio)
-
-            implementation(libs.kotlinx.serialization.json)
 
             implementation("system:core")
             implementation("system:designsystem")
@@ -34,15 +21,10 @@ kotlin {
             implementation(project(":example:data"))
             implementation(project(":example:model"))
         }
-        iosMain.dependencies {
-          implementation(libs.ktor.client.ios)
-        }
     }
 }
 
 android {
-
-
     namespace = "main.example.presentation"
     dependencies {
       debugImplementation(libs.compose.ui.tooling)

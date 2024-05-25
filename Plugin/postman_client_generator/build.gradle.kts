@@ -4,7 +4,7 @@
  */
 plugins {
     `kotlin-dsl`
-    kotlin("plugin.serialization")
+    id("org.jetbrains.kotlin.plugin.serialization")
     id("com.gradle.plugin-publish") version "1.2.1"
 }
 

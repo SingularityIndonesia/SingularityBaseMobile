@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import system.core.lifecycle.SaveAbleState
 import system.designsystem.LargePadding
 import system.designsystem.component.TextBody
 import system.designsystem.component.TextHeadline1
@@ -15,7 +16,6 @@ import system.designsystem.component.TextHeadline2
 import system.designsystem.component.TextHeadline3
 import system.designsystem.component.TextSubTitle
 import system.designsystem.component.TopAppBar
-import system.core.lifecycle.SaveAbleState
 
 data class ExampleTodoDetailScreenPld(
     val id: String,

@@ -4,7 +4,7 @@
  */
 plugins {
     `kotlin-dsl`
-    kotlin("plugin.serialization")
+    id("org.jetbrains.kotlin.plugin.serialization")
 }
 
 group = "plugin.convention"
@@ -53,9 +53,10 @@ tasks.named("compileKotlin") {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:${libs.versions.kotlin.get()}")
-    implementation("com.android.tools.build:gradle:${libs.versions.agp.get()}")
+    implementation(libs.kotlin.gradle.plugin)
+    implementation(libs.gradle)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.compose.gradle.plugin)
 }
 
 gradlePlugin {
@@ -68,13 +69,33 @@ gradlePlugin {
             id = "LibraryConventionV1"
             implementationClass = "plugin.convention.LibraryConventionV1"
         }
-        register("FeatureJetpackCompose") {
-            id = "FeatureJetpackCompose"
-            implementationClass = "plugin.convention.features.FeatureJetpackCompose"
+        register("CompileIOS") {
+            id = "CompileIOS"
+            implementationClass = "plugin.convention.CompileIOS"
+        }
+        register("CompileWasm") {
+            id = "CompileWasm"
+            implementationClass = "plugin.convention.CompileWasm"
+        }
+        register("FeatureScreen") {
+            id = "FeatureScreen"
+            implementationClass = "plugin.convention.features.FeatureScreen"
         }
         register("FeatureContextReceiver") {
             id = "FeatureContextReceiver"
             implementationClass = "plugin.convention.features.FeatureContextReceiver"
+        }
+        register("FeatureHttpClient") {
+            id = "FeatureHttpClient"
+            implementationClass = "plugin.convention.features.FeatureHttpClient"
+        }
+        register("FeatureScreenNavigation") {
+            id = "FeatureScreenNavigation"
+            implementationClass = "plugin.convention.features.FeatureScreenNavigation"
+        }
+        register("FeatureSerialization") {
+            id = "FeatureSerialization"
+            implementationClass = "plugin.convention.features.FeatureSerialization"
         }
     }
 }

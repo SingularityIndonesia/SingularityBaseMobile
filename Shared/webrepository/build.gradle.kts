@@ -4,22 +4,14 @@
  */
 plugins {
     id("LibraryConventionV1")
+    id("CompileIOS")
+    id("FeatureHttpClient")
 }
 
 kotlin {
     sourceSets {
-        androidMain.dependencies {
-            implementation(libs.ktor.client.okhttp)
-        }
         commonMain.dependencies {
-            // ktor
-            implementation(libs.ktor.client.core)
-            implementation(libs.ktor.client.cio)
-
             implementation("system:core")
-        }
-        iosMain.dependencies {
-            implementation(libs.ktor.client.ios)
         }
     }
 }

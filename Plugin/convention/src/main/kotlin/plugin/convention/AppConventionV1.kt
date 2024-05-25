@@ -4,27 +4,29 @@
  */
 package plugin.convention
 
-import com.android.build.api.dsl.ApplicationExtension
-import plugin.convention.companion.DefaultConfigs.EXCLUDED_RESOURCES
 import VersionCatalog.COMPILE_SDK
 import VersionCatalog.JAVA_SOURCE_COMPAT
 import VersionCatalog.JAVA_TARGET_COMPAT
-import VersionCatalog.JUNIT_VERSION
 import VersionCatalog.JVM_TARGET
-import VersionCatalog.KOTLIN_VERSION
 import VersionCatalog.MIN_SDK
 import VersionCatalog.TARGET_SDK
 import com.android.build.api.dsl.ApkSigningConfig
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.get
+import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import plugin.convention.companion.DefaultConfigs.EXCLUDED_RESOURCES
 import java.io.FileInputStream
 import java.util.Properties
 
 class AppConventionV1 : Plugin<Project> {
+    companion object {
+        public val ID: String = "AppConventionV1"
+    }
 
     private val PLUGINS = listOf(
         "com.android.application",
@@ -37,6 +39,8 @@ class AppConventionV1 : Plugin<Project> {
                 PLUGINS.forEach(::apply)
             }
 
+            val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
+
             extensions.configure<KotlinMultiplatformExtension> {
                 androidTarget {
                     compilations.all {
@@ -46,27 +50,9 @@ class AppConventionV1 : Plugin<Project> {
                     }
                 }
 
-                jvm()
-
-                listOf(
-                    iosX64(),
-                    iosArm64(),
-                    iosSimulatorArm64()
-                ).forEach { iosTarget ->
-                    iosTarget.binaries.framework {
-                        baseName = "ComposeApp"
-                        isStatic = true
-                    }
-                }
-
                 sourceSets.commonTest.dependencies {
-                    implementation("junit:junit:$JUNIT_VERSION")
+                    implementation(libs.findLibrary("junit").get())
                 }
-                sourceSets.jvmTest.dependencies {
-                    implementation("org.jetbrains.kotlin:kotlin-test:$KOTLIN_VERSION")
-                    implementation("org.jetbrains.kotlin:kotlin-test-junit:$KOTLIN_VERSION")
-                }
-
             }
             extensions.configure<BaseAppModuleExtension> {
                 compileSdk = COMPILE_SDK

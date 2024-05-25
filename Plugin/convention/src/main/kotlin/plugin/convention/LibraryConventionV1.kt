@@ -4,27 +4,30 @@
  */
 package plugin.convention
 
-import com.android.build.gradle.LibraryExtension
 import VersionCatalog.COMPILE_SDK
 import VersionCatalog.JAVA_SOURCE_COMPAT
 import VersionCatalog.JAVA_TARGET_COMPAT
 import VersionCatalog.JUNIT_VERSION
 import VersionCatalog.JVM_TARGET
-import VersionCatalog.KOTLIN_VERSION
 import VersionCatalog.MIN_SDK
 import VersionCatalog.TARGET_SDK
-import plugin.convention.companion.DefaultConfigs.EXCLUDED_RESOURCES
+import com.android.build.gradle.LibraryExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.get
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import plugin.convention.companion.DefaultConfigs.EXCLUDED_RESOURCES
 
 class LibraryConventionV1 : Plugin<Project> {
 
+    companion object {
+        public val ID: String = "LibraryConventionV1"
+    }
+
     private val PLUGINS = listOf(
         "com.android.library",
-        "org.jetbrains.kotlin.multiplatform"
+        "org.jetbrains.kotlin.multiplatform",
     )
 
     override fun apply(target: Project) =
@@ -42,20 +45,8 @@ class LibraryConventionV1 : Plugin<Project> {
                     }
                 }
 
-                jvm()
-
-                listOf(
-                    iosX64(),
-                    iosArm64(),
-                    iosSimulatorArm64()
-                )
-
                 sourceSets.commonTest.dependencies {
                     implementation("junit:junit:$JUNIT_VERSION")
-                }
-                sourceSets.jvmTest.dependencies {
-                    implementation("org.jetbrains.kotlin:kotlin-test:$KOTLIN_VERSION")
-                    implementation("org.jetbrains.kotlin:kotlin-test-junit:$KOTLIN_VERSION")
                 }
             }
 

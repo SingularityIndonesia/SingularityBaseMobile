@@ -4,7 +4,8 @@
  */
 package system.core.context
 
-import io.ktor.client.*
+import io.ktor.client.HttpClient
+import io.ktor.client.HttpClientConfig
 
 interface WebRepositoryContext {
     val httpClient: HttpClient

@@ -5,9 +5,9 @@
 import androidx.compose.runtime.remember
 import androidx.compose.ui.window.ComposeUIViewController
 import platform.Foundation.NSProcessInfo
+import shared.webrepository.webRepositoryContext
 import system.core.context.MainContext
 import system.core.context.WebRepositoryContext
-import shared.webrepository.webRepositoryContext
 
 fun MainViewController() = ComposeUIViewController {
 
