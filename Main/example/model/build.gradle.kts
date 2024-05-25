@@ -4,6 +4,7 @@
  */
 plugins {
     id("LibraryConventionV1")
+    id("CompileIOS")
     kotlin("plugin.serialization")
 }
 

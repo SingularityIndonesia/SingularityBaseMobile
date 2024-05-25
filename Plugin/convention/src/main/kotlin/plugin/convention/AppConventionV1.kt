@@ -46,27 +46,9 @@ class AppConventionV1 : Plugin<Project> {
                     }
                 }
 
-                jvm()
-
-                listOf(
-                    iosX64(),
-                    iosArm64(),
-                    iosSimulatorArm64()
-                ).forEach { iosTarget ->
-                    iosTarget.binaries.framework {
-                        baseName = "ComposeApp"
-                        isStatic = true
-                    }
-                }
-
                 sourceSets.commonTest.dependencies {
                     implementation("junit:junit:$JUNIT_VERSION")
                 }
-                sourceSets.jvmTest.dependencies {
-                    implementation("org.jetbrains.kotlin:kotlin-test:$KOTLIN_VERSION")
-                    implementation("org.jetbrains.kotlin:kotlin-test-junit:$KOTLIN_VERSION")
-                }
-
             }
             extensions.configure<BaseAppModuleExtension> {
                 compileSdk = COMPILE_SDK

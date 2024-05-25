@@ -76,5 +76,13 @@ gradlePlugin {
             id = "FeatureContextReceiver"
             implementationClass = "plugin.convention.features.FeatureContextReceiver"
         }
+        register("CompileIOS") {
+            id = "CompileIOS"
+            implementationClass = "plugin.convention.CompileIOS"
+        }
+        register("CompileWasm") {
+            id = "CompileWasm"
+            implementationClass = "plugin.convention.CompileWasm"
+        }
     }
 }

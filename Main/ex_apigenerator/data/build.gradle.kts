@@ -4,6 +4,7 @@
  */
 plugins {
     id("LibraryConventionV1")
+    id("CompileIOS")
     id("io.github.stefanusayudha.PostmanClientGenerator")
     kotlin("plugin.serialization")
 }

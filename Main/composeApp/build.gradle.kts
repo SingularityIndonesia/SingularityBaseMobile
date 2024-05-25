@@ -10,6 +10,7 @@ import java.util.Properties
 
 plugins {
     id("AppConventionV1")
+    id("CompileIOS")
     id("FeatureJetpackCompose")
     kotlin("plugin.serialization")
 }

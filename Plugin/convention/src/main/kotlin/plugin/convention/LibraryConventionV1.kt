@@ -19,12 +19,14 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.get
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
+import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
 class LibraryConventionV1 : Plugin<Project> {
 
     private val PLUGINS = listOf(
         "com.android.library",
-        "org.jetbrains.kotlin.multiplatform"
+        "org.jetbrains.kotlin.multiplatform",
     )
 
     override fun apply(target: Project) =
@@ -42,20 +44,8 @@ class LibraryConventionV1 : Plugin<Project> {
                     }
                 }
 
-                jvm()
-
-                listOf(
-                    iosX64(),
-                    iosArm64(),
-                    iosSimulatorArm64()
-                )
-
                 sourceSets.commonTest.dependencies {
                     implementation("junit:junit:$JUNIT_VERSION")
-                }
-                sourceSets.jvmTest.dependencies {
-                    implementation("org.jetbrains.kotlin:kotlin-test:$KOTLIN_VERSION")
-                    implementation("org.jetbrains.kotlin:kotlin-test-junit:$KOTLIN_VERSION")
                 }
             }
 
