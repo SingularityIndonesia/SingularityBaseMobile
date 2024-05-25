@@ -4,11 +4,11 @@
  */
 package plugin.convention.features
 
-import plugin.convention.companion.kotlinCompile
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import plugin.convention.companion.kotlinCompile
 
 class FeatureContextReceiver : Plugin<Project> {
     companion object {

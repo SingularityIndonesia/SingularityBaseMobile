@@ -4,7 +4,6 @@
  */
 package plugin.convention.features
 
-import VersionCatalog
 import VersionCatalog.JVM_TARGET
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalogsExtension
@@ -12,7 +11,6 @@ import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.compose.ComposePlugin
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
-import kotlin.jvm.optionals.getOrElse
 
 class FeatureScreen : ComposePlugin() {
     companion object {

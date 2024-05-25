@@ -7,7 +7,6 @@ package plugin.convention
 import VersionCatalog.COMPILE_SDK
 import VersionCatalog.JAVA_SOURCE_COMPAT
 import VersionCatalog.JAVA_TARGET_COMPAT
-import VersionCatalog.JUNIT_VERSION
 import VersionCatalog.JVM_TARGET
 import VersionCatalog.MIN_SDK
 import VersionCatalog.TARGET_SDK

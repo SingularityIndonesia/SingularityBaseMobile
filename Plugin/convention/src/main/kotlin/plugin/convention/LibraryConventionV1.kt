@@ -4,23 +4,20 @@
  */
 package plugin.convention
 
-import com.android.build.gradle.LibraryExtension
 import VersionCatalog.COMPILE_SDK
 import VersionCatalog.JAVA_SOURCE_COMPAT
 import VersionCatalog.JAVA_TARGET_COMPAT
 import VersionCatalog.JUNIT_VERSION
 import VersionCatalog.JVM_TARGET
-import VersionCatalog.KOTLIN_VERSION
 import VersionCatalog.MIN_SDK
 import VersionCatalog.TARGET_SDK
-import plugin.convention.companion.DefaultConfigs.EXCLUDED_RESOURCES
+import com.android.build.gradle.LibraryExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.get
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
-import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
-import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
+import plugin.convention.companion.DefaultConfigs.EXCLUDED_RESOURCES
 
 class LibraryConventionV1 : Plugin<Project> {
 

@@ -15,9 +15,9 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.WindowCompat
+import shared.webrepository.webRepositoryContext
 import system.core.context.MainContext
 import system.core.context.WebRepositoryContext
-import shared.webrepository.webRepositoryContext
 
 class MainActivity : ComponentActivity() {
 

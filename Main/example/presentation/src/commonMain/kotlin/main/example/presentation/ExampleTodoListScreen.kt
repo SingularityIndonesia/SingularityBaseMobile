@@ -31,6 +31,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import main.example.data.GetTodos
+import main.example.model.Todo
+import main.example.model.TodoID
 import shared.common.PrettyJson
 import shared.common.getPlatform
 import system.core.context.MainContext
@@ -41,6 +49,7 @@ import system.core.data.VmProcessing
 import system.core.data.VmState
 import system.core.data.VmSuccess
 import system.core.data.fold
+import system.core.lifecycle.SaveAbleState
 import system.designsystem.LargePadding
 import system.designsystem.MediumPadding
 import system.designsystem.component.LargeSpacing
@@ -48,15 +57,6 @@ import system.designsystem.component.MediumSpacing
 import system.designsystem.component.TextBody
 import system.designsystem.component.TextLabel
 import system.designsystem.component.TextTitle
-import system.core.lifecycle.SaveAbleState
-import main.example.data.GetTodos
-import main.example.model.Todo
-import main.example.model.TodoID
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
-import kotlinx.coroutines.launch
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
 
 @Immutable
 @Serializable
