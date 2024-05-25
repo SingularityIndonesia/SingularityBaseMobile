@@ -26,9 +26,6 @@ kotlin {
 
 android {
     namespace = "main.example.presentation"
-    dependencies {
-      debugImplementation(libs.compose.ui.tooling)
-    }
 }
 
 task("testClasses")

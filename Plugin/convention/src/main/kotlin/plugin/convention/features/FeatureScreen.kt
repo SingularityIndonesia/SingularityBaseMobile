@@ -5,9 +5,12 @@
 package plugin.convention.features
 
 import VersionCatalog.JVM_TARGET
+import com.android.build.gradle.BaseExtension
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalogsExtension
+import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.compose.ComposePlugin
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
@@ -49,6 +52,17 @@ class FeatureScreen : ComposePlugin() {
                     implementation(Dependencies(target).ui)
                     implementation(Dependencies(target).components.resources)
                     implementation(Dependencies(target).components.uiToolingPreview)
+                }
+            }
+
+            val debugImplementation: (DependencyHandler, Any) -> Unit =
+                { dependencyHandler, dependencyNotation ->
+                    dependencyHandler.add("debugImplementation", dependencyNotation)
+                }
+
+            extensions.configure<BaseExtension> {
+                dependencies {
+                    debugImplementation(this, libs.findLibrary("compose-ui-tooling").get())
                 }
             }
         }
