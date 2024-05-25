@@ -85,9 +85,9 @@ gradlePlugin {
             id = "FeatureContextReceiver"
             implementationClass = "plugin.convention.features.FeatureContextReceiver"
         }
-        register("FeatureKtor") {
-            id = "FeatureKtor"
-            implementationClass = "plugin.convention.features.FeatureKtor"
+        register("FeatureHttpClient") {
+            id = "FeatureHttpClient"
+            implementationClass = "plugin.convention.features.FeatureHttpClient"
         }
         register("FeatureSerialization") {
             id = "FeatureSerialization"

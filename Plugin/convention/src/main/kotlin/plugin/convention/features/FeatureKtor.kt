@@ -7,12 +7,11 @@ package plugin.convention.features
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
-import org.jetbrains.compose.ComposePlugin
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
-class FeatureKtor : Plugin<Project> {
+class FeatureHttpClient : Plugin<Project> {
     companion object {
-        public val ID: String = "FeatureKtor"
+        public val ID: String = "FeatureHttpClient"
     }
     override fun apply(target: Project) {
         with(target) {

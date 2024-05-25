@@ -1,7 +1,7 @@
 plugins {
     id("LibraryConventionV1")
     id("CompileIOS")
-    id("FeatureKtor")
+    id("FeatureHttpClient")
 }
 
 android {

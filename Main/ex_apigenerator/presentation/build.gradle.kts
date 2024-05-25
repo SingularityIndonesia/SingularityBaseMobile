@@ -7,7 +7,7 @@ plugins {
     id("CompileIOS")
     id("FeatureJetpackCompose")
     id("FeatureSerialization")
-    id("FeatureKtor")
+    id("FeatureHttpClient")
 }
 
 kotlin {
