@@ -5,17 +5,13 @@
 plugins {
     id("LibraryConventionV1")
     id("CompileIOS")
-    kotlin("plugin.serialization")
+    id("FeatureKtor")
+    id("FeatureSerialization")
 }
 
 kotlin {
     sourceSets {
-        androidMain.dependencies {
-            implementation(libs.ktor.client.okhttp)
-        }
         commonMain.dependencies {
-            implementation(libs.kotlinx.serialization.json)
-
             implementation("system:core")
             implementation("shared:common")
             implementation("shared:webrepository")
@@ -23,20 +19,12 @@ kotlin {
             implementation(project(":example:model"))
             implementation(project(":ex_apigenerator:data"))
         }
-        iosMain.dependencies {
-            implementation(libs.ktor.client.ios)
-        }
     }
 }
 
 
 android {
-
-
     namespace = "main.example.data"
-    dependencies {
-
-    }
 }
 
 task("testClasses")

@@ -5,20 +5,13 @@
 plugins {
     id("LibraryConventionV1")
     id("CompileIOS")
+    id("FeatureKtor")
 }
 
 kotlin {
     sourceSets {
-        androidMain.dependencies {
-            implementation(libs.ktor.client.okhttp)
-        }
         commonMain.dependencies {
-            implementation(libs.ktor.client.core)
-
             implementation("system:core")
-        }
-        iosMain.dependencies {
-            implementation(libs.ktor.client.ios)
         }
     }
 }

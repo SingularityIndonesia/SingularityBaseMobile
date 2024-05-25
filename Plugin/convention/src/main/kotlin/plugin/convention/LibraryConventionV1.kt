@@ -24,6 +24,10 @@ import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
 class LibraryConventionV1 : Plugin<Project> {
 
+    companion object {
+        public val ID: String = "LibraryConventionV1"
+    }
+
     private val PLUGINS = listOf(
         "com.android.library",
         "org.jetbrains.kotlin.multiplatform",

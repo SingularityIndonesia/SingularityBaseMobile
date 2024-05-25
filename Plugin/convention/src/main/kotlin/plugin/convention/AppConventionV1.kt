@@ -23,6 +23,9 @@ import java.io.FileInputStream
 import java.util.Properties
 
 class AppConventionV1 : Plugin<Project> {
+    companion object {
+        public val ID: String = "AppConventionV1"
+    }
 
     private val PLUGINS = listOf(
         "com.android.application",

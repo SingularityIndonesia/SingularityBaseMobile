@@ -5,28 +5,11 @@
 plugins {
     id("LibraryConventionV1")
     id("CompileIOS")
-    kotlin("plugin.serialization")
-}
-
-kotlin {
-    sourceSets {
-        androidMain.dependencies {
-
-        }
-        commonMain.dependencies {
-            implementation(libs.kotlinx.serialization.json)
-        }
-        iosMain.dependencies {
-
-        }
-    }
+    id("FeatureSerialization")
 }
 
 android {
     namespace = "main.ex_apigenerator.model"
-    dependencies {
-
-    }
 }
 
 task("testClasses")

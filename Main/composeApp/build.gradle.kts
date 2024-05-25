@@ -8,17 +8,13 @@ plugins {
     id("AppConventionV1")
     id("CompileIOS")
     id("FeatureJetpackCompose")
-    kotlin("plugin.serialization")
+    id("FeatureSerialization")
+    id("FeatureKtor")
 }
 
 kotlin {
     sourceSets {
-        androidMain.dependencies {
-            implementation(libs.ktor.client.okhttp)
-        }
         commonMain.dependencies {
-
-            implementation(libs.kotlinx.serialization.json)
             implementation(libs.compose.navigation)
 
             implementation("system:core")
@@ -28,9 +24,6 @@ kotlin {
 
             implementation(project(":example:presentation"))
             implementation(project(":example:model"))
-        }
-        iosMain.dependencies {
-            implementation(libs.ktor.client.ios)
         }
     }
 }
@@ -51,81 +44,33 @@ android {
 
 android.buildTypes {
     getByName("devDebug") {
-        buildConfigField(
-            "String",
-            "HOST",
-            env.getProperty("DEV_HOST")
-        )
-        buildConfigField(
-            "String",
-            "API_BASE_PATH",
-            env.getProperty("DEV_API_BASE_PATH")
-        )
+        buildConfigField("String", "HOST", env.getProperty("DEV_HOST"))
+        buildConfigField("String", "API_BASE_PATH", env.getProperty("DEV_API_BASE_PATH"))
     }
 
     getByName("devRelease") {
-        buildConfigField(
-            "String",
-            "HOST",
-            env.getProperty("DEV_HOST")
-        )
-        buildConfigField(
-            "String",
-            "API_BASE_PATH",
-            env.getProperty("DEV_API_BASE_PATH")
-        )
+        buildConfigField("String", "HOST", env.getProperty("DEV_HOST"))
+        buildConfigField("String", "API_BASE_PATH", env.getProperty("DEV_API_BASE_PATH"))
     }
 
     getByName("stagingDebug") {
-        buildConfigField(
-            "String",
-            "HOST",
-            env.getProperty("STAGE_HOST")
-        )
-        buildConfigField(
-            "String",
-            "API_BASE_PATH",
-            env.getProperty("STAGE_API_BASE_PATH")
-        )
+        buildConfigField("String", "HOST", env.getProperty("STAGE_HOST"))
+        buildConfigField("String", "API_BASE_PATH", env.getProperty("STAGE_API_BASE_PATH"))
     }
 
     getByName("stagingRelease") {
-        buildConfigField(
-            "String",
-            "HOST",
-            env.getProperty("STAGE_HOST")
-        )
-        buildConfigField(
-            "String",
-            "API_BASE_PATH",
-            env.getProperty("STAGE_API_BASE_PATH")
-        )
+        buildConfigField("String", "HOST", env.getProperty("STAGE_HOST"))
+        buildConfigField("String", "API_BASE_PATH", env.getProperty("STAGE_API_BASE_PATH"))
     }
 
     getByName("prodDebug") {
-        buildConfigField(
-            "String",
-            "HOST",
-            env.getProperty("PROD_HOST")
-        )
-        buildConfigField(
-            "String",
-            "API_BASE_PATH",
-            env.getProperty("PROD_API_BASE_PATH")
-        )
+        buildConfigField("String", "HOST", env.getProperty("PROD_HOST"))
+        buildConfigField("String", "API_BASE_PATH", env.getProperty("PROD_API_BASE_PATH"))
     }
 
     getByName("prodRelease") {
-        buildConfigField(
-            "String",
-            "HOST",
-            env.getProperty("PROD_HOST")
-        )
-        buildConfigField(
-            "String",
-            "API_BASE_PATH",
-            env.getProperty("PROD_API_BASE_PATH")
-        )
+        buildConfigField("String", "HOST", env.getProperty("PROD_HOST"))
+        buildConfigField("String", "API_BASE_PATH", env.getProperty("PROD_API_BASE_PATH"))
     }
 }
 

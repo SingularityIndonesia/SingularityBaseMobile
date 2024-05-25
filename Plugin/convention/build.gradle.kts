@@ -4,7 +4,7 @@
  */
 plugins {
     `kotlin-dsl`
-    kotlin("plugin.serialization")
+    id("org.jetbrains.kotlin.plugin.serialization")
 }
 
 group = "plugin.convention"
@@ -69,6 +69,14 @@ gradlePlugin {
             id = "LibraryConventionV1"
             implementationClass = "plugin.convention.LibraryConventionV1"
         }
+        register("CompileIOS") {
+            id = "CompileIOS"
+            implementationClass = "plugin.convention.CompileIOS"
+        }
+        register("CompileWasm") {
+            id = "CompileWasm"
+            implementationClass = "plugin.convention.CompileWasm"
+        }
         register("FeatureJetpackCompose") {
             id = "FeatureJetpackCompose"
             implementationClass = "plugin.convention.features.FeatureJetpackCompose"
@@ -77,13 +85,13 @@ gradlePlugin {
             id = "FeatureContextReceiver"
             implementationClass = "plugin.convention.features.FeatureContextReceiver"
         }
-        register("CompileIOS") {
-            id = "CompileIOS"
-            implementationClass = "plugin.convention.CompileIOS"
+        register("FeatureKtor") {
+            id = "FeatureKtor"
+            implementationClass = "plugin.convention.features.FeatureKtor"
         }
-        register("CompileWasm") {
-            id = "CompileWasm"
-            implementationClass = "plugin.convention.CompileWasm"
+        register("FeatureSerialization") {
+            id = "FeatureSerialization"
+            implementationClass = "plugin.convention.features.FeatureSerialization"
         }
     }
 }

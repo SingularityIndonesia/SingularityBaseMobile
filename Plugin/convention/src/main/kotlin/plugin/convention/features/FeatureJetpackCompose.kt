@@ -11,6 +11,9 @@ import org.jetbrains.compose.ComposePlugin
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 class FeatureJetpackCompose : ComposePlugin() {
+    companion object {
+        public val ID: String = "FeatureJetpackCompose"
+    }
 
     override fun apply(target: Project) {
         with(target) {

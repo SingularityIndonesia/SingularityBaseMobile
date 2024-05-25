@@ -11,6 +11,9 @@ import org.gradle.kotlin.dsl.configure
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 class FeatureContextReceiver : Plugin<Project> {
+    companion object {
+        public val ID: String = "FeatureContextReceiver"
+    }
 
     override fun apply(target: Project) {
         target.extensions.configure<KotlinMultiplatformExtension> {

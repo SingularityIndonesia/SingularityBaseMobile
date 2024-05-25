@@ -6,17 +6,13 @@ plugins {
     id("LibraryConventionV1")
     id("CompileIOS")
     id("FeatureJetpackCompose")
-    kotlin("plugin.serialization")
+    id("FeatureSerialization")
+    id("FeatureKtor")
 }
 
 kotlin {
     sourceSets {
-        androidMain.dependencies {
-            implementation(libs.ktor.client.okhttp)
-        }
         commonMain.dependencies {
-
-            implementation(libs.kotlinx.serialization.json)
 
             implementation("system:core")
             implementation("system:designsystem")
@@ -24,9 +20,6 @@ kotlin {
 
             implementation(project(":example:data"))
             implementation(project(":example:model"))
-        }
-        iosMain.dependencies {
-            implementation(libs.ktor.client.ios)
         }
     }
 }

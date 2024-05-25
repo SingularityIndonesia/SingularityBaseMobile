@@ -5,19 +5,17 @@
 plugins {
     id("LibraryConventionV1")
     id("CompileIOS")
+    id("FeatureKtor")
+    id("FeatureSerialization")
     id("io.github.stefanusayudha.PostmanClientGenerator")
-    kotlin("plugin.serialization")
 }
 
 kotlin {
     sourceSets {
         androidMain.dependencies {
-            implementation(libs.ktor.client.okhttp)
+
         }
         commonMain.dependencies {
-
-            implementation(libs.kotlinx.serialization.json)
-
             implementation("system:core")
             implementation("shared:common")
             implementation("shared:webrepository")
@@ -25,15 +23,13 @@ kotlin {
             implementation(project(":ex_apigenerator:model"))
         }
         iosMain.dependencies {
-            implementation(libs.ktor.client.ios)
+
         }
     }
 }
 
 
 android {
-
-
     namespace = "main.ex_apigenerator.data"
     dependencies {
 

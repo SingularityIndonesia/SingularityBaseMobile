@@ -2,31 +2,30 @@
  * Copyright (c) 2024 Singularity Indonesia (stefanus.ayudha@gmail.com)
  * You are not allowed to remove the copyright. Unless you have a "free software" licence.
  */
-package plugin.convention
+package plugin.convention.features
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
+import org.jetbrains.compose.ComposePlugin
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
-class CompileIOS : Plugin<Project> {
+class FeatureSerialization : Plugin<Project> {
     companion object {
-        public val ID: String = "CompileIOS"
+        public val ID: String = "FeatureSerialization"
     }
 
     override fun apply(target: Project) {
         with(target) {
+
+            with(pluginManager) {
+                apply("org.jetbrains.kotlin.plugin.serialization")
+            }
+
             extensions.configure<KotlinMultiplatformExtension> {
-                listOf(
-                    iosX64(),
-                    iosArm64(),
-                    iosSimulatorArm64()
-                ).forEach { iosTarget ->
-                    if (name.contains("composeApp", true))
-                        iosTarget.binaries.framework {
-                            baseName = "ComposeApp"
-                            isStatic = true
-                        }
+                sourceSets.commonMain.dependencies {
+                    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
                 }
             }
         }
