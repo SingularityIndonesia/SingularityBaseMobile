@@ -36,29 +36,15 @@ fi
 presentation_script_pt1=$(cat <<'EOF'
 plugins {
     id("LibraryConventionV1")
+    id("CompileIOS")
     id("FeatureJetpackCompose")
-    kotlin("plugin.serialization")
+    id("FeatureSerialization")
+    id("FeatureHttpClient")
 }
 
 kotlin {
     sourceSets {
-        androidMain.dependencies {
-            implementation(libs.compose.ui.tooling.preview)
-            implementation(libs.androidx.activity.compose)
-        }
         commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(compose.ui)
-            implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
-
-            implementation(libs.ktor.client.core)
-            implementation(libs.ktor.client.cio)
-
-            implementation(libs.kotlinx.serialization.json)
-
             implementation("system:core")
             implementation("system:designsystem")
             implementation("shared:common")
@@ -69,22 +55,15 @@ presentation_script_pt2="
             implementation(project(\":$NAME:data\"))
             implementation(project(\":$NAME:model\"))
         }
-        iosMain.dependencies {
-          implementation(libs.ktor.client.ios)
-        }
     }
 }
 
 android {
-
 "
 presentation_script_pt3="
     namespace = \"$TYPE.$NAME.presentation\""
 presentation_script_pt4=$(cat <<'EOF'
 
-    dependencies {
-      debugImplementation(libs.compose.ui.tooling)
-    }
 }
 
 task("testClasses")
@@ -96,21 +75,13 @@ presentation_script="$presentation_script_pt1$presentation_script_pt2$presentati
 data_script_pt1=$(cat <<'EOF'
 plugins {
     id("LibraryConventionV1")
-    kotlin("plugin.serialization")
+    id("FeatureSerialization")
+    id("FeatureHttpClient")
 }
 
 kotlin {
     sourceSets {
-        androidMain.dependencies {
-
-        }
         commonMain.dependencies {
-
-            implementation(libs.ktor.client.core)
-            implementation(libs.ktor.client.cio)
-
-            implementation(libs.kotlinx.serialization.json)
-
             implementation("system:core")
             implementation("shared:common")
             implementation("shared:webrepository")
@@ -121,23 +92,15 @@ data_script_pt2="
 
             implementation(project(\":$NAME:model\"))
         }
-        iosMain.dependencies {
-          implementation(libs.ktor.client.ios)
-        }
     }
 }
 
-
 android {
-
 "
 data_script_pt3="
     namespace = \"$TYPE.$NAME.data\""
 data_script_pt4=$(cat <<'EOF'
 
-    dependencies {
-
-    }
 }
 
 task("testClasses")
@@ -149,34 +112,16 @@ data_script="$data_script_pt1$data_script_pt2$data_script_pt3$data_script_pt4"
 model_pt1=$(cat <<'EOF'
 plugins {
     id("LibraryConventionV1")
-    kotlin("plugin.serialization")
-}
-
-kotlin {
-    sourceSets {
-        androidMain.dependencies {
-
-        }
-        commonMain.dependencies {
-            implementation(libs.kotlinx.serialization.json)
-        }
-        iosMain.dependencies {
-
-        }
-    }
+    id("FeatureSerialization")
 }
 
 android {
-
 EOF
 )
 model_pt2="
     namespace = \"$TYPE.$NAME.model\""
 model_pt3=$(cat <<'EOF'
 
-    dependencies {
-
-    }
 }
 
 task("testClasses")
@@ -190,31 +135,13 @@ plugins {
     id("LibraryConventionV1")
 }
 
-kotlin {
-    sourceSets {
-        androidMain.dependencies {
-
-        }
-        commonMain.dependencies {
-
-        }
-        iosMain.dependencies {
-
-        }
-    }
-}
-
 android {
-
 EOF
 )
 common_library_pt2="
     namespace = \"$TYPE.$NAME\""
 common_library_pt3=$(cat <<'EOF'
 
-    dependencies {
-
-    }
 }
 
 task("testClasses")
