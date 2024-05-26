@@ -165,28 +165,12 @@ createMain() {
   mkdir presentation
   mkdir presentation/src
   mkdir presentation/src/androidMain
-  mkdir presentation/src/androidMain/res
-  mkdir presentation/src/androidMain/res/mipmap-mdpi
-  mkdir presentation/src/androidMain/res/drawable-v24
-  mkdir presentation/src/androidMain/res/mipmap-hdpi
-  mkdir presentation/src/androidMain/res/drawable
-  mkdir presentation/src/androidMain/res/mipmap-xxxhdpi
-  mkdir presentation/src/androidMain/res/mipmap-xxhdpi
-  mkdir presentation/src/androidMain/res/values
-  mkdir presentation/src/androidMain/res/mipmap-xhdpi
-  mkdir presentation/src/androidMain/res/mipmap-anydpi-v26
-  mkdir presentation/src/androidMain/kotlin
 
   mkdir presentation/src/commonMain
-  mkdir presentation/src/commonMain/composeResources
-  mkdir presentation/src/commonMain/composeResources/drawable
   mkdir presentation/src/commonMain/kotlin
   mkdir "presentation/src/commonMain/kotlin/$TYPE"
   mkdir "presentation/src/commonMain/kotlin/$TYPE/$NAME"
   mkdir "presentation/src/commonMain/kotlin/$TYPE/$NAME/presentation"
-
-  mkdir presentation/src/iosMain
-  mkdir presentation/src/iosMain/kotlin
 
   echo "$manifest_script" > presentation/src/androidMain/AndroidManifest.xml
   echo "$presentation_script" > presentation/build.gradle.kts
@@ -194,7 +178,6 @@ createMain() {
   mkdir data
   mkdir data/src
   mkdir data/src/androidMain
-  mkdir data/src/androidMain/kotlin
 
   mkdir data/src/commonMain
   mkdir data/src/commonMain/kotlin
@@ -202,16 +185,12 @@ createMain() {
   mkdir "data/src/commonMain/kotlin/$TYPE/$NAME"
   mkdir "data/src/commonMain/kotlin/$TYPE/$NAME/data"
 
-  mkdir data/src/iosMain
-  mkdir data/src/iosMain/kotlin
-
   echo "$manifest_script" > data/src/androidMain/AndroidManifest.xml
   echo "$data_script" > data/build.gradle.kts
 
   mkdir model
   mkdir model/src
   mkdir model/src/androidMain
-  mkdir model/src/androidMain/kotlin
   mkdir model/src/commonMain
   mkdir model/src/commonMain/kotlin
   mkdir "model/src/commonMain/kotlin/$TYPE"
@@ -245,27 +224,11 @@ createCommonLibrary() {
   mkdir "$NAME"
   mkdir "$NAME/src"
   mkdir "$NAME/src/androidMain"
-  mkdir "$NAME/src/androidMain/res"
-  mkdir "$NAME/src/androidMain/res/mipmap-mdpi"
-  mkdir "$NAME/src/androidMain/res/drawable-v24"
-  mkdir "$NAME/src/androidMain/res/mipmap-hdpi"
-  mkdir "$NAME/src/androidMain/res/drawable"
-  mkdir "$NAME/src/androidMain/res/mipmap-xxxhdpi"
-  mkdir "$NAME/src/androidMain/res/mipmap-xxhdpi"
-  mkdir "$NAME/src/androidMain/res/values"
-  mkdir "$NAME/src/androidMain/res/mipmap-xhdpi"
-  mkdir "$NAME/src/androidMain/res/mipmap-anydpi-v26"
-  mkdir "$NAME/src/androidMain/kotlin"
 
   mkdir "$NAME/src/commonMain"
-  mkdir "$NAME/src/commonMain/composeResources"
-  mkdir "$NAME/src/commonMain/composeResources/drawable"
   mkdir "$NAME/src/commonMain/kotlin"
   mkdir "$NAME/src/commonMain/kotlin/$TYPE"
   mkdir "$NAME/src/commonMain/kotlin/$TYPE/$NAME"
-
-  mkdir "$NAME/src/iosMain"
-  mkdir "$NAME/src/iosMain/kotlin"
 
   echo "$manifest_script" > "$NAME/src/androidMain/AndroidManifest.xml"
   echo "$common_library_scipt" > "$NAME/build.gradle.kts"
