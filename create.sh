@@ -162,40 +162,21 @@ createMain() {
   cd Main
   mkdir "$NAME"
   cd "$NAME"
-  mkdir presentation
-  mkdir presentation/src
-  mkdir presentation/src/androidMain
 
-  mkdir presentation/src/commonMain
-  mkdir presentation/src/commonMain/kotlin
-  mkdir "presentation/src/commonMain/kotlin/$TYPE"
-  mkdir "presentation/src/commonMain/kotlin/$TYPE/$NAME"
-  mkdir "presentation/src/commonMain/kotlin/$TYPE/$NAME/presentation"
+  mkdir -p presentation/src/androidMain
+  mkdir -p "presentation/src/commonMain/kotlin/$TYPE/$NAME/presentation"
 
   echo "$manifest_script" > presentation/src/androidMain/AndroidManifest.xml
   echo "$presentation_script" > presentation/build.gradle.kts
 
-  mkdir data
-  mkdir data/src
-  mkdir data/src/androidMain
-
-  mkdir data/src/commonMain
-  mkdir data/src/commonMain/kotlin
-  mkdir "data/src/commonMain/kotlin/$TYPE"
-  mkdir "data/src/commonMain/kotlin/$TYPE/$NAME"
-  mkdir "data/src/commonMain/kotlin/$TYPE/$NAME/data"
+  mkdir -p data/src/androidMain
+  mkdir -p "data/src/commonMain/kotlin/$TYPE/$NAME/data"
 
   echo "$manifest_script" > data/src/androidMain/AndroidManifest.xml
   echo "$data_script" > data/build.gradle.kts
 
-  mkdir model
-  mkdir model/src
-  mkdir model/src/androidMain
-  mkdir model/src/commonMain
-  mkdir model/src/commonMain/kotlin
-  mkdir "model/src/commonMain/kotlin/$TYPE"
-  mkdir "model/src/commonMain/kotlin/$TYPE/$NAME"
-  mkdir "model/src/commonMain/kotlin/$TYPE/$NAME/model"
+  mkdir -p model/src/androidMain
+  mkdir -p "model/src/commonMain/kotlin/$TYPE/$NAME/model"
 
   echo "$manifest_script" > model/src/androidMain/AndroidManifest.xml
   echo "$model_script" > model/build.gradle.kts
@@ -221,14 +202,9 @@ File(settingsDir, \"./$NAME\")
 
 createCommonLibrary() {
   cd "$TYPE"
-  mkdir "$NAME"
-  mkdir "$NAME/src"
-  mkdir "$NAME/src/androidMain"
+  mkdir -p "$NAME/src/androidMain"
 
-  mkdir "$NAME/src/commonMain"
-  mkdir "$NAME/src/commonMain/kotlin"
-  mkdir "$NAME/src/commonMain/kotlin/$TYPE"
-  mkdir "$NAME/src/commonMain/kotlin/$TYPE/$NAME"
+  mkdir -p "$NAME/src/commonMain/kotlin/$TYPE/$NAME"
 
   echo "$manifest_script" > "$NAME/src/androidMain/AndroidManifest.xml"
   echo "$common_library_scipt" > "$NAME/build.gradle.kts"
