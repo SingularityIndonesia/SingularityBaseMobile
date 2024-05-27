@@ -59,10 +59,18 @@ class FeatureScreen : ComposePlugin() {
                 { dependencyHandler, dependencyNotation ->
                     dependencyHandler.add("debugImplementation", dependencyNotation)
                 }
+            val androidTestImplementation: (DependencyHandler, Any) -> Unit =
+                { dependencyHandler, dependencyNotation ->
+                    dependencyHandler.add("androidTestImplementation", dependencyNotation)
+                }
 
             extensions.configure<BaseExtension> {
                 dependencies {
                     debugImplementation(this, libs.findLibrary("compose-ui-tooling").get())
+                    androidTestImplementation(
+                        this,
+                        libs.findLibrary("compose-ui-tooling-preview").get()
+                    )
                 }
             }
         }

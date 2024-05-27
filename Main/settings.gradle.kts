@@ -29,6 +29,41 @@ dependencyResolutionManagement {
             }
         }
         mavenCentral()
+        includeBuild("../System") {
+            dependencySubstitution {
+                // include all Library
+                File(settingsDir, "../System")
+                    .listFiles()
+                    ?.asSequence()
+                    ?.filter { it.isDirectory }
+                    ?.filterNot { it.name.contains("gradle") }
+                    ?.filterNot { it.name.contains("build") }
+                    ?.filterNot { it.name.contains("iosApp") }
+                    ?.filterNot { it.name.contains(".") }
+                    ?.onEach { dir ->
+                        substitute(module("system:${dir.name}")).using(project(":${dir.name}"))
+                    }
+                    ?.toList()
+
+            }
+        }
+        includeBuild("../Shared") {
+            dependencySubstitution {
+                // include all Library
+                File(settingsDir, "../Shared")
+                    .listFiles()
+                    ?.asSequence()
+                    ?.filter { it.isDirectory }
+                    ?.filterNot { it.name.contains("gradle") }
+                    ?.filterNot { it.name.contains("build") }
+                    ?.filterNot { it.name.contains("iosApp") }
+                    ?.filterNot { it.name.contains(".") }
+                    ?.onEach { dir ->
+                        substitute(module("shared:${dir.name}")).using(project(":${dir.name}"))
+                    }
+                    ?.toList()
+            }
+        }
     }
 }
 
