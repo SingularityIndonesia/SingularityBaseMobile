@@ -40,7 +40,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        @Suppress("DEPRECATION")
         val darkDecorView = window.decorView.systemUiVisibility
+        @Suppress("DEPRECATION")
         val lightDecorView = window.decorView.systemUiVisibility or
                 View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
 

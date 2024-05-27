@@ -7,6 +7,7 @@ package main.example.presentation
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
 import system.core.lifecycle.SaveAbleState
 import system.designsystem.LargePadding
@@ -17,6 +18,7 @@ import system.designsystem.component.TextHeadline3
 import system.designsystem.component.TextSubTitle
 import system.designsystem.component.TopAppBar
 
+@Immutable
 data class ExampleTodoDetailScreenPld(
     val id: String,
     val onBack: () -> Unit

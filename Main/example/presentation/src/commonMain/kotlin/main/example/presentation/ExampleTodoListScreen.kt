@@ -39,6 +39,7 @@ import kotlinx.serialization.encodeToString
 import main.example.data.GetTodos
 import main.example.model.Todo
 import main.example.model.TodoID
+import main.example.presentation.entity.TodoDisplay
 import shared.common.PrettyJson
 import shared.common.getPlatform
 import system.core.context.MainContext
@@ -58,15 +59,9 @@ import system.designsystem.component.TextBody
 import system.designsystem.component.TextLabel
 import system.designsystem.component.TextTitle
 
-@Immutable
-@Serializable
-data class TodoDisplay(
-    val todo: Todo,
-    val selectable: Boolean,
-    val selected: Boolean
-)
-
 sealed interface TodoFilter
+
+@Immutable
 data object ShowCompleteOnly : TodoFilter
 
 @Immutable

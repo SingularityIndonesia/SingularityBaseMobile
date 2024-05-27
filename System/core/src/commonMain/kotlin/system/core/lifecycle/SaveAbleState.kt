@@ -4,10 +4,10 @@
  */
 package system.core.lifecycle
 
-class SaveAbleState {
-
+data class SaveAbleState(
     @Deprecated("Do not use this directly!")
-    val state = mutableListOf<Any>()
+    val state: MutableList<Any> = mutableListOf()
+) {
 
     @Suppress("DEPRECATION")
     fun <T : Any> push(state: T) {

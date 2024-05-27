@@ -27,6 +27,11 @@ kotlin {
     }
 }
 
+composeCompiler {
+    enableStrongSkippingMode = true
+    stabilityConfigurationFile = project.rootDir.resolve("stability_config.conf")
+}
+
 android {
     namespace = "com.singularity.basemobile"
     defaultConfig {
@@ -36,8 +41,15 @@ android {
     }
 }
 
-
 android.buildTypes {
+    getByName("debug") {
+        buildConfigField("String", "HOST", env.getProperty("DEV_HOST"))
+        buildConfigField("String", "API_BASE_PATH", env.getProperty("DEV_API_BASE_PATH"))
+    }
+    getByName("release") {
+        buildConfigField("String", "HOST", env.getProperty("DEV_HOST"))
+        buildConfigField("String", "API_BASE_PATH", env.getProperty("DEV_API_BASE_PATH"))
+    }
     getByName("devDebug") {
         buildConfigField("String", "HOST", env.getProperty("DEV_HOST"))
         buildConfigField("String", "API_BASE_PATH", env.getProperty("DEV_API_BASE_PATH"))
