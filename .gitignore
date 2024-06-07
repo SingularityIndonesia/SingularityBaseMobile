@@ -9,7 +9,12 @@
 /.idea/assetWizardSettings.xml
 .DS_Store
 /build
+*/build
+*/*/build
 /captures
 .externalNativeBuild
 .cxx
 local.properties
+*xcuserdata
+**.kotlin/
+/Main/kotlin-js-store/yarn.lock

@@ -1,0 +1,1 @@
+We are using src/commonMain because compose resource didn't allow us to change or add the resources directory.

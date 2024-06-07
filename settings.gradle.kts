@@ -1,25 +1,5 @@
-pluginManagement {
-    repositories {
-        google()
-        mavenCentral()
-        gradlePluginPortal()
-        includeBuild("plugin")
-    }
-}
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-
-rootProject.name = "Singularity Indonesia"
-include(":app")
-include(":library:extension:debugger")
-include(":library:extension:analytic")
-include(":library:dictionary")
-include(":library:model")
-include(":library:exception")
-include(":library:designsystem")
-include(":library:webrepository")
+/*
+ * Copyright (c) 2024 Singularity Indonesia (stefanus.ayudha@gmail.com)
+ * You are not allowed to remove the copyright. Unless you have a "free software" licence.
+ */
+includeBuild("Main")
