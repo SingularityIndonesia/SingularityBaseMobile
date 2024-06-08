@@ -12,7 +12,7 @@ class MainContext {
         ExampleContext(
             webRepositoryContext = ExampleWebRepositoryContext(
                 EnvironmentVariables.webHost,
-                EnvironmentVariables.todoBasePath
+                EnvironmentVariables.todoApiBasePath
             )
         )
     }

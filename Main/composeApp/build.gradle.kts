@@ -67,17 +67,7 @@ android {
 
         buildConfigField("String", "HOST", env("DEV_HOST"))
         buildConfigField("String", "TODO_API_BASE_PATH", env("DEV_TODO_API_BASE_PATH"))
-        // for my safety
-        // buildConfigField(
-        //     "String",
-        //     "GEMINI_API_KEY",
-        //     env("GEMINI_API_KEY")
-        // )
-        buildConfigField(
-            "String",
-            "GEMINI_API_KEY",
-            getLocalProperty("singularity.gemini.api.key").let { "\"${it}\"" }
-        )
+        buildConfigField("String", "GEMINI_API_KEY", env("GEMINI_API_KEY"))
     }
 }
 

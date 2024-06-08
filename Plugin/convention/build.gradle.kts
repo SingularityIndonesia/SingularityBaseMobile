@@ -75,5 +75,9 @@ gradlePlugin {
             id = "FeatureCoroutine"
             implementationClass = "plugin.convention.features.FeatureCoroutine"
         }
+        register("FeatureAdaptiveLayout") {
+            id = "FeatureAdaptiveLayout"
+            implementationClass = "plugin.convention.features.FeatureAdaptiveLayout"
+        }
     }
 }

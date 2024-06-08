@@ -2,6 +2,6 @@ package main
 
 expect object EnvironmentVariables {
     val webHost: String
-    val todoBasePath: String
+    val todoApiBasePath: String
     val geminiApiKey: String
 }
