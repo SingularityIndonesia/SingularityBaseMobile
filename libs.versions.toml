@@ -1,7 +1,7 @@
 [versions]
 composeGradlePlugin = "1.6.10"
 jvm-target = "17"
-agp = "8.2.2"
+agp = "8.4.1"
 android-compileSdk = "34"
 android-minSdk = "29"
 android-targetSdk = "34"

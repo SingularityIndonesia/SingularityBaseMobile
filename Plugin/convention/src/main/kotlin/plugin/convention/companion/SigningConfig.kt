@@ -23,7 +23,7 @@ const val KEYSTORE_PROPERTIES_FILE_NAME = "keystore.properties"
 
 fun getSigningConfig(
     project: Project,
-    extension: CommonExtension<*, *, *, *, *>
+    extension: CommonExtension<*, *, *, *, *,*>
 ): ApkSigningConfig? =
     Properties()
         .let {
