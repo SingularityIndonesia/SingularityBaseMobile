@@ -88,7 +88,6 @@ class AppConventionV1 : Plugin<Project> {
                 // and only composeApp module can access the environment variables.
                 // Other modules are prohibited.
                 defineBuildVariants(
-                    project = target,
                     mod = this,
                     signingConfig = signingConfig
                 )
@@ -134,7 +133,6 @@ class AppConventionV1 : Plugin<Project> {
     }
 
     fun defineBuildVariants(
-        project: Project,
         mod: BaseAppModuleExtension,
         signingConfig: ApkSigningConfig?
     ) = with(mod) {
@@ -155,36 +153,6 @@ class AppConventionV1 : Plugin<Project> {
                 proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
                 isMinifyEnabled = false
                 this.signingConfig = signingConfig
-            }
-
-            create("devDebug") {
-                initWith(getByName("debug"))
-                matchingFallbacks.add("debug")
-            }
-
-            create("devRelease") {
-                initWith(getByName("release"))
-                matchingFallbacks.add("release")
-            }
-
-            create("stagingDebug") {
-                initWith(getByName("debug"))
-                matchingFallbacks.add("debug")
-            }
-
-            create("stagingRelease") {
-                initWith(getByName("release"))
-                matchingFallbacks.add("release")
-            }
-
-            create("prodDebug") {
-                initWith(getByName("debug"))
-                matchingFallbacks.add("debug")
-            }
-
-            create("prodRelease") {
-                initWith(getByName("release"))
-                matchingFallbacks.add("release")
             }
         }
     }

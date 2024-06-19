@@ -10,12 +10,12 @@ val Project.environmentVariables
             .apply {
                 load(
                     FileInputStream(
-                        project.file("${project.projectDir}/environment.properties")
+                        project.file("${project.projectDir}/config.properties")
                     )
                 )
             }
     }
 
-fun Project.env(propertyName: String) : String  {
+fun Project.cfg(propertyName: String) : String  {
     return environmentVariables.getProperty(propertyName)
 }

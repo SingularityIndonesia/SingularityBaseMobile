@@ -79,5 +79,9 @@ gradlePlugin {
             id = "FeatureAdaptiveLayout"
             implementationClass = "plugin.convention.features.FeatureAdaptiveLayout"
         }
+        register("ProjectConfig") {
+            id = "ProjectConfig"
+            implementationClass = "plugin.convention.ProjectConfig"
+        }
     }
 }
