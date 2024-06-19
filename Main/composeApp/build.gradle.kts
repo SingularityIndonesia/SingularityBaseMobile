@@ -2,19 +2,11 @@
  * Copyright (c) 2024 Singularity Indonesia (stefanus.ayudha@gmail.com)
  * You are not allowed to remove the copyright. Unless you have a "free software" licence.
  */
-import org.jetbrains.compose.ComposeExtension
-import org.jetbrains.compose.internal.utils.getLocalProperty
 import plugin.convention.companion.ReleaseNote
 import plugin.convention.companion.Shared
 import plugin.convention.companion.System
-import plugin.convention.companion.env
+import plugin.convention.companion.cfg
 import plugin.convention.companion.model
-import plugin.convention.companion.onDevDebug
-import plugin.convention.companion.onDevRelease
-import plugin.convention.companion.onProdDebug
-import plugin.convention.companion.onProdRelease
-import plugin.convention.companion.onStagingDebug
-import plugin.convention.companion.onStagingRelease
 import plugin.convention.companion.presentation
 
 plugins {
@@ -27,6 +19,7 @@ plugins {
     id("FeatureSerialization")
     id("FeatureHttpClient")
     id("FeatureAndroidPluto")
+    id("ProjectConfig")
 }
 
 val ReleaseNote = "ReleaseNote.md"
@@ -60,47 +53,14 @@ android {
     namespace = "com.singularity.basemobile"
 
     defaultConfig {
+        resValue ("string", "app_name", cfg("APP_NAME").replace("\"",""))
+
         applicationId = "com.singularity.basemobile"
+        versionNameSuffix = cfg("APP_VERSION_NAME_SUFFIX").replace("\"","")
+        applicationIdSuffix = cfg("APP_ID_SUFFIX").replace("\"","")
 
         versionCode = ReleaseNote.versionCode
         versionName = ReleaseNote.versionName
-
-        buildConfigField("String", "HOST", env("DEV_HOST"))
-        buildConfigField("String", "TODO_API_BASE_PATH", env("DEV_TODO_API_BASE_PATH"))
-        buildConfigField("String", "GEMINI_API_KEY", env("GEMINI_API_KEY"))
-    }
-}
-
-// read: Docs/Centralized Context Control.md
-android.buildTypes {
-    onDevDebug {
-        buildConfigField("String", "HOST", env("DEV_HOST"))
-        buildConfigField("String", "TODO_API_BASE_PATH", env("DEV_TODO_API_BASE_PATH"))
-    }
-
-    onDevRelease {
-        buildConfigField("String", "HOST", env("DEV_HOST"))
-        buildConfigField("String", "TODO_API_BASE_PATH", env("DEV_TODO_API_BASE_PATH"))
-    }
-
-    onStagingDebug {
-        buildConfigField("String", "HOST", env("STAGE_HOST"))
-        buildConfigField("String", "TODO_API_BASE_PATH", env("STAGE_TODO_API_BASE_PATH"))
-    }
-
-    onStagingRelease {
-        buildConfigField("String", "HOST", env("STAGE_HOST"))
-        buildConfigField("String", "TODO_API_BASE_PATH", env("STAGE_TODO_API_BASE_PATH"))
-    }
-
-    onProdDebug {
-        buildConfigField("String", "HOST", env("PROD_HOST"))
-        buildConfigField("String", "TODO_API_BASE_PATH", env("PROD_TODO_API_BASE_PATH"))
-    }
-
-    onProdRelease {
-        buildConfigField("String", "HOST", env("PROD_HOST"))
-        buildConfigField("String", "TODO_API_BASE_PATH", env("PROD_TODO_API_BASE_PATH"))
     }
 }
 
