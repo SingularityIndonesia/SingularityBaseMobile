@@ -21,7 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
-import core.lifecycle.StateSaver
+import common.StateSaver
 import designsystem.ExtraLargePadding
 import designsystem.LargePadding
 import designsystem.component.TextLabel

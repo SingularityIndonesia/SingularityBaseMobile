@@ -4,9 +4,8 @@ import ai_chat.entity.ChatHistoryItemDisplay
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import common.moveToDefault
-import core.data.VmFailed
-import core.data.VmSuccess
-import core.lifecycle.StateSaver
+import common.VmFailed
+import common.VmSuccess
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first

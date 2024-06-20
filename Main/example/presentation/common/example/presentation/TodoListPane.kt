@@ -35,7 +35,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import common.PrettyJson
-import core.lifecycle.StateSaver
+import common.StateSaver
 import designsystem.LargePadding
 import designsystem.MediumPadding
 import designsystem.component.LargeSpacing
