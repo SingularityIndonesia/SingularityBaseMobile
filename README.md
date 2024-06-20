@@ -33,6 +33,29 @@ This codebase comes with Groot AI assistant module as example of Gemini AI integ
 - **Centralized Context control**. Read: [Centralized Context Control.md](Docs%2FCentralized%20Context%20Control.md)
 - Modules are **designed to be scaled horizontally**. No matter how many modules you add, the build performance will be fine during the development process. This is possible because the architecture of this codebase is designed to scale horizontally to optimize the **Gradle Caching**.
 - Using the **Gradle Convention Plugin**. Although you may not need it much during the development process as it is automated, for more advanced developers, you can create your own conventions.
+- Module setting design interpretational. Module settings should interpret the purpose of the module. For example, the `data` module's Gradle settings indicate HTTP call capability and serialization processes, effectively conveying its functionality.
+  ```kotlin
+  plugins {
+      id("LibraryConventionV2")
+      id("CompileIOS")
+      id("CompileWasm")
+      id("FeatureCoroutine")
+      id("FeatureSerialization")
+      id("FeatureHttpClient")
+  }
+  
+  kotlin {
+      sourceSets {
+          commonMain.dependencies {
+              System("core")
+              Shared("common")
+  
+              model("dashboard")
+          }
+      }
+  }
+  ```
+  This mechanism enhances code security by providing developers with clear information about a module's capabilities.
 - Design system ready in **material3**.
 - **Ready for large scale project**. This codebase is designed to serve as the foundation **for large-scale projects**. You don't need to worry about how to scale up your codebase, because it's designed for that.
 
