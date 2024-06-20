@@ -1,7 +1,6 @@
 package ai_chat
 
 import ai_chat.entity.ChatHistoryItemDisplay
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -34,14 +33,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import common.getPlatform
 import common.isAndroid
 import common.isIOS
-import core.lifecycle.StateSaver
+import common.StateSaver
 import designsystem.LargePadding
 import designsystem.MediumPadding
 import designsystem.component.LargeSpacing
@@ -49,7 +47,6 @@ import designsystem.component.MediumSpacing
 import designsystem.component.TextBody
 import designsystem.component.TextLabel
 import designsystem.component.TextTitle
-import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import system.designsystem.resources.Res
 import system.designsystem.resources.groot

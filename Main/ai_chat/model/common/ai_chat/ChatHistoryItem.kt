@@ -1,8 +1,9 @@
 package ai_chat
 
-import core.data.VmProcessing
-import core.data.VmState
-import core.data.fold
+import common.VmProcessing
+import common.VmState
+import common.fold
+
 
 data class ChatHistoryItem(
     val message: String,

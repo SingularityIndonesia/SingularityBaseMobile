@@ -2,17 +2,16 @@ package example.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import common.VmFailed
+import common.VmIdle
+import common.VmProcessing
+import common.VmState
+import common.VmSuccess
+import common.fold
 import common.getPlatform
 import common.ifNotBlank
 import common.messageOrUnknownError
 import common.moveToDefault
-import core.data.VmFailed
-import core.data.VmIdle
-import core.data.VmProcessing
-import core.data.VmState
-import core.data.VmSuccess
-import core.data.fold
-import core.lifecycle.StateSaver
 import example.data.GetTodos
 import example.model.Context
 import example.model.Todo

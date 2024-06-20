@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
-import core.lifecycle.StateSaver
+import common.StateSaver
 import designsystem.LargePadding
 import designsystem.component.TextBody
 import designsystem.component.TextHeadline1

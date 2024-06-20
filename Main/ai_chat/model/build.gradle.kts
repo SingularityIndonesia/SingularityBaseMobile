@@ -13,6 +13,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             System("core")
+            Shared("common")
             Shared("gemini")
         }
     }

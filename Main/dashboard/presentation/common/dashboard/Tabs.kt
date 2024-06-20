@@ -5,7 +5,7 @@ import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import core.lifecycle.StateSaver
+import common.StateSaver
 import example.model.TodoID
 import example.presentation.TodoListPane
 import example.presentation.TodoListPanePld
