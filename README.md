@@ -53,7 +53,7 @@ However, the Kotlin team is actively working on it. Once the context receiver is
 ### Make directory look better
 Create new workspace scope to make it look better in Intelij/Android studio, you can use this pattern:
 ```
-!file[*]:gradle//*&&!file[*]:iosApp//*&&!file[*]:.fleet//*&&!file[*]:gradle.properties&&!file[*]:gradlew&&!file[*]:.gitignore&&!file[*]:gradlew.bat&&!file[*]:.idea//*&&!file[*]:settings.gradle.kts&&!file[*]:.kotlin//*
+!file[*]:gradle//*&&!file[*]:iosApp//*&&!file[*]:.fleet//*&&!file[*]:gradle.properties&&!file[*]:gradlew&&!file[*]:.gitignore&&!file[*]:gradlew.bat&&!file[*]:.idea//*&&!file[*]:.kotlin//*&&!file[*]:src//*&&!file[*]:kotlin-js-store//*
 ```
 ![Watch](Docs/Directory%20Scope.gif)
 
