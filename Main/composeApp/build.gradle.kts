@@ -37,6 +37,7 @@ kotlin {
             System("designsystem")
             Shared("common")
             Shared("webclient")
+            Shared("bottomsheetflow")
 
             presentation("dashboard")
             model("dashboard")
