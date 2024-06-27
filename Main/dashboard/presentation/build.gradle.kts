@@ -20,6 +20,7 @@ kotlin {
             System("core")
             System("designsystem")
             Shared("common")
+            Shared("bottomsheetflow")
 
             data("dashboard")
             model("dashboard")

@@ -87,7 +87,7 @@ fun Context.TodoListPane(
 
         val platformName by states.platformName.collectAsState("")
         TextTitle(
-            text = "Running on $platformName",
+            label = "Running on $platformName",
             modifier = Modifier.padding(horizontal = LargePadding)
         )
 
@@ -163,7 +163,7 @@ private fun Status(
     status: String
 ) {
     TextLabel(
-        text = status,
+        label = status,
         modifier = Modifier.padding(horizontal = LargePadding)
     )
 }
@@ -173,7 +173,7 @@ private fun Error(
     error: String
 ) {
     TextLabel(
-        text = error,
+        label = error,
         modifier = Modifier.padding(horizontal = LargePadding)
     )
 }
@@ -183,7 +183,7 @@ private fun AppliedFilters(
     appliedFilters: String
 ) {
     TextLabel(
-        text = appliedFilters,
+        label = appliedFilters,
         modifier = Modifier.padding(horizontal = LargePadding)
     )
 }
@@ -240,7 +240,7 @@ fun Reload(
                 TextLabel(
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally),
-                    text = error
+                    label = error
                 )
                 Button(
                     modifier = Modifier
@@ -249,7 +249,7 @@ fun Reload(
                     onClick = onReload
                 ) {
                     TextLabel(
-                        text = "Reload"
+                        label = "Reload"
                     )
                 }
             }
@@ -269,7 +269,7 @@ private fun ButtonFilters(
             onClick = { onFilter.invoke(TodoFilter.ShowCompleteOnly) }
         ) {
             TextLabel(
-                text = "Completed"
+                label = "Completed"
             )
         }
 
@@ -278,7 +278,7 @@ private fun ButtonFilters(
             onClick = { onClearFilter.invoke() }
         ) {
             TextLabel(
-                text = "Show All"
+                label = "Show All"
             )
         }
 
@@ -339,7 +339,7 @@ fun TodoCard(
         ) {
             Column {
                 TextBody(
-                    text = PrettyJson
+                    label = PrettyJson
                         .encodeToString(todo)
                 )
 
@@ -351,7 +351,7 @@ fun TodoCard(
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         TextLabel(
-                            text = "Click again to open detail",
+                            label = "Click again to open detail",
                             modifier = Modifier
                                 .align(Alignment.CenterHorizontally)
                                 .padding(

@@ -51,11 +51,11 @@ fun PrologPane() {
             )
             TextTitle("Singularity Indonesia Present")
             TextBody(
-                text = "This app is for educational purpose only, to demonstrate Singularity Indonesia's Multiplatform Codebase Kotlin. The source code of this app is free to use, and distributed freely under Creative Common license — Under the name of Singularity Indonesia.",
+                label = "This app is for educational purpose only, to demonstrate Singularity Indonesia's Multiplatform Codebase Kotlin. The source code of this app is free to use, and distributed freely under Creative Common license — Under the name of Singularity Indonesia.",
             )
             ParagraphSpacing()
             TextBody(
-                text = "Follow the link bellow to download the source code of this app."
+                label = "Follow the link bellow to download the source code of this app."
             )
             TextBody(
                 "https://github.com/SingularityIndonesia/SingularityBaseMobile/",
@@ -63,10 +63,10 @@ fun PrologPane() {
             )
             ParagraphSpacing()
             TextHeadline1(
-                text = "Team and Contributors"
+                label = "Team and Contributors"
             )
             TextHeadline2(
-                text = "Project Manager"
+                label = "Project Manager"
             )
             Avatar(
                 painter = painterResource(Res.drawable.logo_of_singularity_indonesia_circle),
@@ -75,7 +75,7 @@ fun PrologPane() {
                 email = "stefanus.ayudha@gmail.com"
             )
             TextHeadline2(
-                text = "System designer"
+                label = "System designer"
             )
             Avatar(
                 painter = painterResource(Res.drawable.ahmad_shufyan),
@@ -115,14 +115,14 @@ fun Avatar(
         LargeSpacing()
         Column {
             TextBody(
-                text = name
+                label = name
             )
             MediumSpacing()
             Row {
                 TextLabel("Linkedin:")
                 MediumSpacing()
                 TextLabel(
-                    text = linkedInID,
+                    label = linkedInID,
                     color = MaterialTheme.colorScheme.tertiary
                 )
             }
@@ -130,7 +130,7 @@ fun Avatar(
                 TextLabel("Email:")
                 MediumSpacing()
                 TextLabel(
-                    text = email,
+                    label = email,
                     color = MaterialTheme.colorScheme.tertiary
                 )
             }

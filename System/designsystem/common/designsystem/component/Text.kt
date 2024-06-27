@@ -18,26 +18,27 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun TextTitle(
-    text: String,
+    label: String,
     color: Color? = null,
     textAlign: TextAlign = TextAlign.Left,
     modifier: Modifier = Modifier
 ) {
-    SelectionContainer {
+    SelectionContainer(
+        modifier = Modifier.then(modifier)
+    ) {
         if (color == null)
             Text(
-                text = text,
+                text = label,
                 textAlign = textAlign,
                 style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier
                     .padding(
                         vertical = 16.dp
                     )
-                    .then(modifier)
             )
         else
             Text(
-                text = text,
+                text = label,
                 color = color,
                 textAlign = textAlign,
                 style = MaterialTheme.typography.titleLarge,
@@ -45,22 +46,24 @@ fun TextTitle(
                     .padding(
                         vertical = 16.dp
                     )
-                    .then(modifier)
+
             )
     }
 }
 
 @Composable
 fun TextSubTitle(
-    text: String,
+    label: String,
     color: Color? = null,
     textAlign: TextAlign = TextAlign.Left,
     modifier: Modifier = Modifier
 ) {
-    SelectionContainer {
+    SelectionContainer(
+        modifier = Modifier.then(modifier)
+    )  {
         if (color == null)
             Text(
-                text = text,
+                text = label,
                 textAlign = textAlign,
                 fontStyle = FontStyle.Italic,
                 style = MaterialTheme.typography.bodyLarge,
@@ -69,11 +72,10 @@ fun TextSubTitle(
                         vertical = 4.dp
                     )
                     .alpha(.9f)
-                    .then(modifier)
             )
         else
             Text(
-                text = text,
+                text = label,
                 textAlign = textAlign,
                 fontStyle = FontStyle.Italic,
                 style = MaterialTheme.typography.bodyLarge,
@@ -82,33 +84,33 @@ fun TextSubTitle(
                         vertical = 4.dp
                     )
                     .alpha(.9f)
-                    .then(modifier)
             )
     }
 }
 
 @Composable
 fun TextHeadline1(
-    text: String,
+    label: String,
     color: Color? = null,
     textAlign: TextAlign = TextAlign.Left,
     modifier: Modifier = Modifier
 ) {
-    SelectionContainer {
+    SelectionContainer(
+        modifier = Modifier.then(modifier)
+    )  {
         if (color == null)
             Text(
-                text = text,
+                text = label,
                 textAlign = textAlign,
                 style = MaterialTheme.typography.headlineLarge,
                 modifier = Modifier
                     .padding(
                         vertical = 20.dp
                     )
-                    .then(modifier)
             )
         else
             Text(
-                text = text,
+                text = label,
                 color = color,
                 textAlign = textAlign,
                 style = MaterialTheme.typography.headlineLarge,
@@ -116,33 +118,33 @@ fun TextHeadline1(
                     .padding(
                         vertical = 20.dp
                     )
-                    .then(modifier)
             )
     }
 }
 
 @Composable
 fun TextHeadline2(
-    text: String,
+    label: String,
     color: Color? = null,
     textAlign: TextAlign = TextAlign.Left,
     modifier: Modifier = Modifier
 ) {
-    SelectionContainer {
+    SelectionContainer(
+        modifier = Modifier.then(modifier)
+    )  {
         if (color == null)
             Text(
-                text = text,
+                text = label,
                 textAlign = textAlign,
                 style = MaterialTheme.typography.headlineMedium,
                 modifier = Modifier
                     .padding(
                         vertical = 14.dp
                     )
-                    .then(modifier)
             )
         else
             Text(
-                text = text,
+                text = label,
                 textAlign = textAlign,
                 color = color,
                 style = MaterialTheme.typography.headlineMedium,
@@ -150,7 +152,6 @@ fun TextHeadline2(
                     .padding(
                         vertical = 14.dp
                     )
-                    .then(modifier)
             )
     }
 
@@ -158,26 +159,27 @@ fun TextHeadline2(
 
 @Composable
 fun TextHeadline3(
-    text: String,
+    label: String,
     color: Color? = null,
     textAlign: TextAlign = TextAlign.Left,
     modifier: Modifier = Modifier
 ) {
-    SelectionContainer {
+    SelectionContainer(
+        modifier = Modifier.then(modifier)
+    )  {
         if (color == null)
             Text(
-                text = text,
+                text = label,
                 textAlign = textAlign,
                 style = MaterialTheme.typography.headlineSmall,
                 modifier = Modifier
                     .padding(
                         vertical = 12.dp
                     )
-                    .then(modifier)
             )
         else
             Text(
-                text = text,
+                text = label,
                 textAlign = textAlign,
                 color = color,
                 style = MaterialTheme.typography.headlineSmall,
@@ -185,7 +187,6 @@ fun TextHeadline3(
                     .padding(
                         vertical = 12.dp
                     )
-                    .then(modifier)
             )
     }
 
@@ -193,26 +194,27 @@ fun TextHeadline3(
 
 @Composable
 fun TextBody(
-    text: String,
+    label: String,
     color: Color? = null,
     textAlign: TextAlign = TextAlign.Left,
     modifier: Modifier = Modifier
 ) {
-    SelectionContainer {
+    SelectionContainer(
+        modifier = Modifier.then(modifier)
+    )  {
         if (color == null)
             Text(
-                text = text,
+                text = label,
                 style = MaterialTheme.typography.bodyLarge,
                 textAlign = textAlign,
                 modifier = Modifier
                     .padding(
                         vertical = 2.dp
                     )
-                    .then(modifier)
             )
         else
             Text(
-                text = text,
+                text = label,
                 style = MaterialTheme.typography.bodyLarge,
                 textAlign = textAlign,
                 color = color,
@@ -220,35 +222,34 @@ fun TextBody(
                     .padding(
                         vertical = 2.dp
                     )
-                    .then(modifier)
             )
     }
 }
 
 @Composable
 fun TextLabel(
-    text: String,
+    label: String,
     textAlign: TextAlign = TextAlign.Left,
     color: Color? = null,
     modifier: Modifier = Modifier
 ) {
-    SelectionContainer {
+    SelectionContainer(
+        modifier = Modifier.then(modifier)
+    )  {
         if (color == null)
             Text(
-                text = text,
+                text = label,
                 textAlign = textAlign,
                 style = MaterialTheme.typography.labelLarge,
                 modifier = Modifier
-                    .then(modifier)
             )
         else
             Text(
-                text = text,
+                text = label,
                 color = color,
                 textAlign = textAlign,
                 style = MaterialTheme.typography.labelLarge,
                 modifier = Modifier
-                    .then(modifier)
             )
     }
 }

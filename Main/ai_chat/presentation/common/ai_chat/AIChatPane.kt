@@ -204,7 +204,7 @@ fun ChatBlock(
             )
         ) {
             TextBody(
-                text = message,
+                label = message,
                 modifier = Modifier
                     .padding(
                         horizontal = LargePadding,
@@ -235,7 +235,7 @@ fun ChatAnswerBlock(
             )
         ) {
             TextBody(
-                text = message,
+                label = message,
                 modifier = Modifier
                     .padding(
                         horizontal = LargePadding,

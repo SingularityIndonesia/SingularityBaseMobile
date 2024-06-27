@@ -34,7 +34,7 @@ fun TopAppBar(
         }
 
         TextTitle(
-            text = title
+            label = title
         )
     }
 }
