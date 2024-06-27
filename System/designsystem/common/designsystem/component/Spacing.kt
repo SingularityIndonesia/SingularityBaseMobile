@@ -4,6 +4,8 @@
  */
 package designsystem.component
 
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
@@ -42,5 +44,19 @@ fun ExtraLargeSpacing() {
 fun ParagraphSpacing() {
     Spacer(
         modifier = Modifier.size(designsystem.ParagraphSpacing)
+    )
+}
+
+@Composable
+fun ColumnScope.Expand() {
+    Spacer(
+        modifier = Modifier.weight(1f)
+    )
+}
+
+@Composable
+fun RowScope.Expand() {
+    Spacer(
+        modifier = Modifier.weight(1f)
     )
 }
