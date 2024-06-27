@@ -40,7 +40,7 @@ import plugin.convention.companion.model
 import plugin.convention.companion.data
 
 plugins {
-    id("LibraryConventionV2")
+    id("LibraryConventionV1")
     id("CompileIOS")
     id("CompileWasm")
     id("FeatureCoroutine")
@@ -85,7 +85,7 @@ import plugin.convention.companion.Shared
 import plugin.convention.companion.System
 
 plugins {
-    id("LibraryConventionV2")
+    id("LibraryConventionV1")
     id("CompileIOS")
     id("CompileWasm")
     id("FeatureCoroutine")
@@ -124,7 +124,7 @@ data_script="$data_script_pt1$data_script_pt2$data_script_pt3$data_script_pt4"
 
 model_pt1=$(cat <<'EOF'
 plugins {
-    id("LibraryConventionV2")
+    id("LibraryConventionV1")
     id("CompileIOS")
     id("CompileWasm")
     id("FeatureCoroutine")
@@ -148,7 +148,7 @@ model_script="$model_pt1$model_pt2$model_pt3"
 
 common_library_pt1=$(cat <<'EOF'
 plugins {
-    id("LibraryConventionV2")
+    id("LibraryConventionV1")
     id("CompileIOS")
     id("CompileWasm")
     id("FeatureCoroutine")

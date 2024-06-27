@@ -6,32 +6,28 @@ package plugin.convention
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.configure
-import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import plugin.convention.companion.withKotlinMultiplatformExtension
 
 class CompileIOS : Plugin<Project> {
-    companion object {
-        public val ID: String = "CompileIOS"
-    }
 
-    override fun apply(target: Project) {
-        val absolutePath = target.projectDir.path
-        val name = target.path.replaceFirstChar { "" }
-            .split(":")
-            .joinToString("") { it.replaceFirstChar { it.uppercaseChar() } }
-            .split("-")
-            .joinToString("") { it.replaceFirstChar { it.uppercaseChar() } }
-            .split("_")
-            .joinToString("") { it.replaceFirstChar { it.uppercaseChar() } }
+    override fun apply(project: Project) {
+        with(project) {
+            val absolutePath = projectDir.path
+            val name = path.replaceFirstChar { "" }
+                .split(":")
+                .joinToString("") { it.replaceFirstChar { it.uppercaseChar() } }
+                .split("-")
+                .joinToString("") { it.replaceFirstChar { it.uppercaseChar() } }
+                .split("_")
+                .joinToString("") { it.replaceFirstChar { it.uppercaseChar() } }
 
-        val _moduleName = when {
-            absolutePath.contains("/Shared", true) -> "Shared$name"
-            absolutePath.contains("/System", true) -> "System$name"
-            else -> name
-        }
+            val _moduleName = when {
+                absolutePath.contains("/Shared", true) -> "Shared$name"
+                absolutePath.contains("/System", true) -> "System$name"
+                else -> name
+            }
 
-        with(target) {
-            extensions.configure<KotlinMultiplatformExtension> {
+            withKotlinMultiplatformExtension {
                 listOf(
                     iosX64(),
                     iosArm64(),
@@ -53,6 +49,7 @@ class CompileIOS : Plugin<Project> {
                 }
             }
         }
+
     }
 
 }

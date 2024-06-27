@@ -1,7 +1,7 @@
 import plugin.convention.companion.model
 
 plugins {
-    id("LibraryConventionV2")
+    id("LibraryConventionV1")
     id("CompileIOS")
     id("CompileWasm")
     id("FeatureCoroutine")

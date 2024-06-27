@@ -35,10 +35,6 @@ gradlePlugin {
             id = "LibraryConventionV1"
             implementationClass = "plugin.convention.LibraryConventionV1"
         }
-        register("LibraryConventionV2") {
-            id = "LibraryConventionV2"
-            implementationClass = "plugin.convention.LibraryConventionV2"
-        }
         register("CompileIOS") {
             id = "CompileIOS"
             implementationClass = "plugin.convention.CompileIOS"
@@ -59,10 +55,6 @@ gradlePlugin {
             id = "FeatureHttpClient"
             implementationClass = "plugin.convention.features.FeatureHttpClient"
         }
-        register("FeatureNavigation") {
-            id = "FeatureNavigation"
-            implementationClass = "plugin.convention.features.FeatureNavigation"
-        }
         register("FeatureSerialization") {
             id = "FeatureSerialization"
             implementationClass = "plugin.convention.features.FeatureSerialization"
@@ -74,10 +66,6 @@ gradlePlugin {
         register("FeatureCoroutine") {
             id = "FeatureCoroutine"
             implementationClass = "plugin.convention.features.FeatureCoroutine"
-        }
-        register("FeatureAdaptiveLayout") {
-            id = "FeatureAdaptiveLayout"
-            implementationClass = "plugin.convention.features.FeatureAdaptiveLayout"
         }
         register("ProjectConfig") {
             id = "ProjectConfig"

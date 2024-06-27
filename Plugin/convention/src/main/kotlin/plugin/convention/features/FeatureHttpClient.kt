@@ -6,30 +6,23 @@ package plugin.convention.features
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.artifacts.VersionCatalogsExtension
-import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.getByType
-import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import plugin.convention.companion.versionCatalog
+import plugin.convention.companion.withKotlinMultiplatformExtension
 
 class FeatureHttpClient : Plugin<Project> {
     companion object {
         public val ID: String = "FeatureHttpClient"
     }
 
-    override fun apply(target: Project) {
-        with(target) {
+    override fun apply(project: Project) {
+        with(project) {
 
-            val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
+            val libs = versionCatalog
 
-            extensions.configure<KotlinMultiplatformExtension> {
-
+            withKotlinMultiplatformExtension {
                 sourceSets.androidMain.dependencies {
-                    implementation(
-                        libs.findLibrary("ktor-client-okhttp").get()
-                    )
-                    implementation(
-                        libs.findLibrary("ktor-client-core").get()
-                    )
+                    implementation(libs.findLibrary("ktor-client-okhttp").get())
+                    implementation(libs.findLibrary("ktor-client-core").get())
                 }
 
                 sourceSets.commonMain.dependencies {
@@ -37,12 +30,8 @@ class FeatureHttpClient : Plugin<Project> {
                 }
 
                 sourceSets.iosMain.dependencies {
-                    implementation(
-                        libs.findLibrary("ktor-client-ios").get()
-                    )
-                    implementation(
-                        libs.findLibrary("ktor-client-core").get()
-                    )
+                    implementation(libs.findLibrary("ktor-client-ios").get())
+                    implementation(libs.findLibrary("ktor-client-core").get())
                 }
             }
         }

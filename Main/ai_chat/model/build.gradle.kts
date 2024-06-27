@@ -2,7 +2,7 @@ import plugin.convention.companion.Shared
 import plugin.convention.companion.System
 
 plugins {
-    id("LibraryConventionV2")
+    id("LibraryConventionV1")
     id("CompileIOS")
     id("CompileWasm")
     id("FeatureCoroutine")

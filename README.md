@@ -36,7 +36,7 @@ This codebase comes with Groot AI assistant module as example of Gemini AI integ
 - Module setting design interpretational. Module settings should interpret the purpose of the module. For example, the `data` module's Gradle settings indicate HTTP call capability and serialization processes, effectively conveying its functionality.
   ```kotlin
   plugins {
-      id("LibraryConventionV2")
+      id("LibraryConventionV1")
       id("CompileIOS")
       id("CompileWasm")
       id("FeatureCoroutine")

@@ -15,7 +15,6 @@ plugins {
     id("CompileWasm")
     id("FeatureCoroutine")
     id("FeaturePane")
-    id("FeatureNavigation")
     id("FeatureSerialization")
     id("FeatureHttpClient")
     id("FeatureAndroidPluto")

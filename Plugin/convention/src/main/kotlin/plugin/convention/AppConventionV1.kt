@@ -9,12 +9,12 @@ import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.artifacts.VersionCatalogsExtension
-import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.get
-import org.gradle.kotlin.dsl.getByType
-import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import plugin.convention.companion.DefaultConfigs.EXCLUDED_RESOURCES
+import plugin.convention.companion.versionCatalog
+import plugin.convention.companion.withBaseAppModuleExtension
+import plugin.convention.companion.withKotlinMultiplatformExtension
+import plugin.convention.companion.withPluginManager
 import java.io.FileInputStream
 import java.util.Properties
 
@@ -23,20 +23,16 @@ class AppConventionV1 : Plugin<Project> {
         public val ID: String = "AppConventionV1"
     }
 
-    private val PLUGINS = listOf(
-        "com.android.application",
-        "org.jetbrains.kotlin.multiplatform"
-    )
+    override fun apply(project: Project) =
+        with(project) {
+            val libs = versionCatalog
 
-    override fun apply(target: Project) =
-        with(target) {
-            with(pluginManager) {
-                PLUGINS.forEach(::apply)
+            withPluginManager {
+                apply("com.android.application")
+                apply("org.jetbrains.kotlin.multiplatform")
             }
 
-            val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
-
-            extensions.configure<KotlinMultiplatformExtension> {
+            withKotlinMultiplatformExtension {
                 androidTarget {
                     compilations.all {
                         kotlinOptions {
@@ -68,7 +64,7 @@ class AppConventionV1 : Plugin<Project> {
                     implementation(libs.findLibrary("androidx-espresso-core").get())
                 }
             }
-            extensions.configure<BaseAppModuleExtension> {
+            withBaseAppModuleExtension {
                 compileSdk = libs.findVersion("android-compileSdk").get().toString().toInt()
 
                 sourceSets["main"].manifest.srcFile("android/AndroidManifest.xml")
@@ -81,7 +77,7 @@ class AppConventionV1 : Plugin<Project> {
                 }
 
                 // signing config
-                val signingConfig = generateSigningConfig(target, this)
+                val signingConfig = generateSigningConfig(project, this)
 
                 // You only need to define build variant once here.
                 // No need to define it in every module, because only composeApp module can have contexts,

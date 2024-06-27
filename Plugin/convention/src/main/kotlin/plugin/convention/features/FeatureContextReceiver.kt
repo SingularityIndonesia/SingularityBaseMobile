@@ -6,20 +6,21 @@ package plugin.convention.features
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.configure
-import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import plugin.convention.companion.kotlinCompile
+import plugin.convention.companion.withKotlinMultiplatformExtension
 
 class FeatureContextReceiver : Plugin<Project> {
     companion object {
         public val ID: String = "FeatureContextReceiver"
     }
 
-    override fun apply(target: Project) {
-        target.extensions.configure<KotlinMultiplatformExtension> {
-            target.kotlinCompile {
-                kotlinOptions {
-                    freeCompilerArgs += "-Xcontext-receivers"
+    override fun apply(project: Project) {
+        with(project) {
+            withKotlinMultiplatformExtension {
+                kotlinCompile {
+                    kotlinOptions {
+                        freeCompilerArgs += "-Xcontext-receivers"
+                    }
                 }
             }
         }

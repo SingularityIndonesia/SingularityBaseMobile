@@ -5,7 +5,7 @@ import org.jetbrains.compose.ComposeExtension
  * You are not allowed to remove the copyright. Unless you have a "free software" licence.
  */
 plugins {
-    id("LibraryConventionV2")
+    id("LibraryConventionV1")
     id("CompileIOS")
     id("CompileWasm")
     id("FeaturePane")

@@ -43,6 +43,11 @@ val prodReleaseImplementation: DependencyHandler.(Any) -> Unit =
         add("prodReleaseImplementation", dependencyNotation)
     }
 
+val androidTestImplementation: DependencyHandler.(Any) -> Unit =
+    { dependencyNotation ->
+        add("androidTestImplementation", dependencyNotation)
+    }
+
 val debugAllImplementation: DependencyHandler.(Any) -> Unit =
     { pkg ->
         listOf(

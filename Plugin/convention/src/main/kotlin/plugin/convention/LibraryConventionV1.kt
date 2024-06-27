@@ -4,37 +4,28 @@
  */
 package plugin.convention
 
-import com.android.build.gradle.LibraryExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.artifacts.VersionCatalogsExtension
-import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.get
-import org.gradle.kotlin.dsl.getByType
-import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import plugin.convention.companion.DefaultConfigs.EXCLUDED_RESOURCES
+import plugin.convention.companion.versionCatalog
+import plugin.convention.companion.withKotlinMultiplatformExtension
+import plugin.convention.companion.withLibraryExtension
+import plugin.convention.companion.withPluginManager
 
 class LibraryConventionV1 : Plugin<Project> {
 
-    companion object {
-        public val ID: String = "LibraryConventionV1"
-    }
+    override fun apply(project: Project) =
+        with(project) {
+            val libs = versionCatalog
 
-    private val PLUGINS = listOf(
-        "com.android.library",
-        "org.jetbrains.kotlin.multiplatform",
-    )
-
-    override fun apply(target: Project) =
-        with(target) {
-            with(pluginManager) {
-                PLUGINS.forEach(::apply)
+            withPluginManager {
+                apply("com.android.library")
+                apply("org.jetbrains.kotlin.multiplatform")
             }
 
-            val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
-
-            extensions.configure<KotlinMultiplatformExtension> {
+            withKotlinMultiplatformExtension {
                 androidTarget {
                     compilations.all {
                         kotlinOptions {
@@ -43,17 +34,42 @@ class LibraryConventionV1 : Plugin<Project> {
                     }
                 }
 
+                sourceSets.commonMain {
+                    kotlin.srcDir("common")
+                    resources.srcDirs("common/res")
+                }
+                sourceSets.commonTest {
+                    kotlin.srcDirs("commonTest")
+                }
+                sourceSets.androidMain {
+                    kotlin.srcDir("android")
+                }
+                sourceSets.androidNativeTest {
+                    kotlin.srcDir("androidTest")
+                }
+                sourceSets.iosMain {
+                    kotlin.srcDir("ios")
+                }
+                sourceSets.iosTest {
+                    kotlin.srcDirs("iosTest")
+                }
+
                 sourceSets.commonTest.dependencies {
-                    implementation("junit:junit:${libs.findVersion("junit").get()}")
+                    implementation(libs.findLibrary("kotlin-test").get())
+                    implementation(libs.findLibrary("junit").get())
+                }
+                sourceSets.androidNativeTest.dependencies {
+                    implementation(libs.findLibrary("androidx-test-junit").get())
+                    implementation(libs.findLibrary("androidx-espresso-core").get())
                 }
             }
 
-            extensions.configure<LibraryExtension> {
+            withLibraryExtension {
                 compileSdk = libs.findVersion("android-compileSdk").get().toString().toInt()
 
-                sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-                sourceSets["main"].res.srcDirs("src/androidMain/res")
-                sourceSets["main"].resources.srcDirs("src/commonMain/resources")
+                sourceSets["main"].manifest.srcFile("android/AndroidManifest.xml")
+                sourceSets["main"].res.srcDirs("android/res")
+                sourceSets["main"].resources.srcDirs("common/res")
 
                 defaultConfig {
                     minSdk = libs.findVersion("android-minSdk").get().toString().toInt()

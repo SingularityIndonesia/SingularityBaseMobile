@@ -12,9 +12,6 @@ import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
 class CompileWasm : Plugin<Project> {
-    companion object {
-        public val ID: String = "CompileWasm"
-    }
 
     override fun apply(target: Project) {
 

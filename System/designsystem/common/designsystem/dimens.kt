@@ -4,7 +4,6 @@
  */
 package designsystem
 
-import androidx.compose.ui.text.Paragraph
 import androidx.compose.ui.unit.dp
 
 val SmallSpacing = 4.dp
