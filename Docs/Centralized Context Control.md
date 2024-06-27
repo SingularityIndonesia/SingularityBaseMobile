@@ -42,9 +42,9 @@ interface WebRepositoryContext {
     val webClient: WebClient
 }
 ```
-That function requires ExampleContext to be able to run. That function cannot exist nor tobe running if the main context doesn't permit the `ExampleContext` tobe exist.
+That function requires Example Module's Context to be able to run. That function cannot exist nor tobe running if the main context doesn't permit the `Example Module's Context` tobe exist.
 
-To permit that function to run, the main context must reify the `ExampleContext` and it's `WebRepositoryContext` first.
+To permit that function to run, the main context must reify or create the `ExampleContext` and it's `WebRepositoryContext` first.
 
 **Example of MainContext class in main module:**
 ```kotlin
