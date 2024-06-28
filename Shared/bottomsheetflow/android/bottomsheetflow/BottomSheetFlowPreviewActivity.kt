@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -65,6 +64,8 @@ fun BottomSheetInput(
     onCancel: () -> Unit,
     onFinish: () -> Unit
 ) {
+    val scope = rememberCoroutineScope()
+
     BottomSheetFlow(
         startDestination = "input1",
         onCancel = onCancel
@@ -78,12 +79,24 @@ fun BottomSheetInput(
             }
         ) { sheetState ->
             Sheet1(
-                sheetState,
-                onBack = onCancel,
-                onNext = {
-                    navigate("input2")
+                onBack = {
+                    scope.launch {
+                        sheetState.hide()
+                        onCancel.invoke()
+                    }
                 },
-                onCancel = onCancel
+                onNext = {
+                    scope.launch {
+                        sheetState.hide()
+                        navigate("input2")
+                    }
+                },
+                onCancel = {
+                    scope.launch {
+                        sheetState.hide()
+                        onCancel.invoke()
+                    }
+                }
             )
         }
 
@@ -96,12 +109,24 @@ fun BottomSheetInput(
             }
         ) { sheetState ->
             Sheet2(
-                sheetState,
-                onBack = ::popBackStack,
-                onNext = {
-                    navigate("input3")
+                onBack = {
+                    scope.launch {
+                        sheetState.hide()
+                        popBackStack()
+                    }
                 },
-                onCancel = onCancel
+                onNext = {
+                    scope.launch {
+                        sheetState.hide()
+                        navigate("input3")
+                    }
+                },
+                onCancel = {
+                    scope.launch {
+                        sheetState.hide()
+                        onCancel.invoke()
+                    }
+                }
             )
         }
 
@@ -114,24 +139,35 @@ fun BottomSheetInput(
             }
         ) { sheetState ->
             Sheet3(
-                sheetState,
-                onBack = ::popBackStack,
-                onFinish = onFinish,
-                onCancel = onCancel
+                onBack = {
+                    scope.launch {
+                        sheetState.hide()
+                        popBackStack()
+                    }
+                },
+                onFinish = {
+                    scope.launch {
+                        sheetState.hide()
+                        onFinish.invoke()
+                    }
+                },
+                onCancel = {
+                    scope.launch {
+                        sheetState.hide()
+                        onCancel.invoke()
+                    }
+                }
             )
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Sheet1(
-    sheetState: SheetState,
     onBack: () -> Unit,
     onNext: () -> Unit,
     onCancel: () -> Unit
 ) {
-    val scope = rememberCoroutineScope()
     Column {
         TextTitle(
             modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -141,47 +177,32 @@ fun Sheet1(
         Row {
             TertiaryButton(
                 modifier = Modifier.weight(1f),
-                label = "Cancel"
-            ) {
-                scope.launch {
-                    sheetState.hide()
-                    onCancel.invoke()
-                }
-            }
+                label = "Cancel",
+                onClick = onCancel
+            )
             MediumSpacing()
             SecondaryButton(
                 modifier = Modifier.weight(1f),
-                label = "Back"
-            ) {
-                scope.launch {
-                    sheetState.hide()
-                    onBack.invoke()
-                }
-            }
+                label = "Back",
+                onClick = onBack
+            )
             MediumSpacing()
             PrimaryButton(
                 modifier = Modifier.weight(1f),
-                label = "Next"
-            ) {
-                scope.launch {
-                    sheetState.hide()
-                    onNext.invoke()
-                }
-            }
+                label = "Next",
+                onClick = onNext
+            )
         }
         ExtraLargeSpacing()
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Sheet2(
-    sheetState: SheetState,
     onBack: () -> Unit,
     onNext: () -> Unit,
     onCancel: () -> Unit
 ) {
-    val scope = rememberCoroutineScope()
     Column {
         TextTitle(
             modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -193,47 +214,32 @@ fun Sheet2(
         ) {
             TertiaryButton(
                 modifier = Modifier.weight(1f),
-                label = "Cancel"
-            ) {
-                scope.launch {
-                    sheetState.hide()
-                    onCancel.invoke()
-                }
-            }
+                label = "Cancel",
+                onClick = onCancel
+            )
             MediumSpacing()
             SecondaryButton(
                 modifier = Modifier.weight(1f),
-                label = "Back"
-            ) {
-                scope.launch {
-                    sheetState.hide()
-                    onBack.invoke()
-                }
-            }
+                label = "Back",
+                onClick = onBack
+            )
             MediumSpacing()
             PrimaryButton(
                 modifier = Modifier.weight(1f),
-                label = "Next"
-            ) {
-                scope.launch {
-                    sheetState.hide()
-                    onNext.invoke()
-                }
-            }
+                label = "Next",
+                onClick = onNext
+            )
         }
         ExtraLargeSpacing()
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Sheet3(
-    sheetState: SheetState,
     onBack: () -> Unit,
     onFinish: () -> Unit,
     onCancel: () -> Unit
 ) {
-    val scope = rememberCoroutineScope()
     Column {
         TextTitle(
             modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -245,33 +251,21 @@ fun Sheet3(
         ) {
             TertiaryButton(
                 modifier = Modifier.weight(1f),
-                label = "Cancel"
-            ) {
-                scope.launch {
-                    sheetState.hide()
-                    onCancel.invoke()
-                }
-            }
+                label = "Cancel",
+                onClick = onCancel
+            )
             MediumSpacing()
             SecondaryButton(
                 modifier = Modifier.weight(1f),
-                label = "Back"
-            ) {
-                scope.launch {
-                    sheetState.hide()
-                    onBack.invoke()
-                }
-            }
+                label = "Back",
+                onClick = onBack
+            )
             MediumSpacing()
             PrimaryButton(
                 modifier = Modifier.weight(1f),
-                label = "Finish"
-            ) {
-                scope.launch {
-                    sheetState.hide()
-                    onFinish.invoke()
-                }
-            }
+                label = "Finish",
+                onClick = onFinish
+            )
         }
         ExtraLargeSpacing()
     }
