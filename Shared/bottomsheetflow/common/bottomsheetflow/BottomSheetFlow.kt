@@ -40,6 +40,7 @@ interface BottomSheetFlowScope {
 /**
  * BottomSheet flow is a flow of bottom sheet. You can configure multiple bottomsheets and perform navigation to each bottomsheet.
  * To run preview launch the BottomSheetFlowPreviewActivity.
+ * @see [Docs/Run Custom Activity.md]
  * @param startDestination first launch route.
  * @param onCancel When the user performs a back action (either through navigation or dismissal) and the navigation reaches the end of the stack, the flow will be canceled, and `onCancel` will be invoked.
  * @param configuration Configuration scope to configure the bottom sheet.
