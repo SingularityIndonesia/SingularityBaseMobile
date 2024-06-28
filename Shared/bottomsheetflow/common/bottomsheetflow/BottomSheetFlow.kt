@@ -67,6 +67,7 @@ fun BottomSheetFlow(
                 ) {
                     val sheetState = rememberModalBottomSheetState(
                         confirmValueChange = { state ->
+                            /** interrupt dismissal intention **/
                             if (state == SheetValue.Hidden)
                                 onDismiss.invoke()
                             else
