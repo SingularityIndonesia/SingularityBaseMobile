@@ -17,7 +17,7 @@ interface BottomSheetFlowScope {
     @OptIn(ExperimentalMaterial3Api::class)
     fun route(
         route: String,
-        onDismiss: ()-> Boolean,
+        onDismiss: ()-> Boolean = { true },
         content: @Composable NavHostController.(SheetState) -> Unit
     )
 }
