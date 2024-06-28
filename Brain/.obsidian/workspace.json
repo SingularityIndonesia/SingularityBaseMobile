@@ -93,7 +93,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "event propagation.md",
+                "file": "centralized context control.md",
                 "mode": "source",
                 "source": false
               }
@@ -166,7 +166,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "event propagation.md",
+                "file": "centralized context control.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -183,7 +183,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "event propagation.md",
+                "file": "centralized context control.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -206,7 +206,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "event propagation.md"
+                "file": "centralized context control.md"
               }
             }
           }
@@ -229,11 +229,11 @@
   },
   "active": "926b5d23c7a82411",
   "lastOpenFiles": [
+    "event propagation.md",
     "stateless component.md",
     "pane.md",
     "navigation.md",
     "explicit dependency injection.md",
-    "event propagation.md",
     "contextual programming.md",
     "composable component.md",
     "centralized context control.md",
