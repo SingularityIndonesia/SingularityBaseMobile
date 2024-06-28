@@ -60,7 +60,7 @@ This codebase comes with Groot AI assistant module as example of Gemini AI integ
 - **Ready for large scale project**. This codebase is designed to serve as the foundation **for large-scale projects**. You don't need to worry about how to scale up your codebase, because it's designed for that.
 
 ## Examples
-If you somehow new to functional and contextual programming, you can see [Gists.md](Docs%2FGists.md) for examples.
+If you are new to functional and contextual programming, you can see [Gists.md](Docs%2FGists.md) for examples.
 
 ## Promises
 More module will be added in the future such camera, biometic, etc.
