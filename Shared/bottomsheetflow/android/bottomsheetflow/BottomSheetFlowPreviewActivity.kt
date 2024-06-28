@@ -28,7 +28,7 @@ import designsystem.component.TextTitle
 import kotlinx.coroutines.launch
 import simpleactivity.SimpleActivity
 
-class BottomSheetFlowPreview : SimpleActivity() {
+class BottomSheetFlowPreviewActivity : SimpleActivity() {
 
     @Composable
     override fun App() {
