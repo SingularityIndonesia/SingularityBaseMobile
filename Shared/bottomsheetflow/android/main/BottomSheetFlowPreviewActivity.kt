@@ -86,7 +86,12 @@ fun BottomSheetInput(
         onCancel = onCancel
     ) {
         route(
-            "input1"
+            route = "input1",
+            onDismiss = {
+                // you can show dialog here
+                // showDismissDialog = true
+                false
+            }
         ) { sheetState ->
             Sheet1(
                 sheetState,
@@ -99,7 +104,12 @@ fun BottomSheetInput(
         }
 
         route(
-            "input2"
+            "input2",
+            onDismiss = {
+                // you can show dialog here
+                // showDismissDialog = true
+                false
+            }
         ) { sheetState ->
             Sheet2(
                 sheetState,
@@ -112,7 +122,12 @@ fun BottomSheetInput(
         }
 
         route(
-            "input3"
+            "input3",
+            onDismiss = {
+                // you can show dialog here
+                // showDismissDialog = true
+                false
+            }
         ) { sheetState ->
             Sheet3(
                 sheetState,

@@ -5,6 +5,7 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
@@ -16,7 +17,7 @@ interface BottomSheetFlowScope {
     @OptIn(ExperimentalMaterial3Api::class)
     fun route(
         route: String,
-        dismissAble: Boolean = true,
+        onDismiss: ()-> Boolean,
         content: @Composable NavHostController.(SheetState) -> Unit
     )
 }
@@ -41,13 +42,20 @@ fun BottomSheetFlow(
         val scope = object : BottomSheetFlowScope {
             override fun route(
                 route: String,
-                dismissAble: Boolean,
-                content: @Composable (NavHostController.(SheetState) -> Unit)
+                onDismiss: () -> Boolean,
+                content: @Composable() (NavHostController.(SheetState) -> Unit)
             ) {
                 composable(
                     route
                 ) {
-                    val sheetState = rememberModalBottomSheetState()
+                    val sheetState = rememberModalBottomSheetState(
+                        confirmValueChange = { state ->
+                            if (state == SheetValue.Hidden)
+                                onDismiss.invoke()
+                            else
+                                true
+                        }
+                    )
 
                     ModalBottomSheet(
                         onDismissRequest = {
