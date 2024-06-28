@@ -1,0 +1,2 @@
+- Component must be a [[stateless component]] not a [stateful component](stateless%20component)
+- Component cannot invoke side effect that effect another component except it's child components - must do [[event propagation]] instead.

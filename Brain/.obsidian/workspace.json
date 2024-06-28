@@ -1,0 +1,247 @@
+{
+  "main": {
+    "id": "e971252e65a3f1cf",
+    "type": "split",
+    "children": [
+      {
+        "id": "004b3e98e97318ac",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "9aa58e15a1edab4f",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "contextual programming.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "40b69f8e345102c7",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "explicit dependency injection.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "ec9e25108cd312d8",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {}
+            }
+          },
+          {
+            "id": "9d8289ddae62f6aa",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "explicit dependency injection.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "f6424ec3df0d65ea",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "navigation.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "8dd6afa445e38a8a",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "stateless component.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "541f5bbd6846ca6f",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "composable component.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "926b5d23c7a82411",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "event propagation.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ],
+        "currentTab": 7
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "549b9327d86f9d0d",
+    "type": "split",
+    "children": [
+      {
+        "id": "3d4536e789e5e62b",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "7329f2d582ef31d5",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "acfc05e513322362",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "6ac843e38f58e0e3",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 283.5
+  },
+  "right": {
+    "id": "72b10e892919d131",
+    "type": "split",
+    "children": [
+      {
+        "id": "0af8a2aac38b4a47",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "a942b7883a3bb776",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "event propagation.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "c31cf33b7151be24",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "event propagation.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "bb64efc2939949b6",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "eddebf01cc5aa376",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "event propagation.md"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false
+    }
+  },
+  "active": "926b5d23c7a82411",
+  "lastOpenFiles": [
+    "stateless component.md",
+    "pane.md",
+    "navigation.md",
+    "explicit dependency injection.md",
+    "event propagation.md",
+    "contextual programming.md",
+    "composable component.md",
+    "centralized context control.md",
+    "images/Centralized Context Control.jpg",
+    "stateless.md",
+    "images",
+    "monad.md",
+    "monoid.md",
+    "panes.md"
+  ]
+}
