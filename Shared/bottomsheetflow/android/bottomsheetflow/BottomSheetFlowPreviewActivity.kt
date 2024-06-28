@@ -2,23 +2,15 @@
  * Copyright (c) 2024 Singularity Indonesia (stefanus.ayudha@gmail.com)
  * You are not allowed to remove the copyright. Unless you have a "free software" licence.
  */
-package main
+package bottomsheetflow
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.SheetState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -27,7 +19,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import bottomsheetflow.BottomSheetFlow
 import designsystem.component.ExtraLargeSpacing
 import designsystem.component.MediumSpacing
 import designsystem.component.PrimaryButton
@@ -35,44 +26,37 @@ import designsystem.component.SecondaryButton
 import designsystem.component.TertiaryButton
 import designsystem.component.TextTitle
 import kotlinx.coroutines.launch
+import simpleactivity.SimpleActivity
 
-class BottomSheetFlowPreview : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+class BottomSheetFlowPreview : SimpleActivity() {
 
-        setContent {
-            App()
-        }
-    }
-}
+    @Composable
+    override fun App() {
+        var showSheet by remember { mutableStateOf(false) }
 
-@Composable
-fun App() {
-
-    var showSheet by remember { mutableStateOf(false) }
-
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .imePadding()
-    ) {
-        PrimaryButton(
-            label = "Open Bottom Sheet",
-            modifier = Modifier.align(Alignment.Center),
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .imePadding()
         ) {
-            showSheet = true
-        }
-    }
-
-    if (showSheet)
-        BottomSheetInput(
-            onCancel = {
-                showSheet = false
-            },
-            onFinish = {
-                showSheet = false
+            PrimaryButton(
+                label = "Open Bottom Sheet",
+                modifier = Modifier.align(Alignment.Center),
+            ) {
+                showSheet = true
             }
-        )
+        }
+
+        if (showSheet)
+            BottomSheetInput(
+                onCancel = {
+                    showSheet = false
+                },
+                onFinish = {
+                    showSheet = false
+                }
+            )
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
