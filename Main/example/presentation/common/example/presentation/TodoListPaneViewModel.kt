@@ -194,7 +194,7 @@ class TodoListPaneViewModel(
     private fun loadData() {
         viewModelScope.launch {
             state.todoListDataState.emit(VmProcessing())
-            with(context) {
+            with(context.webRepositoryContext) {
                 GetTodos()
                     .onSuccess {
                         state.todoListDataState.emit(

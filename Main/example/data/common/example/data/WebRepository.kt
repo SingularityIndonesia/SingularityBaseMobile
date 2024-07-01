@@ -4,16 +4,16 @@
  */
 package example.data
 
-import example.model.Context
+import core.context.WebRepositoryContext
 import example.model.Todo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 
 
-suspend fun Context.GetTodos(): Result<List<Todo>> =
+suspend fun WebRepositoryContext.GetTodos(): Result<List<Todo>> =
     withContext(Dispatchers.Default) {
-        webRepositoryContext.webClient.get("todos/")
+        webClient.get("todos/")
             .map {
                 val stringResponse = it.invoke().decodeToString()
                 Json.decodeFromString<List<Todo>>(stringResponse)
