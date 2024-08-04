@@ -14,7 +14,7 @@ androidx-test-junit = "1.2.1"
 compose = "1.6.8"
 compose-plugin = "1.6.11"
 junit = "4.13.2"
-kotlin = "2.0.20-Beta1"
+kotlin = "2.0.20-Beta2"
 ksp = "2.0.20-Beta2-1.0.23"
 ktor = "2.3.11"
 kotlinx-serialization-json = "1.7.1"
@@ -26,9 +26,10 @@ pluto = "2.2.2"
 coroutine = "1.9.0-RC"
 generativeai = "0.9.0"
 orbit-mvi = "9.0.0"
+allopen = "gradle85"
 
 [libraries]
-kotlin-allopen = {module = "org.jetbrains.kotlin:kotlin-allopen", version.ref = "kotlin"}
+kotlin-allopen = { module = "org.jetbrains.kotlin:kotlin-allopen", version.ref = "allopen" }
 compose-gradle-plugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "compose-plugin" }
 gradle = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }

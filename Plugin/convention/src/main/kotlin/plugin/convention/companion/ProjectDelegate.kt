@@ -1,7 +1,7 @@
 package plugin.convention.companion
 
-import org.gradle.kotlin.dsl.support.delegates.ProjectDelegate
+import org.gradle.api.Project
 
-fun ProjectDelegate.taskIsRunningTest() =
+fun Project.taskIsRunningTest() =
     gradle.startParameter.taskNames
         .any { it == "check" || it.startsWith("test") || it.contains("Test", true) }

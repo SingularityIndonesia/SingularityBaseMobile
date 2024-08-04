@@ -6,10 +6,13 @@ package plugin.convention
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.get
+import org.jetbrains.kotlin.allopen.gradle.AllOpenExtension
 import plugin.convention.companion.requirePlugin
+import plugin.convention.companion.taskIsRunningTest
 import plugin.convention.companion.versionCatalog
+import plugin.convention.companion.withAllOpenExtension
 import plugin.convention.companion.withKotlinMultiplatformExtension
 import plugin.convention.companion.withPluginManager
 
@@ -36,8 +39,16 @@ class AndroidTest : Plugin<Project> {
                 configurations
                     .filter { it.name.startsWith("ksp") && it.name.contains("Test") }
                     .forEach {
-                        add(it.name, libs.findLibrary("mockative").get())
+                        add(it.name, "io.mockative:mockative-processor:2.2.2")
                     }
+            }
+
+            withAllOpenExtension {
+                if (taskIsRunningTest()) {
+                    extensions.configure<AllOpenExtension> {
+                        annotation("core.test.Mockable")
+                    }
+                }
             }
         }
     }

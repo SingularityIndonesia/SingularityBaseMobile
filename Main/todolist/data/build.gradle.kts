@@ -32,11 +32,4 @@ android {
     namespace = "main.example.data"
 }
 
-// /** fixme: Required by AndroidUnitTest, for now **/
-// if (taskIsRunningTest()) {
-//    extensions.configure<AllOpenExtension> {
-//        annotation("com.myannotation.MyAnnotation")
-//    }
-// }
-
 task("testClasses")
