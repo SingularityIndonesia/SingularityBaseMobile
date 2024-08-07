@@ -9,9 +9,10 @@ import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
 /**
- * This reduce is a fancy function just to inform that the calculation process is involving some other elements.
- * This function will be beneficial in the debugging and refactoring process - giving clear information (visually) of it's dependencies.
- * Example:
+ * This reduce function is a fancy way to inform that the calculation process involves other elements.
+ * It aids debugging and refactoring by clearly showing dependencies visually.
+ * When used correctly, the bloc body won't be colored purple, indicating it's pure.
+ * For instance:
  * ```
  *     val isABlackHole = reduce(
  *         mass,
@@ -24,8 +25,7 @@ import kotlin.contracts.contract
  *          return r <= SchwarzschildRadius
  *     }
  * ```
- * In that example, we can see that the calculation process requires 2 elements: userSubmitIntentErrorMessage and agreeToTermAndAgreement.
- * When it used properly, the `bloc` body will not colored purple (indicating that the function is totally pure).
+ * In that example, we can see that the calculation process requires 2 elements: mass and radius, and the bloc lamda is a pure function.
  */
 @OptIn(ExperimentalContracts::class)
 inline fun <T1, T2, R> reduce(
@@ -40,9 +40,10 @@ inline fun <T1, T2, R> reduce(
 }
 
 /**
- * This reduce is a fancy function just to inform that the calculation process is involving some other elements.
- * This function will be beneficial in the debugging and refactoring process - giving clear information (visually) of it's dependencies.
- * Example:
+ * This reduce function is a fancy way to inform that the calculation process involves other elements.
+ * It aids debugging and refactoring by clearly showing dependencies visually.
+ * When used correctly, the bloc body won't be colored purple, indicating it's pure.
+ * For instance:
  * ```
  *     val isABlackHole = reduce(
  *         mass,
@@ -55,8 +56,7 @@ inline fun <T1, T2, R> reduce(
  *          return r <= SchwarzschildRadius
  *     }
  * ```
- * In that example, we can see that the calculation process requires 2 elements: userSubmitIntentErrorMessage and agreeToTermAndAgreement.
- * When it used properly, the `bloc` body will not colored purple (indicating that the function is totally pure).
+ * In that example, we can see that the calculation process requires 2 elements: mass and radius, and the bloc lamda is a pure function.
  */
 @OptIn(ExperimentalContracts::class)
 inline fun <T1, T2, T3, R> reduce(
@@ -72,9 +72,10 @@ inline fun <T1, T2, T3, R> reduce(
 }
 
 /**
- * This reduce is a fancy function just to inform that the calculation process is involving some other elements.
- * This function will be beneficial in the debugging and refactoring process - giving clear information (visually) of it's dependencies.
- * Example:
+ * This reduce function is a fancy way to inform that the calculation process involves other elements.
+ * It aids debugging and refactoring by clearly showing dependencies visually.
+ * When used correctly, the bloc body won't be colored purple, indicating it's pure.
+ * For instance:
  * ```
  *     val isABlackHole = reduce(
  *         mass,
@@ -87,8 +88,7 @@ inline fun <T1, T2, T3, R> reduce(
  *          return r <= SchwarzschildRadius
  *     }
  * ```
- * In that example, we can see that the calculation process requires 2 elements: userSubmitIntentErrorMessage and agreeToTermAndAgreement.
- * When it used properly, the `bloc` body will not colored purple (indicating that the function is totally pure).
+ * In that example, we can see that the calculation process requires 2 elements: mass and radius, and the bloc lamda is a pure function.
  */
 @OptIn(ExperimentalContracts::class)
 inline fun <T1, T2, T3, T4, R> reduce(
@@ -126,7 +126,7 @@ inline fun <T1, T2, T3, T4, R> reduce(
  *         ....
  *     }
  * ```
- * In that example, we can see that the calculation process requires 2 elements: userSubmitIntentErrorMessage and agreeToTermAndAgreement.
+ * In that example, we can see that the calculation process requires many elements, and they are converted into list of arguments.
  */
 @OptIn(ExperimentalContracts::class)
 inline fun <R> reduce(
