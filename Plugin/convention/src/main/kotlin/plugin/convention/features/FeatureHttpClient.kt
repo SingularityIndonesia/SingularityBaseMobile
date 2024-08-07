@@ -10,13 +10,8 @@ import plugin.convention.companion.versionCatalog
 import plugin.convention.companion.withKotlinMultiplatformExtension
 
 class FeatureHttpClient : Plugin<Project> {
-    companion object {
-        public val ID: String = "FeatureHttpClient"
-    }
-
     override fun apply(project: Project) {
         with(project) {
-
             val libs = versionCatalog
 
             withKotlinMultiplatformExtension {
@@ -26,7 +21,6 @@ class FeatureHttpClient : Plugin<Project> {
                 }
 
                 sourceSets.commonMain.dependencies {
-
                 }
 
                 sourceSets.iosMain.dependencies {
@@ -36,5 +30,4 @@ class FeatureHttpClient : Plugin<Project> {
             }
         }
     }
-
 }

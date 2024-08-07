@@ -6,18 +6,19 @@ package plugin.convention.features
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.apply
+import plugin.convention.companion.requirePlugin
 import plugin.convention.companion.versionCatalog
 import plugin.convention.companion.withKotlinMultiplatformExtension
 import plugin.convention.companion.withPluginManager
 
 class FeatureSerialization : Plugin<Project> {
-
     override fun apply(project: Project) {
         with(project) {
             val libs = versionCatalog
 
             withPluginManager {
-                apply("org.jetbrains.kotlin.plugin.serialization")
+                requirePlugin("org.jetbrains.kotlin.plugin.serialization") { apply(it) }
             }
 
             withKotlinMultiplatformExtension {

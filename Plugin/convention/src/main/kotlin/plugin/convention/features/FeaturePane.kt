@@ -5,10 +5,12 @@
 package plugin.convention.features
 
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.dependencies
 import org.jetbrains.compose.ComposePlugin
 import plugin.convention.companion.androidTestImplementation
 import plugin.convention.companion.debugImplementation
+import plugin.convention.companion.requirePlugin
 import plugin.convention.companion.versionCatalog
 import plugin.convention.companion.withBaseAppModuleExtension
 import plugin.convention.companion.withBaseExtension
@@ -17,21 +19,20 @@ import plugin.convention.companion.withLibraryExtension
 import plugin.convention.companion.withPluginManager
 
 class FeaturePane : ComposePlugin() {
-
     override fun apply(project: Project) {
         with(project) {
             val libs = versionCatalog
 
             withPluginManager {
-                apply("org.jetbrains.compose")
-                apply("org.jetbrains.kotlin.plugin.compose")
+                requirePlugin("org.jetbrains.compose") { apply(it) }
+                requirePlugin("org.jetbrains.kotlin.plugin.compose") { apply(it) }
             }
 
             withKotlinMultiplatformExtension {
                 sourceSets.androidMain.dependencies {
                     implementation(Dependencies(project).preview)
                     implementation(
-                        libs.findLibrary("androidx-activity-compose").get()
+                        libs.findLibrary("androidx-activity-compose").get(),
                     )
                 }
 
@@ -57,7 +58,7 @@ class FeaturePane : ComposePlugin() {
                 dependencies {
                     debugImplementation(libs.findLibrary("compose-ui-tooling").get())
                     androidTestImplementation(
-                        libs.findLibrary("compose-ui-tooling-preview").get()
+                        libs.findLibrary("compose-ui-tooling-preview").get(),
                     )
                 }
             }

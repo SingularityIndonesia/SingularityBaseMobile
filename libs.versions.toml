@@ -27,44 +27,48 @@ coroutine = "1.9.0-RC"
 generativeai = "0.9.0"
 orbit-mvi = "9.0.0"
 allopen = "gradle85"
+arrow = "1.2.4"
 
 [libraries]
-kotlin-allopen = { module = "org.jetbrains.kotlin:kotlin-allopen", version.ref = "allopen" }
-compose-gradle-plugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "compose-plugin" }
 gradle = { module = "com.android.tools.build:gradle", version.ref = "agp" }
-kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
-kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core-ktx" }
-androidx-test-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-junit" }
-androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidx-espresso-core" }
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }
-androidx-material = { group = "com.google.android.material", name = "material", version.ref = "androidx-material" }
-androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androidx-constraintlayout" }
-androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 
+# all open
+kotlin-allopen = { module = "org.jetbrains.kotlin:kotlin-allopen", version.ref = "kotlin" }
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+
+# http client
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
 ktor-client-ios = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
 
+# serialization
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 
+# compose
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
+compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
+compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
+compose-gradle-plugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "compose-plugin" }
 compose-navigation = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "compose-navigation" }
+lifecycle-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelCompose" }
 
-#coroutine
+# coroutine
 coroutine-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutine" }
 coroutine-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutine" }
 coroutine-core-iosarm64 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core-iosarm64", version.ref = "coroutine" }
 coroutine-core-iossimulatorarm64 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core-iossimulatorarm64", version.ref = "coroutine" }
 coroutine-core-js = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core-js", version.ref = "coroutine" }
 
-# pluto
-lifecycle-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelCompose" }
+# test
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-test-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-junit" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidx-espresso-core" }
 mockative = { module = "io.mockative:mockative", version.ref = "mockative" }
+
+# debugger
 pluto = { module = "com.plutolib:pluto", version.ref = "pluto" }
 pluto-no-op = { module = "com.plutolib:pluto-no-op", version.ref = "pluto" }
 pluto-bundle-core = { module = "com.plutolib.plugins:bundle-core", version.ref = "pluto" }
@@ -83,11 +87,25 @@ pluto-plugin-room = { module = "com.plutolib.plugins:rooms-db", version.ref = "p
 pluto-plugin-room-no-op = { module = "com.plutolib.plugins:rooms-db-no-op", version.ref = "pluto" }
 pluto-plugin-data-store = { module = "com.plutolib.plugins:datastore-pref", version.ref = "pluto" }
 pluto-plugin-data-store-no-op = { module = "com.plutolib.plugins:datastore-pref-no-op", version.ref = "pluto" }
+
+# ai
 generativeai = { group = "com.google.ai.client.generativeai", name = "generativeai", version.ref = "generativeai" }
+
+# mvi
 orbit-mvi-core = { module = "org.orbit-mvi:orbit-core", version.ref = "orbit-mvi" }
 orbit-mvi-viewmodel = { module = "org.orbit-mvi:orbit-viewmodel", version.ref = "orbit-mvi" }
 orbit-mvi-compose = { module = "org.orbit-mvi:orbit-compose", version.ref = "orbit-mvi" }
 orbit-test = { module = "org.orbit-mvi:orbit-test", version.ref = "orbit-mvi" }
+
+# optic
+arrow-core = { module = "io.arrow-kt:arrow-core", version.ref= "arrow"}
+arrow-optics = { module = "io.arrow-kt:arrow-optics", version.ref = "arrow"}
+arrow-ksp-plugin = { module = "io.arrow-kt:arrow-optics-ksp-plugin", version.ref = "arrow"}
+
+# platform
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core-ktx" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }
+androidx-material = { group = "com.google.android.material", name = "material", version.ref = "androidx-material" }
 
 [bundles]
 pluto = ["pluto", "pluto-bundle-core", "pluto-plugin-network", "pluto-plugin-network-ktor-interceptor", "pluto-plugin-logger", "pluto-plugin-shared-preference", "pluto-plugin-exception", "pluto-plugin-room", "pluto-plugin-data-store"]

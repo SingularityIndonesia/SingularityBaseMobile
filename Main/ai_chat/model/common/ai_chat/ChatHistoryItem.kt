@@ -1,21 +1,20 @@
 package ai_chat
 
+import arrow.optics.optics
 import common.VmProcessing
 import common.VmState
-import common.fold
 
-
+@optics
 data class ChatHistoryItem(
     val message: String,
     val answer: ChatResponse = ChatResponse(),
-)
-
-data class ChatResponse(
-    val answerState: VmState<String> = VmProcessing()
 ) {
-    val message: String
-        get() = answerState.fold(
-            ifSuccess = { it },
-            ifFailed = { "Error: ${it.message}" }
-        ) { "Loading.." }
+    companion object
+}
+
+@optics
+data class ChatResponse(
+    val answerState: VmState<String> = VmProcessing(),
+) {
+    companion object
 }

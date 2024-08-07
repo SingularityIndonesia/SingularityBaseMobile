@@ -68,6 +68,10 @@ gradlePlugin {
             id = "FeatureCoroutine"
             implementationClass = "plugin.convention.features.FeatureCoroutine"
         }
+        register("FeatureOptic") {
+            id = "FeatureOptic"
+            implementationClass = "plugin.convention.features.FeatureOptic"
+        }
         register("ProjectConfig") {
             id = "ProjectConfig"
             implementationClass = "plugin.convention.ProjectConfig"

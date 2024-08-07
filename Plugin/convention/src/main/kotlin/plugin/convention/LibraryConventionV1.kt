@@ -7,29 +7,30 @@ package plugin.convention
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.get
 import plugin.convention.companion.DefaultConfigs.EXCLUDED_RESOURCES
+import plugin.convention.companion.requirePlugin
 import plugin.convention.companion.versionCatalog
 import plugin.convention.companion.withKotlinMultiplatformExtension
 import plugin.convention.companion.withLibraryExtension
 import plugin.convention.companion.withPluginManager
 
 class LibraryConventionV1 : Plugin<Project> {
-
     override fun apply(project: Project) =
         with(project) {
             val libs = versionCatalog
 
             withPluginManager {
-                apply("com.android.library")
-                apply("org.jetbrains.kotlin.multiplatform")
+                requirePlugin("com.android.library") { apply(it) }
+                requirePlugin("org.jetbrains.kotlin.multiplatform") { apply(it) }
             }
 
             withKotlinMultiplatformExtension {
                 androidTarget {
                     compilations.all {
                         kotlinOptions {
-                            jvmTarget = "17"
+                            jvmTarget = JVMConfig.jvmTarget
                         }
                     }
                 }
@@ -65,15 +66,30 @@ class LibraryConventionV1 : Plugin<Project> {
             }
 
             withLibraryExtension {
-                compileSdk = libs.findVersion("android-compileSdk").get().toString().toInt()
+                compileSdk =
+                    libs
+                        .findVersion("android-compileSdk")
+                        .get()
+                        .toString()
+                        .toInt()
 
                 sourceSets["main"].manifest.srcFile("android/AndroidManifest.xml")
                 sourceSets["main"].res.srcDirs("android/res")
                 sourceSets["main"].resources.srcDirs("common/res")
 
                 defaultConfig {
-                    minSdk = libs.findVersion("android-minSdk").get().toString().toInt()
-                    targetSdk = libs.findVersion("android-targetSdk").get().toString().toInt()
+                    minSdk =
+                        libs
+                            .findVersion("android-minSdk")
+                            .get()
+                            .toString()
+                            .toInt()
+                    targetSdk =
+                        libs
+                            .findVersion("android-targetSdk")
+                            .get()
+                            .toString()
+                            .toInt()
                 }
                 packaging {
                     resources {
@@ -91,5 +107,4 @@ class LibraryConventionV1 : Plugin<Project> {
                 }
             }
         }
-
 }

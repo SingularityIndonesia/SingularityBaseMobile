@@ -3,25 +3,22 @@ package plugin.convention.features
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import plugin.convention.companion.requirePlugin
+import plugin.convention.companion.versionCatalog
 import plugin.convention.companion.withKotlinMultiplatformExtension
 import plugin.convention.companion.withPluginManager
 
-class FeatureOptics : Plugin<Project> {
+class FeatureOptic : Plugin<Project> {
     override fun apply(target: Project) {
-
+        val libs = target.versionCatalog
         target.withPluginManager {
-            requirePlugin("com.android.library") { apply(it) }
-            requirePlugin("org.jetbrains.kotlin.android") { apply(it) }
             requirePlugin("com.google.devtools.ksp") { apply(it) }
         }
-        val arrowVersion = "1.2.0"
+
         target.withKotlinMultiplatformExtension {
             sourceSets.commonMain.dependencies {
-                implementation(platform("io.arrow-kt:arrow-stack:$arrowVersion"))
-                implementation("io.arrow-kt:arrow-core")
-                implementation("io.arrow-kt:arrow-optics")
+                implementation(libs.findLibrary("arrow-core").get())
+                implementation(libs.findLibrary("arrow-optics").get())
             }
         }
     }
-
 }

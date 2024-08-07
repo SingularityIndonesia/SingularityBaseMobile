@@ -34,24 +34,25 @@ class AIChatPaneViewModel(
         intent {
             // submit to gemini
             val response =
-                this@Context
-                    .geminiAgent
-                    .sendMessage(message)
-                    .fold(
-                        onSuccess = {
-                            VmSuccess(it)
-                        },
-                        onFailure = {
-                            postSideEffect(
-                                AIChatPaneSideEffect.ShowToast(
-                                    it.cause?.message ?: it.message ?: "Unknown Error",
-                                ),
-                            )
-                            VmFailed(Exception(it))
-                        },
-                    )
+                with(geminiAgent) {
+                    sendMessage(message)
+                        .fold(
+                            onSuccess = {
+                                VmSuccess(it)
+                            },
+                            onFailure = {
+                                postSideEffect(
+                                    AIChatPaneSideEffect.ShowToast(
+                                        it.cause?.message ?: it.message ?: "Unknown Error",
+                                    ),
+                                )
+                                VmFailed(Exception(it))
+                            },
+                        )
+                }
 
             // new entity
+            // val messageLens = ChatHistoryItemDisplay.Companion.
             val responseEntity =
                 ChatHistoryItemDisplay(
                     ChatHistoryItem(
